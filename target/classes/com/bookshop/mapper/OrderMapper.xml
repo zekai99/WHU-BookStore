@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--
+    Description: order mapper
+    Author: 曾志昊 2017302580214
+-->
+<mapper namespace="com.bookshop.dao.OrderDao">
+
+<!--todo 动态sql解决插入无默认值问题-->
+
+
+    <resultMap id="orderResultMapPlus" type="com.bookshop.entity.Order">
+        <id property="orderId" column="order_id"/>
+        <id property="userId" column="user_id"/>
+        <result property="orderStatus" column="order_status"/>
+        <result property="orderAddress" column="order_address"/>
+        <result property="purchaseTime" column="purchase_time"/>
+        <result property="price" column="price"/>
+        <collection property="books" column="order_id"
+                    javaType="java.util.List"
+                    ofType="com.bookshop.entity.OrderItem"
+                    select="com.bookshop.dao.OrderItemDao.getOrderItem"/>
+        <!--<collection property="user" column="user_id"
+                    javaType="com.bookshop.entity.User"
+                    select="com.bookshop.dao.UserDao.getUser"/>-->
+    </resultMap>
+
+    <resultMap id="orderResultMap" type="com.bookshop.entity.Order">
+        <id property="orderId" column="order_id"/>
+        <id property="userId" column="user_id"/>
+        <result property="orderStatus" column="order_status"/>
+        <result property="orderAddress" column="order_address"/>
+        <result property="purchaseTime" column="purchase_time"/>
+        <result property="price" column="price"/>
+
+    </resultMap>
+
+    <sql id="search_where">
+        <if test="orderId!=null">and order_id=#{orderId}</if>
+        <if test="userId!=null">and user_id=#{userId}</if>
+        <if test="orderStatus!=null">and order_status=#{orderStatus}</if>
+        <if test="orderAddress!=null">and order_address=#{orderAddress}</if>
+        <if test="startTime!=null"><![CDATA[ and purchase_time >= #{startTime}]]></if>
+        <if test="endTime!=null"><![CDATA[ and purchase_time <= #{startTime}]]></if>
+        <if test="startPrice!=null"><![CDATA[ and price>=startPrice]]></if>
+        <if test="endPrice!=null"><![CDATA[ and price<= endPrice]]></if>
+    </sql>
+
+    <sql id="table_column">
+        (user_id,order_status,order_address,purchase_time,price)
+    </sql>
+
+    <select id="getOrder" parameterType="Integer" resultMap="orderResultMapPlus">
+        select * from orders where order_id=#{orderId}
+    </select>
+
+    <select id="getOrdersByUserId" parameterType="Integer" resultMap="orderResultMapPlus">
+        select * from orders where user_id=#{userId}
+    </select>
+
+    <select id="getOrdersPlusByUserId" parameterType="Integer" resultMap="orderResultMapPlus">
+        select * from orders where user_id=#{userId}
+        <if test="startPage!=null and pageSize != null"> LIMIT #{startPage},#{pageSize}</if>
+    </select>
+
+    <select id="searchOrders" parameterType="java.util.HashMap" resultMap="orderResultMap">
+        select * from orders where 1=1
+        <include refid="search_where"/>
+        <if test="startPage!=null and pageSize != null"> LIMIT #{startPage},#{pageSize}</if>
+    </select>
+
+    <insert id="insertOrder" parameterType="com.bookshop.entity.Order" useGeneratedKeys="true" keyProperty="orderId">
+        insert into orders (<include refid="ordersInfoColumns"/>)
+        values(
+        <include refid="ordersInfoValues"/>
+        )
+    </insert>
+<!--#{userId},#{orderStatus},#{orderAddress},#{purchaseTime},#{price}-->
+
+    <sql id="ordersInfoColumns">
+        <trim suffixOverrides=",">
+            <if test="userId != null"> user_id,</if>
+            <if test="orderStatus != null"> order_status,</if>
+            <if test="orderAddress!=null"> order_address,</if>
+            <if test="purchaseTime != null"> purchase_time,</if>
+            <if test="price!=null"> price,</if>
+
+        </trim>
+    </sql>
+
+    <sql id="ordersInfoValues">
+        <trim suffixOverrides=",">
+            <if test="userId != null">#{userId},</if>
+            <if test="orderStatus != null">#{orderStatus},</if>
+            <if test="orderAddress!=null">#{orderAddress},</if>
+            <if test="purchaseTime != null">#{purchaseTime},</if>
+            <if test="price !=null"> #{price},</if>
+        </trim>
+    </sql>
+
+
+
+    <insert id="insertOrders" parameterType="java.util.List">
+        insert into orders <include refid="table_column"/>
+        values
+        <foreach collection="list" item="item" separator=",">
+            (
+                #{item.userId},
+                #{item.orderStatus},
+                #{item.orderAddress},
+                #{item.purchaseTime},
+                #{item.price}
+            )
+        </foreach>
+
+    </insert>
+
+    <update id="updateOrder" parameterType="com.bookshop.entity.Order">
+        update orders
+        <set>
+            <if test="userId!=null">user_id=#{userId},</if>
+            <if test="orderStatus!=null">order_status=#{orderStatus},</if>
+            <if test="orderAddress!=null">order_addresas=#{orderAddress},</if>
+            <if test="purchaseTime!=null">purchase_time=#{purchaseTime},</if>
+            <if test="price!=null">price=#{price},</if>
+        </set>
+        where order_id=#{orderId}
+    </update>
+
+    <update id="updateOrders" parameterType="java.util.List">
+        <foreach collection="list" item="item" separator=";">
+            update orders
+            <set>
+                <if test="item.userId!!=null">user_id=#{item.userId},</if>
+                <if test="item.orderStatus!=null">order_status=#{item.orderStatus},</if>
+                <if test="item.orderAddress!=null">order_addresas=#{item.orderAddress},</if>
+                <if test="item.purchaseTime!=null">purchase_time=#{item.purchaseTime},</if>
+                <if test="item.price!=null">price=#{item.price},</if>
+            </set>
+            where order_id=#{item.orderId}
+        </foreach>
+    </update>
+
+    <delete id="deleteOrder" parameterType="com.bookshop.entity.Order">
+        delete from orders where order_id=#{orderId}
+    </delete>
+    <delete id="deleteOrderById" parameterType="Integer">
+        delete from orders where order_id=#{orderId}
+    </delete>
+    <delete id="deleteOrders" parameterType="java.util.List">
+        delete from orders where order_id in
+        <foreach collection="list" item="item" open="(" close=")" separator=",">
+            #{item.}
+        </foreach>
+    </delete>
+    <select id="count" parameterType="map" resultType="Integer">
+        select count(*) from orders where 1=1
+        <include refid="search_where"/>
+    </select>
+
+
+</mapper>

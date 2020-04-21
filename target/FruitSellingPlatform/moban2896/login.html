@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script type="text/javascript" src="scripts/jquery/jquery-1.7.1.js"></script>
+    <script type="text/javascript">
+        function login() {
+            var userName = $("#userName").val();
+            var userPassword = $("#userPassword").val();
+            if(userName==""||userPassword==""){
+                alert("请正确输入用户名和密码");
+                return;
+            }
+            $.ajax({
+                async: false,
+                url: "http://localhost:8080/user/login",
+                contentType: "application/json;charset=UTF-8", //必须有
+                dataType: "json", //表示返回值类型，不必须
+                type: "post",
+                data: JSON.stringify({
+                    "userName": userName,
+                    "userPassword": userPassword
+                }),
+                success: function (response) {
+                    if (response.status == 0) {
+                        var user = response.data;
+                        if(user!=null &&user.userStatus!=null&&user.userStatus=="manager"){
+                            window.location.href = "back-index.html";
+                        }else{
+                            alert("登录错误！");
+                        }
+                    } else {
+                        alert("登录错误！");
+                    }
+                },
+                error: function (response) {
+                    alert("请求错误");
+                }
+            });
+        }
+    </script>
+    <title>登录页面</title>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+    <!-- Bootstrap -->
+    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet" media="screen">
+    <link href="assets/styles.css" rel="stylesheet" media="screen">
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <script src="js/vendor/modernizr-2.6.2-respond-1.1.0.min.js"></script>
+</head>
+<body id="login">
+<div class="container">
+
+    <form class="form-signin" action="back-index.html">
+        <h2 class="form-signin-heading">登录</h2>
+        <input type="text" id="userName" class="input-block-level" placeholder="用户名">
+        <input type="password" id="userPassword" class="input-block-level" placeholder="密码">
+<!--        <label class="checkbox">-->
+<!--            <input type="checkbox" value="remember-me"> 记住密码-->
+<!--        </label>-->
+        <button class="btn btn-large btn-primary" type="button" onclick="login()">登录</button>
+    </form>
+
+</div> <!-- /container -->
+<script src="vendors/jquery-1.9.1.min.js"></script>
+<script src="bootstrap/js/bootstrap.min.js"></script>
+</body>
+</html>

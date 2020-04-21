@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>信息管理系统</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <script type="text/javascript" src="scripts/jquery/jquery-1.7.1.js"></script>
+    <link href="style/authority/basic_layout.css" rel="stylesheet" type="text/css">
+    <link href="style/authority/common_style.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="scripts/authority/commonAll.js"></script>
+    <script type="text/javascript" src="scripts/jquery/jquery-1.4.4.min.js"></script>
+    <script src="scripts/My97DatePicker/WdatePicker.js" type="text/javascript" defer="defer"></script>
+    <script type="text/javascript" src="scripts/artDialog/artDialog.js?skin=default"></script>
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            /*
+             * 提交
+             */
+            $("#submitbutton").click(function () {
+                if (validateForm()) {
+                    updateBook();
+                    // checkFyFhSubmit();
+                }
+            });
+
+            /*
+             * 取消
+             */
+            $("#cancelbutton").click(function () {
+                /**  关闭弹出iframe  **/
+                window.parent.$.fancybox.close();
+            });
+
+            var result = 'null';
+            if (result == 'success') {
+                /**  关闭弹出iframe  **/
+                window.parent.$.fancybox.close();
+            }
+        });
+
+
+        /** 表单验证  **/
+        function validateForm() {
+            if ($("#bookName").val() == "") {
+                art.dialog({icon: 'error', title: '友情提示', drag: false, resize: false, content: '书名', ok: true,});
+                return false;
+            }
+            if ($("#price").val() == "") {
+                art.dialog({icon: 'error', title: '友情提示', drag: false, resize: false, content: '价格', ok: true,});
+                return false;
+            }
+            if ($("#bookType").val() == "") {
+                art.dialog({icon: 'error', title: '友情提示', drag: false, resize: false, content: '类型', ok: true,});
+                return false;
+            }
+            if ($("#bookStatus").val() == "") {
+                art.dialog({icon: 'error', title: '友情提示', drag: false, resize: false, content: '状态', ok: true,});
+                return false;
+            }
+            return true;
+        }
+
+        function getParam(name) {
+            var search = document.location.search;
+            var pattern = new RegExp("[?&]" + name + "\=([^&]+)", "g");
+            var matcher = pattern.exec(search);
+            var items = null;
+            if (null != matcher) {
+                try {
+                    items = decodeURIComponent(decodeURIComponent(matcher[1]));
+                } catch (e) {
+                    try {
+                        items = decodeURIComponent(matcher[1]);
+                    } catch (e) {
+                        items = matcher[1];
+                    }
+                }
+            }
+            return items;
+        }
+
+        window.onload = function getBook(){
+            var bookId = getParam("bookId");
+            $.ajax({
+                async:false,
+                url: "http://localhost:8080/book/getBook",
+                contentType: "application/json;charset=UTF-8", //必须有
+                dataType: "json", //表示返回值类型，不必须
+                type: "post",
+                data: JSON.stringify({
+                    "bookId": parseInt(bookId)
+                }),
+                success: function (response) {
+                    if(response.status == 0){
+                        book = response.data;
+                        $("#bookId").val(book.bookId);
+                        $("#bookName").val(book.bookName);
+                        $("#bookType").val(book.bookType);
+                        $("#bookStatus").val(book.bookStatus);
+                        $("#image").val(book.image);
+                        $("#price").val(book.price);
+                        $("#detail").val(book.detail);
+                        $("#publishTime").val(book.publishTime);
+                        // alert("查询成功");
+                    }else if(response.status==10) {
+                        alert("请登录！");
+                        window.location.href = "login.html";
+                    }else{
+                        alert("查询失败");
+                        return false;
+                    }
+                },
+                error:function () {
+                    alert("请求失败");
+                }
+            });
+        }
+
+        /** update图书**/
+        function updateBook(){
+            var bookId = getParam("bookId");
+            // var bookType = $("#bookType").find("option:selected").text();
+            var bookType = $("#bookType").find("option:selected").val();
+            if (bookType == "--请选择--" || bookType == "") {
+                bookType = null;
+            }
+
+            $.ajax({
+                async:false,
+                url: "http://localhost:8080/book/updateBook",
+                contentType: "application/json;charset=UTF-8", //必须有
+                dataType: "json", //表示返回值类型，不必须
+                type: "post",
+                data: JSON.stringify({
+                    "bookId": parseInt(bookId),
+                    "bookName": $("#bookName").val()==""?null:$("#bookName").val(),
+                    "bookType": bookType,
+                    "bookStatus": $("#bookStatus").val()==""?null:$("#bookStatus").val(),
+                    "image": $("#image").val()==""?null:$("#image").val(),
+                    "detail": $("#detail").val()==""?null:$("#detail").val(),
+                    "publishTime": $("#publishTime").val()==""?null:$("#publishTime").val()
+                }),
+                success: function (response) {
+                    if(response.status == 0){
+                        alert("更新成功");
+                    }else{
+                        alert("更新失败");
+                        return false;
+                    }
+                },
+                error:function () {
+                    alert("请求失败");
+                }
+            });
+        }
+    </script>
+</head>
+<body>
+<form id="submitForm" name="submitForm" action="/xngzf/archives/initFangyuan.action" method="post">
+    <input type="hidden" name="fyID" value="14458625716623" id="fyID"/>
+    <div id="container">
+        <div id="nav_links">
+            当前位置：书籍&nbsp;>&nbsp;<span style="color: #1A5CC6;">书籍编辑</span>
+            <div id="page_close">
+                <a href="javascript:parent.$.fancybox.close();">
+                    <img src="images/common/page_close.png" width="20" height="20" style="vertical-align: text-top;"/>
+                </a>
+            </div>
+        </div>
+        <div class="ui_content">
+            <table cellspacing="0" cellpadding="0" width="100%" align="left" border="0">
+                <tr>
+                    <td class="ui_text_rt">ID</td>
+                    <td class="ui_text_lt">
+                        <input type="text" id="bookId" name="fangyuanEntity.bookId" value="" class="ui_input_txt02" readonly="true"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="ui_text_rt">书名</td>
+                    <td class="ui_text_lt">
+                        <input type="text" id="bookName" name="fangyuanEntity.bookName" value="" class="ui_input_txt02"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="ui_text_rt">价格</td>
+                    <td class="ui_text_lt">
+                        <input type="text" id="price" name="fangyuanEntity.price" value="" class="ui_input_txt02"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="ui_text_rt">介绍</td>
+                    <td class="ui_text_lt">
+                        <input type="text" id="detail" name="fangyuanEntity.detail" value="" class="ui_input_txt02"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="ui_text_rt">出版</td>
+                    <td class="ui_text_lt">
+                        <input type="text" id="publishTime" name="fangyuanEntity.publishTime" value="" class="ui_input_txt02"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="ui_text_rt" width="80">类别</td>
+                    <td class="ui_text_lt">
+                        <select name="fangyuanEntity.bookType" id="bookType" class="ui_select02">
+                            <option value="" selected="selected">--请选择--</option>
+                            <option value="1">教育考试</option>
+                            <option value="2">小说</option>
+                            <option value="3">童书</option>
+                            <option value="4" >人文社科</option>
+                            <option value="5">健康</option>
+                            <option value="6">英文</option>
+                            <option value="7">理工</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="ui_text_rt">图片</td>
+                    <td class="ui_text_lt">
+                        <input type="text" id="image" name="fangyuanEntity.image" value="" class="ui_input_txt02"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="ui_text_rt">状态</td>
+                    <td class="ui_text_lt">
+                        <select name="fangyuanEntity.bookStatus" id="bookStatus"
+                                class="ui_select01">
+                            <option value="">--请选择--</option>
+                            <option value="on"selected="selected">on</option>
+                            <option value="off">off</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>&nbsp;</td>
+                    <td class="ui_text_lt">
+                        &nbsp;<input id="submitbutton" type="button" value="更新" class="ui_input_btn01"/>
+                        &nbsp;<input id="cancelbutton" type="button" value="取消" class="ui_input_btn01"/>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</form>
+<div style="display:none">
+    <script src='http://v7.cnzz.com/stat.php?id=155540&web_id=155540' language='JavaScript' charset='gb2312'></script>
+</div>
+</body>
+</html>

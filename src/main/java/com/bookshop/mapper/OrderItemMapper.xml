@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--
+
+    Author: 曾志昊 2017302580214
+-->
+<!--todo 动态sql解决插入无默认值问题-->
+
+<mapper namespace="com.bookshop.dao.OrderItemDao">
+
+    <resultMap id="orderItemResultMap" type="com.bookshop.entity.OrderItem">
+        <id property="orderId" column="order_id"/>
+        <result property="bookId" column="book_id"/>
+        <result property="orderNum" column="order_num"/>
+        <result property="orderItemStatus" column="order_item_status"/>
+        <collection property="book" column="book_id"
+                    javaType="com.bookshop.entity.Book"
+                    select="com.bookshop.dao.BookDao.getBook"/>
+    </resultMap>
+
+    <sql id="table_column">
+        (order_id,book_id,order_num,order_item_status)
+    </sql>
+
+    <select id="getOrderItem" parameterType="Integer" resultMap="orderItemResultMap">
+        select * from order_item where order_id=#{orderId}
+    </select>
+
+    <select id="getOrderItems" parameterType="java.util.HashMap" resultMap="orderItemResultMap">
+        select * from order_item where order_id=#{orderId}
+        <if test="startPage!=null and pageSize != null"> LIMIT #{startPage},#{pageSize}</if>
+    </select>
+
+    <insert id="insertOrderItem" parameterType="com.bookshop.entity.OrderItem">
+        insert into order_item <include refid="table_column"/>
+        values(
+            #{orderId},#{bookId},#{orderNum},#{orderItemStatus}
+        )
+    </insert>
+
+    <insert id="insertOrderItems" parameterType="java.util.List">
+        insert into order_item <include refid="table_column"/>
+        values
+        <foreach collection="list" item="item" separator=",">
+            (
+                #{item.orderId},#{item.bookId},#{item.orderNum},#{item.orderItemStatus}
+            )
+        </foreach>
+    </insert>
+
+    <update id="updateOrderItem" parameterType="com.bookshop.entity.OrderItem">
+        update order_item
+        <set>
+            <if test="orderNum!=null">order_num=#{orderNum},</if>
+            <if test="orderItemStatus!=null">order_item_status=#{orderItemStatus},</if>
+        </set>
+        where order_id=#{orderId} and book_id=#{booK_id}
+    </update>
+
+    <update id="updateOrderItems" parameterType="java.util.List">
+        <foreach collection="list" item="item" separator=";">
+            update order_item
+            <set>
+                <if test="item.orderNum!=null">order_num=#{item.orderNum},</if>
+                <if test="item.orderItemStatus!=null">order_item_status=#{item.orderItemStatus},</if>
+            </set>
+            where order_id=#{item.orderId} and book_id=#{item.booK_id}
+        </foreach>
+    </update>
+
+    <delete id="deleteOrderItem" parameterType="com.bookshop.entity.OrderItem">
+        delete from order_item
+        where order_id=#{orderId} and book_id=#{bookId}
+    </delete>
+
+    <delete id="deleteOrderItems" parameterType="java.util.List">
+        <foreach collection="list" item="item" separator=";">
+            delete from order_item
+            where order_id=#{item.orderId} and book_id=#{item.bookId}
+        </foreach>
+    </delete>
+
+    <delete id="deleteOrderItemsByOrderId" parameterType="Integer">
+        delete from order_item where  order_id=#{item.orderId}
+    </delete>
+
+</mapper>

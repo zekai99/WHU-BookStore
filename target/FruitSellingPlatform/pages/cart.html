@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="referrer" content="no-referrer" />
+
+    <title></title>
+
+    <script src="http://libs.baidu.com/jquery/1.9.0/jquery.js"></script>
+    <!-- Vendor Stylesheet -->
+    <link rel="stylesheet" href="../assets/css/vendor.css">
+    <!-- Main Stylesheet -->
+    <link rel="stylesheet" href="../assets/css/line-awesome.min.css">
+    <link rel="stylesheet" href="../assets/css/owl.carousel.min.css">
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/checkbix.css">
+
+    <!-- responsive Stylesheet -->
+    <link rel="stylesheet" href="../assets/css/responsive.css">
+</head>
+<body>
+
+
+<!-- preloader area start -->
+<div class="preloader" id="preloader">
+    <div class="preloader-inner">
+        <div class="spinner">
+            <div class="dot1"></div>
+            <div class="dot2"></div>
+        </div>
+    </div>
+</div>
+<!-- preloader area end -->
+
+<!-- search Popup -->
+<div class="body-overlay" id="body-overlay"></div>
+<div class="search-popup" id="search-popup">
+    <form action="../index.html" class="main-search search-form">
+        <input type="text" placeholder="Search...">
+        <button>Search</button>
+    </form>
+</div>
+<!-- //. search Popup -->
+
+<!--sidebar menu start-->
+<div class="sidebar-menu" id="sidebar-menu">
+    <button class="sidebar-menu-close"><i class="flaticon-close"></i></button>
+    <div class="sidebar-inner">
+        <div class="sidebar-logo">
+            <img src="../assets/img/logo.png" alt="logo"/>
+        </div>
+        <div class="sidemenu-text">
+            <p>We believe brand interaction is key in commu- nication. Real inno vations and a positive customer
+                experience are the heart of successful commu- nication.</p>
+        </div>
+        <div class="sidebar-contact">
+            <h4>Contact Us</h4>
+            <ul>
+                <li><i class="fa fa-map-marker"></i>Lavaca Street, Suite 2000</li>
+                <li><i class="fa fa-envelope"></i>email@evha.com</li>
+                <li><i class="fa fa-phone"></i>(+880) 172570051</li>
+            </ul>
+        </div>
+        <div class="sidebar-subscribe">
+            <input type="text" placeholder="Email">
+            <button><i class="fa fa-long-arrow-right"></i></button>
+        </div>
+        <div class="social-link">
+            <ul>
+                <li><a href="#"><i class="fa fa-facebook-f"></i></a></li>
+                <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+                <li><a href="#"><i class="fa fa-instagram"></i></a></li>
+                <li><a href="#"><i class="fa fa-pinterest"></i></a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!--sidebar menu end-->
+
+<!-- navbar start -->
+<div class="navbar-area">
+    <div class="navbar-top">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 text-md-left text-center">
+                    <ul class="topbar-left">
+                        <li class="topbar-single-info"><i class="fa fa-phone"></i>+123 4567 8910</li>
+                        <li class="topbar-single-info"><i class="fa fa-map-marker"></i>Store Location</li>
+                        <li class="topbar-single-info d-none d-lg-block"><i class="fa fa-crosshairs"></i>Track Your
+                            Order
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-md-6 text-md-right text-center">
+                    <ul class="topbar-right float-md-right">
+                        <div class="align-self-center">
+                            <div class="shop-cart-area">
+                                <ul id="userCart">
+
+                                    <!--                                <li><span>6</span><i class="fa fa-heart-o"></i></li>-->
+                                    <li id="userCartCount" onclick="goToCart();">
+                                        <i class="las la-shopping-cart" onclick="goToCart();"></i>
+                                        <span id="userCartCountSpan"></span></li>
+                                    <!--                                    <li id="userCartPrice" onclick="goToCart();">$ 155.00 .</li>&lt;!&ndash;                                todo 获取购物车价格&ndash;&gt;-->
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="dropdown topbar-help" id="myaccountdropdown">
+                            <i class="fa fa-user"></i>
+                        </div>
+                        <script src="http://libs.baidu.com/jquery/1.9.0/jquery.js"></script>
+                        <script type="text/javascript">
+                            function checkLoginStatus(){
+
+                            }
+                            function logOut() {
+                                alert("login");
+                                $.ajax({
+                                    async: false,
+                                    url: "http://localhost:8080/user/logOut",
+                                    contentType: "application/json;charset=UTF-8", //必须有
+                                    dataType: "json", //表示返回值类型，不必须
+                                    type: "post",
+                                    data: JSON.stringify({}),
+                                    success: function (response) {
+                                        if (response.status == 0) {
+                                            /*退登成功*/
+                                            window.location.href = "login.html";
+                                        } else {
+                                            alert("退登失败");
+                                        }
+                                    },
+                                    error: function () {
+                                        alert("请求失败");
+                                    }
+                                });
+                            }
+
+                            function goToCart(){
+                                window.open("cart.html");
+                            }
+
+                            function checkLogin() {
+                                var user;
+                                $.ajax({
+                                    async:false,
+                                    url: "http://localhost:8080/user/checkLogin",
+                                    contentType: "application/json;charset=UTF-8", //必须有
+                                    dataType: "json", //表示返回值类型，不必须
+                                    type: "post",
+                                    success: function (response) {
+                                        if (response.status == 0) {
+                                            // alert("已登录");
+                                            user = response.data;
+                                            // alert(user.userId);
+                                        } else {
+                                            // alert("未登录");
+                                            return null;
+                                        }
+                                    },
+                                    error: function () {
+                                        alert("请求失败");
+                                        return null;
+                                    }
+                                });
+                                if (user == null || user.userId == null) {
+                                    var str =
+                                        "<a class=\"btn dropdown-toggle\" href=\"#\" role=\"button\" id=\"dropdownMenuLink2\" data-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"false\">\n" +
+                                        "请登录</a>" +
+                                        "<div class=\"dropdown-menu\" aria-labelledby=\"dropdownMenuLink2\" >\n" +
+                                        "<a class=\"dropdown-item\" target=\"_blank\" href=\"login.html\">登录</a> " +
+                                        "</div>";
+                                    $("#myaccountdropdown").append(str);
+                                } else {
+                                    // alert(user.userName);
+                                    /*用户选项*/
+                                    var str =
+                                        "<a class=\"btn dropdown-toggle\" href=\"#\" role=\"button\" id=\"dropdownMenuLink2\" data-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"false\">\n" +
+                                        user.userName + "</a>" +
+                                        "<div class=\"dropdown-menu\" aria-labelledby=\"dropdownMenuLink2\" >\n" +
+                                        "<a class=\"dropdown-item\"target=\"_blank\" href=\"user-order.html\">我的订单</a>" +
+                                        "<a class=\"dropdown-item\"target=\"_blank\"  href=\"user-setting.html\">用户设置</a> " +
+                                        "<a class=\"dropdown-item\"target=\"_blank\" onclick=\"logOut()\">退登</a>\n" +
+                                        "</div>";
+                                    $("#myaccountdropdown").append(str);
+
+                                    $.ajax({
+                                        url: "http://localhost:8080/cart/getCartNum",
+                                        contentType: "application/json;charset=UTF-8", //必须有
+                                        dataType: "json", //表示返回值类型，不必须
+                                        type: "post",
+                                        // data: JSON.stringify(),/*不需要传用户数据*/
+                                        success: function (response) {
+                                            if(response.status==0){
+                                                document.getElementById("userCartCountSpan").innerText = response.data;
+                                                /*                  str = "<span>"+response.data+"</span>";
+                                                                  $("#userCartCount").append(str);*/
+                                            }else{
+                                                alert("获取购物车信息错误");
+                                            }
+                                        },
+                                        error: function () {
+                                            alert("请求失败");
+                                        }
+                                    });
+                                }
+                            }
+
+
+
+                        </script>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+    <div class="navbar-middle d-none d-lg-block">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-2 align-self-center">
+                    <div class="logo-area">
+                        <a href="../index.html"> <img src="../assets/img/logo.png" alt="logo"></a>
+                    </div>
+                </div>
+                <div class="col-lg-7 text-center">
+                    <div class="main-search d-inline-flex">
+                        <input type="text" placeholder="Search product..." name="searchText" id="searchText"/>
+                        <div class="topbar-cat-select">
+                            <select id="bookTypeSelection">
+                                <option value="" selected="selected">全部</option>
+                                <option value="1">教育考试</option>
+                                <option value="2">小说</option>
+                                <option value="3">童书</option>
+                                <option value="4" >人文社科</option>
+                                <option value="5">健康</option>
+                                <option value="6">英文</option>
+                                <option value="7">理工</option>
+                            </select>
+                        </div>
+                        <button onclick="shopPage()">搜索</button>
+
+                        <script type="text/javascript">
+                            function shopPage() {
+                                window.location.href = "shop.html?bookName=" + $("#searchText").val()+"&bookType="+$("#bookTypeSelection").val();
+                                // window.location.href="shop.html?bookName="+searchText.val();
+                            }
+                        </script>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <nav class="navbar navbar-area navbar-expand-lg nav-style-01">
+        <div class="container nav-container">
+            <div class="responsive-mobile-menu">
+                <button class="menu toggle-btn d-block d-lg-none" data-toggle="collapse" data-target="#zenax_main_menu"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="icon-left"></span>
+                    <span class="icon-right"></span>
+                </button>
+            </div>
+            <div class="mobile-logo">
+                <a href="../index.html"> <img src="../assets/img/logo-2.png" alt="logo"></a>
+            </div>
+            <div class="cat-menu-wrap">
+                <div class="cat-menu">
+                    <img src="../assets/img/icon/bar.png" alt="icon">
+                    All Category
+                </div>
+                <ul class="sidebar-categories">
+                    <li><a href="shop.html?bookType=1"><img src="../assets/img/icon/laptop.png" alt="img">教育考试<i
+                            class="fa fa-angle-down"></i></a></li>
+                    <li><a href="shop.html?bookType=2"><img src="../assets/img/icon/chair.png" alt="img">小说<i
+                            class="fa fa-angle-down"></i></a></li>
+                    <li><a href="shop.html?bookType=3"><img src="../assets/img/icon/phone.png" alt="img">童书<i
+                            class="fa fa-angle-down"></i></a></li>
+                    <li><a href="shop.html?bookType=4"><img src="../assets/img/icon/ball.png" alt="img">人文社科<i
+                            class="fa fa-angle-down"></i></a></li>
+                    <li><a href="shop.html?bookType=5"><img src="../assets/img/icon/heart.png" alt="img">健康<i
+                            class="fa fa-angle-down"></i></a></li>
+                    <li><a href="shop.html?bookType=6"><img src="../assets/img/icon/monitor.png" alt="img">英文<i
+                            class="fa fa-angle-down"></i></a></li>
+                    <li><a href="shop.html?bookType=7"><img src="../assets/img/icon/monitor.png" alt="img">理工<i
+                            class="fa fa-angle-down"></i></a></li>
+                </ul>
+            </div>
+            <div class="shop-cart-area">
+                <ul>
+                    <li><span>6</span><i class="fa fa-heart-o"></i></li>
+                    <li><span>5</span><i class="las la-shopping-cart"></i></li>
+                </ul>
+                <ul class="right-part-search">
+                    <li class="search" id="search">
+                        <a href="#"><i class="fa fa-search"></i></a>
+                    </li>
+                    <li class="menubar d-none d-lg-block" id="navigation-button">
+                        <a><i class="flaticon-menu-button"></i></a>
+                    </li>
+                </ul>
+            </div>
+            <div class="collapse navbar-collapse" id="zenax_main_menu">
+                <ul class="navbar-nav menu-open">
+
+                </ul>
+            </div>
+            <!--<div class="nav-right-part">
+                <a href="cart.html" class="right-part-text">购物车</a>
+            </div>-->
+        </div>
+    </nav>
+</div>
+<!-- navbar end -->
+
+<!-- breadcrumb-area start -->
+<nav class="breadcrumb-area" aria-label="breadcrumb">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                    <li class="breadcrumb-item"><a href="#">Shop</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Card</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</nav>
+<!-- breadcrumb-area end -->
+
+
+<!-- wishlist area start -->
+<div class="wishlist-area bg-gray-4">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-12">
+                <div class="card-3-area table-responsive pd-100">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th scope="col" width="70"></th>
+                            <th scope="col">书籍</th>
+                            <th scope="col"></th>
+                            <th scope="col"></th>
+                            <th scope="col">价格</th>
+                            <th scope="col">数量</th>
+                            <th colspan="2">计价</th>
+                        </tr>
+                        </thead>
+                        <tbody id="cartTBody">
+
+<!--                        <tr class="table-space">-->
+<!--                            <td></td>-->
+<!--                        </tr>-->
+
+<!--                        <tr>-->
+<!--                            <th scope="row" width="50">-->
+<!--                                <input type="checkbox" name="check">-->
+<!--                                &lt;!&ndash;                                        <input id="mycheckbox8" type="checkbox" class="checkbix" data-shape="circled" data-color="orange" data-text="Orange, circled" checked>&ndash;&gt;-->
+<!--                            </th>-->
+<!--                            &lt;!&ndash;                                    <th scope="row"><img src="../assets/img/card/5.png" alt="img"></th>&ndash;&gt;-->
+<!--                            <td><img src="../assets/img/card/5.png" alt="img"></td>-->
+<!--                            <td colspan="2" class="item-name">Universal Color Dual Pro S25 Rapata Loxin Duka</td>-->
+<!--                            <td>$40.00</td>-->
+<!--                            <td class="table-quantity">-->
+<!--                                <form>-->
+<!--                                    <div class="quantity buttons_added">-->
+<!--                                        <input type="button" value="-" class="minus">-->
+<!--                                        <input type="number" class="input-text qty text" step="1" min="1" max="10000"-->
+<!--                                               name="quantity" value="1">-->
+<!--                                        <input type="button" value="+" class="plus">-->
+<!--                                    </div>-->
+<!--                                </form>-->
+<!--                            </td>-->
+<!--                            <td>$40.00</td>-->
+<!--                            <td class="table-close-btn"><i class="fa fa-close"></i></td>-->
+<!--                        </tr>-->
+
+
+<!--                        <tr>-->
+<!--                            <th></th>-->
+<!--                        </tr>-->
+
+                        </tbody>
+                        <tr>
+                            <th></th>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+<!--                            <td class="total-amount">Total: <span>$484.85</span></td>-->
+                            <td></td>
+                        </tr>
+                    </table>
+                    <div class="checkout-btn text-right">
+                        <a class="btn btn-basic-lg" onclick="setUpOrder()">购买</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- wishlist area end -->
+
+<!-- footer area start -->
+<footer class="footer-area">
+    <div class="footer-top">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 col-sm-6">
+                    <div class="footer-widget widget contact-widget">
+                        <a href="../index.html" class="footer-logo">
+                            <img src="../assets/img/logo-2.png" alt="footer logo">
+                        </a>
+                        <p>It is a long established fact that a reader will be the distracted by the readable content of
+                            a page.</p>
+                        <ul class="contact_info_list">
+                            <li class="single-info-item">
+                                <h4>Address:</h4>
+                                <p>45 Grand Central Terminal New York <br> NY 1245, United State USA</p>
+                            </li>
+                            <li class="single-info-item">
+                                <h4>Email:</h4>
+                                <p>supports@zenax.com</p>
+                            </li>
+                            <li class="single-info-item">
+                                <h4>Phone:</h4>
+                                <p>+123 4567 8910</p>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-2 offset-lg-1 col-sm-3">
+                    <div class="footer-widget widget widget_nav_menu">
+                        <h4 class="widget-title">Quick Links</h4>
+                        <ul>
+                            <li><a href="#"><i class="fa fa-long-arrow-right" aria-hidden="true"></i>Support</a></li>
+                            <li><a href="#"><i class="fa fa-long-arrow-right" aria-hidden="true"></i>Helpline</a></li>
+                            <li><a href="#"><i class="fa fa-long-arrow-right" aria-hidden="true"></i>Affiliates</a></li>
+                            <li><a href="#"><i class="fa fa-long-arrow-right" aria-hidden="true"></i>Live Support</a>
+                            </li>
+                            <li><a href="#"><i class="fa fa-long-arrow-right" aria-hidden="true"></i>Customer Care</a>
+                            </li>
+                            <li><a href="#"><i class="fa fa-long-arrow-right" aria-hidden="true"></i>FAQs</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-sm-6">
+                    <div class="footer-widget widget widget_nav_menu">
+                        <h4 class="widget-title">Informations</h4>
+                        <ul>
+                            <li><a href="#"><i class="fa fa-long-arrow-right" aria-hidden="true"></i>About Us</a></li>
+                            <li><a href="#"><i class="fa fa-long-arrow-right" aria-hidden="true"></i>Customer
+                                Services</a></li>
+                            <li><a href="#"><i class="fa fa-long-arrow-right" aria-hidden="true"></i>Privacy and Policy</a>
+                            </li>
+                            <li><a href="#"><i class="fa fa-long-arrow-right" aria-hidden="true"></i>Orders &
+                                Returns</a></li>
+                            <li><a href="#"><i class="fa fa-long-arrow-right" aria-hidden="true"></i>Shipping Policy</a>
+                            </li>
+                            <li><a href="#"><i class="fa fa-long-arrow-right" aria-hidden="true"></i>Our Sitemap</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-sm-6">
+                    <div class="footer-widget widget widget_nav_menu">
+                        <h4 class="widget-title">My Account</h4>
+                        <ul>
+                            <li><a href="#"><i class="fa fa-long-arrow-right" aria-hidden="true"></i>Balance</a></li>
+                            <li><a href="#"><i class="fa fa-long-arrow-right" aria-hidden="true"></i>Checkout</a></li>
+                            <li><a href="#"><i class="fa fa-long-arrow-right" aria-hidden="true"></i>Cards</a></li>
+                            <li><a href="#"><i class="fa fa-long-arrow-right" aria-hidden="true"></i>Track Order</a>
+                            </li>
+                            <li><a href="#"><i class="fa fa-long-arrow-right" aria-hidden="true"></i>Terms</a></li>
+                            <li><a href="#"><i class="fa fa-long-arrow-right" aria-hidden="true"></i>Site Policy</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="footer-bottom text-md-center">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 align-self-lg-center">
+                    <p class="copyright">Copyright &copy; 2020.Company name All rights reserved.<a target="_blank"
+                                                                                                   href="http://sc.chinaz.com/moban/">&#x7F51;&#x9875;&#x6A21;&#x677F;</a>
+                    </p>
+                </div>
+                <div class="col-lg-4 text-lg-center">
+                    <ul class="footer-social social-area">
+                        <li><a href="#"><i class="fa fa-facebook-f"></i></a></li>
+                        <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+                        <li><a href="#"><i class="fa fa-pinterest-p"></i></a></li>
+                        <li><a href="#"><i class="fa fa-instagram"></i></a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-4">
+                    <ul class="footer-currency currency-area float-lg-right">
+                        <li><a href="#"><img src="../assets/img/footer/01.png" alt="img"></a></li>
+                        <li><a href="#"><img src="../assets/img/footer/02.png" alt="img"></a></li>
+                        <li><a href="#"><img src="../assets/img/footer/03.png" alt="img"></a></li>
+                        <li><a href="#"><img src="../assets/img/footer/04.png" alt="img"></a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+<!-- footer area end -->
+
+<!-- back to top area start -->
+<div class="back-to-top">
+    <span class="back-top"><i class="fa fa-angle-up"></i></span>
+</div>
+<!-- back to top area end -->
+
+
+<script type="text/javascript">
+    window.onload = function () {
+        checkLogin();
+        getCart();
+    }
+
+    function getCart() {
+        $.ajax({
+            async: false,
+            url: "http://localhost:8080/cart/getCartItems",
+            contentType: "application/json;charset=UTF-8", //必须有
+            dataType: "json", //表示返回值类型，不必须
+            type: "post",
+            data: JSON.stringify({}),
+            success:function(response){
+                if(response.status==0){
+                    var items = response.data;
+                    for(var i =0;i<items.length;i++){
+                        var book = items[i].book;
+                        var cartNum = parseInt(items[i].cartNum);
+                        var price = parseFloat(book.price);
+                        var str =
+                            "<tr class=\"table-space\">\n" +
+                            "                            <td></td>\n" +
+                            "                        </tr>\n" +
+                            "                        <tr>\n" +
+                            "                            <th scope=\"row\" width=\"50\">\n" +
+                            "                                <input type=\"checkbox\" name=\"check\" value='"+book.bookId+"'>\n" +
+                            "                                <!--                                        <input id=\"mycheckbox8\" type=\"checkbox\" class=\"checkbix\" data-shape=\"circled\" data-color=\"orange\" data-text=\"Orange, circled\" checked>-->\n" +
+                            "                            </th>\n" +
+                            "                            <!--                                    <th scope=\"row\"><img src=\"../assets/img/card/5.png\" alt=\"img\"></th>-->\n" +
+                            // "                            <td><img src=\"../assets/img/"+book.image+"\" alt=\"img\" style='width:40px;heigh:40px'></td>\n" +
+                            "                            <td>"+
+                            "                 <div  align='center'  style='width: 100px;height: 100px;align-items: center;justify-content:center;display:flex;'>\n" +
+                            "                       <a href=\"shop-details.html?bookId="+book.bookId+"\"  style='width: 100px;height: 100px;align-items: center;justify-content:center;display:flex;'>"+
+                            "                                     <img src=\""+book.image.toString()+"\" alt=\"item\" style='height: 100%;width: auto;align-items: center;justify-content:center;display:flex;'/>"+
+
+                            // "                                 <img src=\""+book.image.toString()+"\" alt=\"top-product\" style='width: 283px;height: 432px;'/>"+
+                            "                       </a>"+
+                            "                  </div>\n" +
+                            "</td>\n" +
+                            "                            <td colspan=\"2\" class=\"item-name\"><a href=\"shop-details.html?bookId="+book.bookId+"\">"+book.bookName+"</a></td>\n" +
+                            "                            <td>"+price+"</td>\n" +
+                            "                            <td class=\"table-quantity\">\n" +
+                            "                                <form>\n" +
+                            "                                    <div class=\"quantity buttons_added\">\n" +
+                            "                                        <input type=\"button\" value=\"-\"onclick='flush("+book.bookId+","+price+",false)'>\n" +
+                            "                                        <input type=\"number\" class=\"input-text qty text\" step=\"1\" min=\"1\" max=\"10000\"\n" +
+                            "                                               name=\"quantity\" value=\""+cartNum+"\" id=\""+book.bookId+"input\">\n" +
+                            "                                        <input type=\"button\" value=\"+\" onclick=\"flush("+book.bookId+","+price+",true)\">\n" +
+                            "                                    </div>\n" +
+                            "                                </form>\n" +
+                            "                            </td>\n" +
+                            "                            <td id='"+book.bookId+"'>"+price*cartNum+"</td>\n" +
+                            "                        </tr>\n";
+                        $("#cartTBody").append(str);
+                    }
+                    <!--class="plus" -->
+                    var tailStr =
+                        "                        <tr>\n" +
+                        "                            <th></th>\n" +
+                        "                        </tr>";
+                    $("#cartTBody").append(tailStr);
+
+
+
+                }else if(response.status==10){
+                    alert("请登录");
+                    window.location.href="login.html";
+                }
+            },
+            error:function(response){
+
+            }
+        });
+    }
+
+    function flush(id,price,plus){
+        $("#"+id).empty();
+        var num = parseInt($("#"+id+"input").val());
+        if(plus == true){
+            num = num + 1;
+        }else{
+            num = num - 1;
+        }
+        $("#"+id+"input").val(num);
+        var str = num*price;
+        $("#"+id).append(str);
+        $.ajax({
+            url: "http://localhost:8080/cart/updateCartItem",
+            contentType: "application/json;charset=UTF-8", //必须有
+            dataType: "json", //表示返回值类型，不必须
+            type: "post",
+            data: JSON.stringify({
+                "cartNum":parseInt(num),
+                "bookId":id
+            }),
+            success:function(response){
+                alert("更新购物车成功");
+            },error:function(response){
+                alert("更新购物车失败");
+            }
+        });
+    }
+
+    function setUpOrder(){
+        class orderItem{
+            constructor(bookId,orderNum) {
+                this.bookId = bookId;
+                this.orderNum = orderNum;
+            }
+        }
+        if ($("input[name='check']:checked").size() <= 0) {
+            alert("请至少选择一项书籍");
+            return;
+        }
+        // 1）取出用户选中的checkbox放入字符串传给后台,form提交
+        var orderItems = [];
+        var i = 0;
+        $("input[name='check']:checked").each(
+            function (index, domEle) {
+                bookId = parseInt($(domEle).val());
+                orderNum = parseInt($("#"+bookId+"input").val());
+                orderItems[i] = new orderItem(bookId,orderNum);
+                alert(orderNum);
+                i = i+1;
+            });
+        $.ajax({
+            url: "http://localhost:8080/order/insertOrder",
+            contentType: "application/json;charset=UTF-8", //必须有
+            dataType: "json", //表示返回值类型，不必须
+            type: "post",
+            data: JSON.stringify({
+                "books": orderItems
+            }),
+            success: function (response) {
+                if (response.status == 0) {
+                    alert("建立订单成功");
+                    window.location.href="setupOrder.html?orderId="+response.data.orderId;
+                } else {
+                    alert("建立订单失败");
+                }
+            },
+            error() {
+                alert("请求失败");
+            }
+        });
+    }
+
+</script>
+
+
+<!-- all plugins here -->
+<script src="../assets/js/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+<script src="../assets/js/vendor.js"></script>
+<!-- main js  -->
+<script src="../assets/js/main.js"></script>
+<script src="../assets/js/checkbix.js"></script>
+</body>
+</html>

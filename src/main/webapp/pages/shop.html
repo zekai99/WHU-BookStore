@@ -1,0 +1,1473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="referrer" content="no-referrer" />
+    <title></title>
+
+    <script src="http://libs.baidu.com/jquery/1.9.0/jquery.js"></script>
+    <!-- Vendor Stylesheet -->
+    <link rel="stylesheet" href="../assets/css/vendor.css">
+    <!-- Main Stylesheet -->
+    <link rel="stylesheet" href="../assets/css/jquery-ui.min.css">
+    <link rel="stylesheet" href="../assets/css/line-awesome.min.css">
+    <link rel="stylesheet" href="../assets/css/owl.carousel.min.css">
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <!-- responsive Stylesheet -->
+    <link rel="stylesheet" href="../assets/css/responsive.css">
+
+    <!--分页栏-->
+    <link href="../assets/css/page.css" rel="stylesheet" type="text/css">
+
+</head>
+<body>
+
+<!-- preloader area start -->
+<div class="preloader" id="preloader">
+    <div class="preloader-inner">
+        <div class="spinner">
+            <div class="dot1"></div>
+            <div class="dot2"></div>
+        </div>
+    </div>
+</div>
+<!-- preloader area end -->
+
+<!-- search Popup -->
+<div class="body-overlay" id="body-overlay"></div>
+<div class="search-popup" id="search-popup">
+    <form action="../index.html" class="main-search search-form">
+        <input type="text" placeholder="Search...">
+        <button>Search</button>
+    </form>
+</div>
+<!-- //. search Popup -->
+
+<!--sidebar menu start-->
+<div class="sidebar-menu" id="sidebar-menu">
+    <button class="sidebar-menu-close"><i class="flaticon-close"></i></button>
+    <div class="sidebar-inner">
+        <div class="sidebar-logo">
+            <img src="../assets/img/logo.png" alt="logo"/>
+        </div>
+        <div class="sidemenu-text">
+            <p>We believe brand interaction is key in commu- nication. Real inno vations and a positive customer
+                experience are the heart of successful commu- nication.</p>
+        </div>
+        <div class="sidebar-contact">
+            <h4>Contact Us</h4>
+            <ul>
+                <li><i class="fa fa-map-marker"></i>Lavaca Street, Suite 2000</li>R
+                <li><i class="fa fa-envelope"></i>email@evha.com</li>
+                <li><i class="fa fa-phone"></i>(+880) 172570051</li>
+            </ul>
+        </div>
+        <div class="sidebar-subscribe">
+            <input type="text" placeholder="Email">
+            <button><i class="fa fa-long-arrow-right"></i></button>
+        </div>
+        <div class="social-link">
+            <ul>
+                <li><a href="#"><i class="fa fa-facebook-f"></i></a></li>
+                <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+                <li><a href="#"><i class="fa fa-instagram"></i></a></li>
+                <li><a href="#"><i class="fa fa-pinterest"></i></a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!--sidebar menu end-->
+
+<!-- navbar start -->
+<div class="navbar-area">
+    <div class="navbar-top">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 text-md-left text-center">
+                    <ul class="topbar-left">
+                        <li class="topbar-single-info"><i class="fa fa-phone"></i>+123 4567 8910</li>
+                        <li class="topbar-single-info"><i class="fa fa-map-marker"></i>Store Location</li>
+                        <li class="topbar-single-info d-none d-lg-block"><i class="fa fa-crosshairs"></i>Track Your
+                            Order
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-md-6 text-md-right text-center">
+                    <ul class="topbar-right float-md-right">
+                        <div class="align-self-center">
+                            <div class="shop-cart-area">
+                                <ul id="userCart">
+
+                                    <!--                                <li><span>6</span><i class="fa fa-heart-o"></i></li>-->
+                                    <li id="userCartCount" onclick="goToCart();">
+                                        <i class="las la-shopping-cart" onclick="goToCart();"></i>
+                                        <span id="userCartCountSpan"></span></li>
+                                    <!--                                    <li id="userCartPrice" onclick="goToCart();">$ 155.00 .</li>&lt;!&ndash;                                todo 获取购物车价格&ndash;&gt;-->
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="dropdown topbar-help" id="myaccountdropdown">
+                            <i class="fa fa-user"></i>
+                        </div>
+                        <script src="http://libs.baidu.com/jquery/1.9.0/jquery.js"></script>
+                        <script type="text/javascript">
+                            function checkLoginStatus() {
+
+                            }
+
+                            function logOut() {
+                                alert("login");
+                                $.ajax({
+                                    async: false,
+                                    url: "http://localhost:8080/user/logOut",
+                                    contentType: "application/json;charset=UTF-8", //必须有
+                                    dataType: "json", //表示返回值类型，不必须
+                                    type: "post",
+                                    data: JSON.stringify({}),
+                                    success: function (response) {
+                                        if (response.status == 0) {
+                                            /*退登成功*/
+                                            window.location.href = "login.html";
+                                        } else {
+                                            alert("退登失败");
+                                        }
+                                    },
+                                    error: function () {
+                                        alert("请求失败");
+                                    }
+                                });
+                            }
+
+                            function goToCart() {
+                                window.open("cart.html");
+                            }
+
+                            function checkLogin() {
+                                var user;
+                                $.ajax({
+                                    async: false,
+                                    url: "http://localhost:8080/user/checkLogin",
+                                    contentType: "application/json;charset=UTF-8", //必须有
+                                    dataType: "json", //表示返回值类型，不必须
+                                    type: "post",
+                                    success: function (response) {
+                                        if (response.status == 0) {
+                                            // alert("已登录");
+                                            user = response.data;
+                                            // alert(user.userId);
+                                        } else {
+                                            // alert("未登录");
+                                            return null;
+                                        }
+                                    },
+                                    error: function () {
+                                        alert("请求失败");
+                                        return null;
+                                    }
+                                });
+                                if (user == null || user.userId == null) {
+                                    var str =
+                                        "<a class=\"btn dropdown-toggle\" href=\"#\" role=\"button\" id=\"dropdownMenuLink2\" data-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"false\">\n" +
+                                        "请登录</a>" +
+                                        "<div class=\"dropdown-menu\" aria-labelledby=\"dropdownMenuLink2\" >\n" +
+                                        "<a class=\"dropdown-item\" target=\"_blank\" href=\"login.html\">登录</a> " +
+                                        "</div>";
+                                    $("#myaccountdropdown").append(str);
+                                } else {
+                                    // alert(user.userName);
+                                    /*用户选项*/
+                                    var str =
+                                        "<a class=\"btn dropdown-toggle\" href=\"#\" role=\"button\" id=\"dropdownMenuLink2\" data-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"false\">\n" +
+                                        user.userName + "</a>" +
+                                        "<div class=\"dropdown-menu\" aria-labelledby=\"dropdownMenuLink2\" >\n" +
+                                        "<a class=\"dropdown-item\"target=\"_blank\" href=\"user-order.html\">我的订单</a>" +
+                                        "<a class=\"dropdown-item\"target=\"_blank\"  href=\"user-setting.html\">用户设置</a> " +
+                                        "<a class=\"dropdown-item\"target=\"_blank\" onclick=\"logOut()\">退登</a>\n" +
+                                        "</div>";
+                                    $("#myaccountdropdown").append(str);
+
+                                    $.ajax({
+                                        url: "http://localhost:8080/cart/getCartNum",
+                                        contentType: "application/json;charset=UTF-8", //必须有
+                                        dataType: "json", //表示返回值类型，不必须
+                                        type: "post",
+                                        // data: JSON.stringify(),/*不需要传用户数据*/
+                                        success: function (response) {
+                                            if (response.status == 0) {
+                                                document.getElementById("userCartCountSpan").innerText = response.data;
+                                                /*                  str = "<span>"+response.data+"</span>";
+                                                                  $("#userCartCount").append(str);*/
+                                            } else {
+                                                alert("获取购物车信息错误");
+                                            }
+                                        },
+                                        error: function () {
+                                            alert("请求失败");
+                                        }
+                                    });
+                                }
+                            }
+
+
+
+                            window.onload = function () {
+                                var bookName = getParam("bookName")==null?"":getParam("bookName");
+                                var bookType = getParam("bookType")==null?"": getParam("bookType");
+                                $("#searchText").val(bookName == null ? "" : bookName.toString());
+                                var select = document.getElementById("bookTypeSelection");
+                                for (var i = 0; i < select.options.length; i++) {
+                                    if (select.options[i].value.toString() == bookType.toString()) {
+                                        select.options[i].selected = true;
+                                        break;
+                                    }
+                                }
+                                var bookTypeStr = "";
+                                switch (parseInt(bookType)) {
+                                    case 1:
+                                        bookTypeStr = "教育考试";
+                                        break;
+                                    case 2:
+                                        bookTypeStr = "小说";
+                                        break;
+                                    case 3:
+                                        bookTypeStr = "童书";
+                                        break;
+                                    case 4:
+                                        bookTypeStr = "人文社科";
+                                        break;
+                                    case 5:
+                                        bookTypeStr = "健康";
+                                        break;
+                                    case 6:
+                                        bookTypeStr = "英文";
+                                        break;
+                                    case 7:
+                                        bookTypeStr = "理工";
+                                        break;
+                                    default:
+                                        bookTypeStr = "";
+                                        break;
+                                }
+                                if(bookTypeStr!=""){
+                                    var str = "<div class=\"container\">\n" +
+                                        "                                            <div class=\"row\">\n" +
+                                        "                                                <div class=\"col-12\">\n" +
+                                        "                                                    <h3>"+bookTypeStr+"</h3>\n" +
+                                        "                                            </div>\n" +
+                                        "                                        </div>\n" +
+                                        "                                    </div>"
+                                    $("#bookTypeHeader").empty();
+                                    $("#bookTypeHeader").append(str);
+                                }else{
+                                    $("#bookTypeHeader").remove();
+
+                                }
+                                getBooksData(1);
+                                checkLogin();
+                            }
+
+                        </script>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="navbar-middle d-none d-lg-block">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-2 align-self-center">
+                    <div class="logo-area">
+                        <a href="../index.html"> <img src="../assets/img/logo.png" alt="logo"></a>
+                    </div>
+                </div>
+                <div class="col-lg-7 text-center">
+                    <div class="main-search d-inline-flex">
+                        <input type="text" placeholder="Search product..." name="searchText" id="searchText"/>
+                        <div class="topbar-cat-select">
+                            <select id="bookTypeSelection">
+                                <option value="" selected="selected">全部</option>
+                                <option value="1">教育考试</option>
+                                <option value="2">小说</option>
+                                <option value="3">童书</option>
+                                <option value="4">人文社科</option>
+                                <option value="5">健康</option>
+                                <option value="6">英文</option>
+                                <option value="7">理工</option>
+                            </select>
+                        </div>
+                        <button onclick="shopPage()">搜索</button>
+
+                        <script type="text/javascript">
+                            function shopPage() {
+                                window.location.href = "shop.html?bookName=" + $("#searchText").val() + "&bookType=" + $("#bookTypeSelection").val();
+                                // window.location.href="shop.html?bookName="+searchText.val();
+                            }
+                        </script>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <nav class="navbar navbar-area navbar-expand-lg nav-style-01">
+        <div class="container nav-container">
+            <div class="responsive-mobile-menu">
+                <button class="menu toggle-btn d-block d-lg-none" data-toggle="collapse" data-target="#zenax_main_menu"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="icon-left"></span>
+                    <span class="icon-right"></span>
+                </button>
+            </div>
+            <div class="mobile-logo">
+                <a href="../index.html"> <img src="../assets/img/logo-2.png" alt="logo"></a>
+            </div>
+            <div class="cat-menu-wrap">
+                <div class="cat-menu">
+                    <img src="../assets/img/icon/bar.png" alt="icon">
+                    All Category
+                </div>
+                <ul class="sidebar-categories">
+                    <li><a href="shop.html?bookType=1"><img src="../assets/img/icon/laptop.png" alt="img">教育考试<i
+                            class="fa fa-angle-down"></i></a></li>
+                    <li><a href="shop.html?bookType=2"><img src="../assets/img/icon/chair.png" alt="img">小说<i
+                            class="fa fa-angle-down"></i></a></li>
+                    <li><a href="shop.html?bookType=3"><img src="../assets/img/icon/phone.png" alt="img">童书<i
+                            class="fa fa-angle-down"></i></a></li>
+                    <li><a href="shop.html?bookType=4"><img src="../assets/img/icon/ball.png" alt="img">人文社科<i
+                            class="fa fa-angle-down"></i></a></li>
+                    <li><a href="shop.html?bookType=5"><img src="../assets/img/icon/heart.png" alt="img">健康<i
+                            class="fa fa-angle-down"></i></a></li>
+                    <li><a href="shop.html?bookType=6"><img src="../assets/img/icon/monitor.png" alt="img">英文<i
+                            class="fa fa-angle-down"></i></a></li>
+                    <li><a href="shop.html?bookType=7"><img src="../assets/img/icon/monitor.png" alt="img">理工<i
+                            class="fa fa-angle-down"></i></a></li>
+                </ul>
+            </div>
+            <div class="shop-cart-area">
+                <ul>
+                    <li><span>6</span><i class="fa fa-heart-o"></i></li>
+                    <li><span>5</span><i class="las la-shopping-cart"></i></li>
+                </ul>
+                <ul class="right-part-search">
+                    <li class="search" id="search">
+                        <a href="#"><i class="fa fa-search"></i></a>
+                    </li>
+                    <li class="menubar d-none d-lg-block" id="navigation-button">
+                        <a><i class="flaticon-menu-button"></i></a>
+                    </li>
+                </ul>
+            </div>
+            <div class="collapse navbar-collapse" id="zenax_main_menu">
+                <ul class="navbar-nav menu-open">
+
+                </ul>
+            </div>
+            <!--<div class="nav-right-part">
+                <a href="cart.html" class="right-part-text">购物车</a>
+            </div>-->
+        </div>
+    </nav>
+</div>
+<!-- navbar end -->
+
+<!-- breadcrumb-area start -->
+<nav class="breadcrumb-area" aria-label="breadcrumb">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="home.html">首页</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">浏览</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</nav>
+<!-- breadcrumb-area end -->
+
+<!-- Page-title-area start -->
+<div class="page-title-area" id="bookTypeHeader">
+    <!--    <div class="container">-->
+    <!--        <div class="row">-->
+    <!--            <div class="col-12">-->
+    <!--                <h3>Classic & Smart Watches</h3>-->
+    <!--            </div>-->
+    <!--        </div>-->
+    <!--    </div>-->
+</div>
+<!-- Page-title-area end -->
+
+<!-- shop-product area start -->
+<div class="shop-product-area bg-gray-3 common-pd">
+    <div class="container">
+
+
+        <div class="row">
+
+            <div class="col-lg-3">
+                <!--侧边分类栏-->
+                <div class="sidebar">
+                    <!--类别-->
+                    <div class="single-widget">
+                        <h4 class="sidebar-title sidebar-title-cat"><img src="../assets/img/icon/bar.png" alt="img">分类
+                            <i class="fa fa-angle-up"></i></h4>
+                        <ul class="sidebar-categories">
+
+                            <li><a href="shop.html?bookType=1"><img src="../assets/img/icon/laptop.png"
+                                                                alt="img">教育考试<i
+                                    class="fa fa-angle-down"></i></a></li>
+                            <li><a href="shop.html?bookType=2"><img src="../assets/img/icon/light.png" alt="img">小说<i
+                                    class="fa fa-angle-down"></i></a></li>
+                            <li><a href="shop.html?bookType=3"><img src="../assets/img/icon/ball.png" alt="img">童书<i
+                                    class="fa fa-angle-down"></i></a></li>
+                            <li><a href="shop.html?bookType=4"><img src="../assets/img/icon/chair.png" alt="img">人文社科<i
+                                    class="fa fa-angle-down"></i></a></li>
+                            <li><a href="shop.html?bookType=5"><img src="../assets/img/icon/heart.png" alt="img">健康<i
+                                    class="fa fa-angle-down"></i></a></li>
+                            <li><a href="shop.html?bookType=6"><img src="../assets/img/icon/headphone.png" alt="img">英文<i
+                                    class="fa fa-angle-down"></i></a></li>
+                            <li><a href="shop.html?bookType=7"><img src="../assets/img/icon/monitor.png" alt="img">理工<i
+                                    class="fa fa-angle-down"></i></a></li>
+                        </ul>
+                    </div>
+
+                    <!--按照品牌筛选-->
+                    <!--
+                    <div class="single-widget">
+                        <h4 class="sidebar-title">Filter by Brand <i class="fa fa-angle-up"></i></h4>
+                        <div class="sidebar-rating">
+                            <div class="sidebar-single-rating">
+                                <label><input type="checkbox" aria-label="Checkbox for following text input">
+                                    <span class="checkmark"></span></label>
+                                <div class="star-rating">
+                                    <span>Apple</span>
+                                    <span>(458)</span>
+                                </div>
+                            </div>
+                            <div class="sidebar-single-rating">
+                                <label><input type="checkbox" aria-label="Checkbox for following text input">
+                                    <span class="checkmark"></span></label>
+                                <div class="star-rating">
+                                    <span>Dell</span>
+                                    <span>(308)</span>
+                                </div>
+                            </div>
+                            <div class="sidebar-single-rating">
+                                <label><input type="checkbox" aria-label="Checkbox for following text input">
+                                    <span class="checkmark"></span></label>
+                                <div class="star-rating">
+                                    <span>Sony</span>
+                                    <span>(480)</span>
+                                </div>
+                            </div>
+                            <div class="sidebar-single-rating">
+                                <label><input type="checkbox" aria-label="Checkbox for following text input">
+                                    <span class="checkmark"></span></label>
+                                <div class="star-rating">
+                                    <span>Xiaomi</span>
+                                    <span>(308)</span>
+                                </div>
+                            </div>
+                            <div class="sidebar-single-rating">
+                                <label><input type="checkbox" aria-label="Checkbox for following text input">
+                                    <span class="checkmark"></span></label>
+                                <div class="star-rating">
+                                    <span>Logitech</span>
+                                    <span>(75)</span>
+                                </div>
+                            </div>
+                            <div class="sidebar-single-rating">
+                                <label><input type="checkbox" aria-label="Checkbox for following text input">
+                                    <span class="checkmark"></span></label>
+                                <div class="star-rating">
+                                    <span>Samsung</span>
+                                    <span>(57)</span>
+                                </div>
+                            </div>
+                            <div class="sidebar-single-rating">
+                                <label><input type="checkbox" aria-label="Checkbox for following text input">
+                                    <span class="checkmark"></span></label>
+                                <div class="star-rating">
+                                    <span>Asus</span>
+                                    <span>(49)</span>
+                                </div>
+                            </div>
+                            <div class="sidebar-single-rating">
+                                <label><input type="checkbox" aria-label="Checkbox for following text input">
+                                    <span class="checkmark"></span></label>
+                                <div class="star-rating">
+                                    <span>Rezer</span>
+                                    <span>(45)</span>
+                                </div>
+                            </div>
+                            <div class="sidebar-single-rating">
+                                <label><input type="checkbox" aria-label="Checkbox for following text input">
+                                    <span class="checkmark"></span></label>
+                                <div class="star-rating">
+                                    <span>Others</span>
+                                    <span>(503)</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>-->
+
+                    <!--按照价格筛选-->
+                    <!--<div class="single-widget">
+                        <h4 class="sidebar-title">Filter by Price <i class="fa fa-angle-up"></i></h4>
+                        <div class="side-bar-range">
+                            <div id="slider-range"></div>
+                            <p>
+                                <input type="text" id="amount" readonly>
+                            </p>
+                        </div>
+                    </div>-->
+
+                    <!--按照星级筛选-->
+                    <!--<div class="single-widget">
+                        <h4 class="sidebar-title">Filter by Rating <i class="fa fa-angle-up"></i></h4>
+                        <div class="sidebar-rating">
+                            <div class="sidebar-single-rating">
+                                <label><input type="checkbox" aria-label="Checkbox for following text input">
+                                    <span class="checkmark"></span></label>
+                                <div class="star-rating">
+                                    <span><i class="fa fa-star"></i></span>
+                                    <span><i class="fa fa-star"></i></span>
+                                    <span><i class="fa fa-star"></i></span>
+                                    <span><i class="fa fa-star"></i></span>
+                                    <span><i class="fa fa-star"></i></span>
+                                    <span class="rate-count">(8920)</span>
+                                </div>
+                            </div>
+                            <div class="sidebar-single-rating">
+                                <label><input type="checkbox" aria-label="Checkbox for following text input">
+                                    <span class="checkmark"></span></label>
+                                <div class="star-rating">
+                                    <span><i class="fa fa-star"></i></span>
+                                    <span><i class="fa fa-star"></i></span>
+                                    <span><i class="fa fa-star"></i></span>
+                                    <span><i class="fa fa-star"></i></span>
+                                    <span class="rate-count">(6935)</span>
+                                </div>
+                            </div>
+                            <div class="sidebar-single-rating">
+                                <label><input type="checkbox" aria-label="Checkbox for following text input">
+                                    <span class="checkmark"></span></label>
+                                <div class="star-rating">
+                                    <span><i class="fa fa-star"></i></span>
+                                    <span><i class="fa fa-star"></i></span>
+                                    <span><i class="fa fa-star"></i></span>
+                                    <span class="rate-count">(1205)</span>
+                                </div>
+                            </div>
+                            <div class="sidebar-single-rating">
+                                <label><input type="checkbox" aria-label="Checkbox for following text input">
+                                    <span class="checkmark"></span></label>
+                                <div class="star-rating">
+                                    <span><i class="fa fa-star"></i></span>
+                                    <span><i class="fa fa-star"></i></span>
+                                    <span class="rate-count">(792)</span>
+                                </div>
+                            </div>
+                            <div class="sidebar-single-rating">
+                                <label><input type="checkbox" aria-label="Checkbox for following text input">
+                                    <span class="checkmark"></span></label>
+                                <div class="star-rating">
+                                    <span><i class="fa fa-star"></i></span>
+                                    <span class="rate-count">(503)</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>-->
+                </div>
+            </div>
+            <!--商品部分-->
+            <script type="text/javascript">
+                function getParam(name) {
+                    var search = document.location.search;
+                    var pattern = new RegExp("[?&]" + name + "\=([^&]+)", "g");
+                    var matcher = pattern.exec(search);
+                    var items = null;
+                    if (null != matcher) {
+                        try {
+                            items = decodeURIComponent(decodeURIComponent(matcher[1]));
+                        } catch (e) {
+                            try {
+                                items = decodeURIComponent(matcher[1]);
+                            } catch (e) {
+                                items = matcher[1];
+                            }
+                        }
+                    }
+                    return items;
+                }
+
+                /*调整分页标签*/
+                function formatPage(startPage, totalPage, totalCount) {
+                    if (startPage == null || totalPage == null || totalCount == null) {
+                        alert("分页错误");
+                    }
+                    var str = "";
+                    var header = "<li class=\"page-item\">\n" +
+                        "                                    <a class=\"page-link\" href=\"javascript:getBooksData(1)\" aria-label=\"Previous\">\n" +
+                        "                                        <span aria-hidden=\"true\">首页</span>\n" +
+                        "                                    </a>\n" +
+                        "                                </li>\n" +
+                        "                                <li class=\"page-item\">\n" +
+                        "                                    <a class=\"page-link\" href=\"javascript:getLastOnePage()\" aria-label=\"Previous\">\n" +
+                        "                                        <span aria-hidden=\"true\"><i class=\"fa fa-angle-left\"></i></span>\n" +
+                        "                                    </a>\n" +
+                        "                                </li>\n";
+                    var tail = "                                <li class=\"page-item\">\n" +
+                        "                                    <a class=\"page-link\" href=\"javascript:getNextOnePage()\"aria-label=\"Next\">\n" +
+                        "                                        <span aria-hidden=\"true\"><i class=\"fa fa-angle-right\"></i></span>\n" +
+                        "                                    </a>\n" +
+                        "                                </li>\n" +
+                        "                                <li class=\"page-item\">\n" +
+                        "                                    <a class=\"page-link\" href=\"javascript:getLastPage()\" aria-label=\"Previous\">\n" +
+                        "                                        <span aria-hidden=\"true\">尾页</span>\n" +
+                        "                                    </a>\n" +
+                        "                                </li>"
+                    if (totalPage <= 11) {
+                        str = str + header;
+                        for (var i = 1; i <= totalPage; i++) {
+                            str = str + "<li class=\"page-item\"><a class=\"page-link\" href=\"javascript:getBooksData(" + parseInt(i) + ")\">"+parseInt(i)+"</a></li>\n";
+                        }
+                        str = str + tail;
+                        $("#pageId").empty();
+                        $("#pageId").append(str);
+                    } else {
+                        var left = startPage;
+                        var right = startPage;
+                        while (right - left < 10) {
+                            if (left > 1) left--;
+                            if (right < totalPage) right++;
+                        }
+                        str = str + header;
+                        for (var i = left; i <= right; i++) {
+                            str = str + "<li class=\"page-item\"><a class=\"page-link\" href=\"javascript:getBooksData(" + i + ")\">1</a></li>\n";
+                        }
+                        str = str + tail;
+                        $("#pageId").empty();
+                        $("#pageId").append(str);
+                    }
+
+                }
+
+                function getBooksData(startPage) {
+                    // alert("load");
+                    if (startPage == null || startPage <= 0) {
+                        let startPage = document.getElementById("startPage").innerText;
+                    }
+                    //                            "startPage": parseInt($("#hiddenStartPage").val()),
+                    var bookName = getParam("bookName")==null?"":getParam("bookName");
+                    var bookType = getParam("bookType")==null?"": getParam("bookType");
+                    // alert(bookType);
+                    $.ajax({
+                        async: false,
+                        url: "http://localhost:8080/book/searchBooksPage",
+                        contentType: "application/json;charset=UTF-8", //必须有
+                        dataType: "json", //表示返回值类型，不必须
+                        type: "post",
+                        data: JSON.stringify({
+                            "startPage": startPage,
+                            "searchStr": "%" + bookName + "%",
+                            "bookType": parseInt(bookType)
+                        }),
+                        success: function (response) {
+                            // alert("success");
+                            if (response.status == 0) {
+                                var page = response.data;
+                                var books = page.lists;
+                                document.getElementById("startPage").innerText = page.currPage.toString();
+                                document.getElementById("totalPage").innerText = page.totalPage.toString();
+                                document.getElementById("totalCount").innerText = page.totalCount.toString();
+                                formatPage(parseInt(page.currPage), parseInt(page.totalPage), parseInt(page.totalCount));
+
+                                // alert(books.length+"\n"+parseInt(books.length)+"\n");
+                                $("#booksRows").empty();
+                                for (var i = 0; i < parseInt(books.length); i++) {
+                                    var bookId = books[i].bookId;
+                                    var bookName = books[i].bookName;
+                                    var image = books[i].image;
+                                    var price = books[i].price;
+                                    var bookType = books[i].bookType;
+
+                                    // var str = "<div class=\"single-product-card media border-0\">\n" +
+                                    //     "                        <div class=\"single-product-card single-product-card-2 text-center border-0\">\n" +
+                                    //     "                            <img src=\"../assets/img/product/" + image.toString() + "\" alt=\"top-product\">\n" +
+                                    //     "                        </div>\n" +
+                                    //     "                        <div class=\"product-card-details\">\n" +
+                                    //     "                            <p class=\"categories\">" + bookType.toString() + "</p>\n" +
+                                    //     "                            <h4 class=\"title\"><a href=\"shop-details.html?bookId="+bookId+">" + bookName.toString() + "</a></h4>\n" +
+                                    //     "                            <div class=\"price\">\n" +
+                                    //     "                                <span>" + price.toString() + "</span>\n" +
+                                    //     "                            </div>\n" +
+                                    //     "                        </div>\n" +
+                                    //     "                    </div>";
+
+                                    var str = " <div class=\"col-lg-3\">\n" +
+                                        "                        <div class=\"single-product-card single-product-card-2 text-center border-0\">\n" +
+                                        "<a href=\"shop-details.html?bookId="+bookId+"\">"+
+                                        "                                <img src=\""+ image.toString() + " alt=\"top-product\" style='height: 305px;width:200px'>\n" +
+                                        "</a>"+
+                                        // "                                <img src=\""+ image.toString() + " alt=\"top-product\" style='height: 305px;width:200px'>\n" +
+                                        // "                            <div class=\"thumb\">\n" +
+                                        // "                                <img src=\"../assets/img/product/" + image.toString() + "\" alt=\"top-product\">\n" +
+                                        // "                            </div>\n" +
+                                        "                            <div class=\"product-card-details\">\n" +
+                                        // "                                <p class=\"categories\">" + bookType.toString() + "</p>\n" +
+                                        "                                <h4 class=\"title\"><a href=\"shop-details.html?bookId="+bookId+"\">"+bookName.toString()+"</a></h4>\n"+
+                                        // "                                <h4 class=\"title\"><a href=\"shop-details.html?bookId="+bookId+"\">" + bookName.toString() + "</a></h4>"+
+                                        "<div class=\"star-rating\">\n" +
+                                        "                                    <span><i class=\"fa fa-star\"></i></span>\n" +
+                                        "                                    <span><i class=\"fa fa-star\"></i></span>\n" +
+                                        "                                    <span><i class=\"fa fa-star\"></i></span>\n" +
+                                        "                                    <span><i class=\"fa fa-star\"></i></span>\n" +
+                                        "                                    <span><i class=\"fa fa-star\"></i></span>\n" +
+                                        "                                </div>"+
+                                        "                            <div class=\"price\">\n" +
+                                        "                                    <span>￥" + parseFloat(price) + "</span>\n" +
+                                        "                                </div>\n" +
+                                        "                            </div>\n" +
+                                        "                            </div>\n" +
+
+                                        "                        </div>\n" +
+                                        "                    </div>";
+                                    $("#booksRows").append(str);
+                                }
+                                // // initPage(page.totalCount, page.startPage, page.totalPage);
+                                // $("#hiddenStartPage").value = page.currPage;
+                                // $("#hiddenTotalPage").value = page.totalPage;
+                                // $("#hiddenTotalCount").value = page.totalCount;
+                                // $("#hiddenPageSize").value = page.pageSize;
+
+                                // alert("搜索成功");
+                            } else {
+                                alert("搜索失败");
+                            }
+                        },
+                        error: function () {
+                            alert("请求失败");
+                        }
+                    });
+                }
+
+
+                /************ 分页js继承jquery *************/
+                $.fn.pageBar = function (options) {
+                    var configs = {
+                        PageIndex: 1,  //设置当前页码
+                        PageSize: 20,  //设置分页大小
+                        TotalPage: 0,   //设置总页数
+                        RecordCount: 0,  //设置数据总数
+                        showPageCount: 4,   //设置连续页数的个数
+                        onPageClick: function (pageIndex) {
+                            return false;   //默认的翻页事件
+                        }
+                    }
+                    $.extend(configs, options)
+                    var tmp = "",
+                        i = 0,
+                        j = 0,
+                        a = 0,
+                        b = 0,
+                        totalpage = parseInt(configs.RecordCount / configs.PageSize);
+                    totalpage = configs.RecordCount % configs.PageSize > 0 ? totalpage + 1 : totalpage;
+                    tmp += "<span>总计：" + configs.RecordCount + "</span > ";
+                    tmp += " <span>页数：" + totalpage + "</span>";
+                    if (configs.PageIndex > 1) {
+                        tmp += "<a>上一页</a>"
+                    } else {
+                        tmp += "<a class=\"no\">上一页</a>"
+                    }
+                    tmp += "<a>1</a>";
+                    if (totalpage > configs.showPageCount + 1) {
+                        if (configs.PageIndex <= configs.showPageCount) {
+                            i = 2;
+                            j = i + configs.showPageCount;
+                            a = 1;
+                        } else if (configs.PageIndex > totalpage - configs.showPageCount) {
+                            i = totalpage - configs.showPageCount;
+                            j = totalpage;
+                            b = 1;
+                        } else {
+                            var k = parseInt((configs.showPageCount - 1) / 2);
+                            i = configs.PageIndex - k;
+                            j = configs.PageIndex + k + 1;
+                            a = 1;
+                            b = 1;
+                            if ((configs.showPageCount - 1) % 2) {
+                                i -= 1
+                            }
+                        }
+                    } else {
+                        i = 2;
+                        j = totalpage;
+                    }
+                    if (b) {
+                        tmp += "..."
+                    }
+                    for (; i < j; i++) {
+                        tmp += "<a>" + i + "</a>"
+                    }
+                    if (a) {
+                        tmp += " ... "
+                    }
+                    if (totalpage > 1) {
+                        tmp += "<a>" + totalpage + "</a>"
+                    }
+                    if (configs.PageIndex < totalpage) {
+                        tmp += "<a>下一页</a>"
+                    } else {
+                        tmp += "<a class=\"no\">下一页</a>"
+                    }
+                    tmp += "<input type=\"text\" /><a>GO</a>";
+                    var pager = this.html(tmp);
+                    var index = pager.children('input')[0];
+                    pager.children('a').click(function () {
+                        var cls = $(this).attr('class');
+                        if (this.innerHTML == '上一页') {
+                            if (cls != 'no') {
+                                configs.onPageClick(configs.PageIndex - 2)
+                            }
+                        } else if (this.innerHTML == '下一页') {
+                            if (cls != 'no') {
+                                configs.onPageClick(configs.PageIndex)
+                            }
+                        } else if (this.innerHTML == 'GO') {
+                            if (!isNaN(index.value) && index.value != "") {
+                                var indexvalue = parseInt(index.value);
+                                indexvalue = indexvalue < 1 ? 1 : indexvalue
+                                indexvalue = indexvalue > totalpage ? totalpage : indexvalue
+                                configs.onPageClick(indexvalue - 1)
+                            }
+                        } else {
+                            if (cls != 'cur') {
+                                configs.onPageClick(parseInt(this.innerHTML) - 1)
+                            }
+                        }
+                    }).each(function () {
+                        if (configs.PageIndex == parseInt(this.innerHTML)) {
+                            $(this).addClass('cur')
+                        }
+                    })
+                }
+
+
+                /*步骤4、初始化分页*/
+                function initPage(recodeCount, pageIndex, totalPage) {
+                    //设置分页信息
+                    alert("init");
+                    var pageOptions = {
+                        AllowPaging: true,
+                        PageIndex: pageIndex,       //设置当前页码
+                        PageSize: 15,               //设置分页大小
+                        RecordCount: recodeCount,   //设置数据总数
+                        TotalPage: totalPage,  //设置总页数
+                        showPageCount: 3,           //设置连续页数的个数
+                        onPageClick: function (pageIndex) {
+                            //alert("您点击了第" + parseInt(pageIndex + 1) + "页");    //自定义您的翻页事件
+
+                            var type = window.location.search.substr(7);
+                            if (type == "news-page") {
+                                getNewsList(pageIndex);
+                            } else if (type == "dongTai-page") {
+                                getDongTaiList(pageIndex);
+                            } else if (type == "zhiDu-page") {
+                                getZhiDuList(pageIndex);
+                            } else if (type == "yuanDi-page") {
+                                getYuaDiList(pageIndex);
+                            } else if (type == "tongZhi-page") {
+                                getNoticeList(pageIndex);
+                            }
+                            return false;
+                        }
+                    }
+                    //初始化分页栏
+                    $('.g-pagerwp .g-pager').css('visibility', 'visible').pageBar(pageOptions);
+                }
+
+                function getNextOnePage() {
+                    var nowPage = parseInt(document.getElementById("startPage").innerText);
+                    var totalPage = parseInt(document.getElementById("totalPage").innerText);
+                    if (nowPage == totalPage) {
+                        alert("您现在已经在尾页");
+                    } else {
+                        getBooksData(nowPage + 1);
+                    }
+                }
+
+
+                function getLastOnePage() {
+                    var nowPage = parseInt(document.getElementById("startPage").innerText);
+                    if (nowPage == 1) {
+                        alert("您现在已经在首页");
+                    } else {
+                        getBooksData(nowPage - 1);
+                    }
+                }
+
+
+                function getFirstPage() {
+                    var nowPage = parseInt(document.getElementById("startPage").innerText);
+                    c
+                    if (nowPage == 1) {
+                        alert("您现在已经在首页");
+                    } else {
+                        getBooksData(1);
+                    }
+                }
+
+
+                function getLastPage() {
+                    var nowPage = parseInt(document.getElementById("startPage").innerText);
+                    var totalPage = parseInt(document.getElementById("totalPage").innerText);
+                    if (nowPage == totalPage) {
+                        alert("您现在已经在尾页");
+                    } else {
+                        getBooksData(totalPage);
+                    }
+                }
+
+                function jumpInputPage(){
+                    if($("#jumpNumTxt").val()==""){
+                        alert("请输入正确的页面");
+                    }else if(parseInt($("#jumpNumTxt").val())>parseInt($("#totalPage").val())||parseInt($("#jumpNumTxt").val())<1){
+                        alert("请输入正确的页面");
+                    }else{
+                        getBooksData(parseInt($("#jumpNumTxt").val()));
+                    }
+                }
+
+            </script>
+            <div class="col-lg-9">
+                <div class="row" id="booksRows">
+
+                </div>
+                <!--todo -->
+                <!--分页栏-->
+                <div class="col-12">
+                    <nav class="text-center">
+                        <div>
+
+
+                            <ul class="pagination" id="pageId">
+                                <li class="page-item">
+                                    <a class="page-link" href="javascript:getFirstPage()" aria-label="Previous">
+                                        <span aria-hidden="true">首页</span>
+                                    </a>
+                                </li>
+                                <li class="page-item">
+                                    <a class="page-link" href="javascript:getLastOnePage()" aria-label="Previous">
+                                        <span aria-hidden="true"><i class="fa fa-angle-left"></i></span>
+                                    </a>
+                                </li>
+
+                                <li class="page-item"><a class="page-link" href="#">1</a></li>
+
+                                <li class="page-item">
+                                    <a class="page-link" href="javascript:getNextOnePage()" aria-label="Next">
+                                        <span aria-hidden="true"><i class="fa fa-angle-right"></i></span>
+                                    </a>
+                                </li>
+                                <li class="page-item">
+                                    <a class="page-link" href="javascript:getLastPage()" aria-label="Previous">
+                                        <span aria-hidden="true">尾页</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <ul class="pagination">
+                            <li class="page-item">
+                                转到第<input type="text" id="jumpNumTxt" style="width: 50px;"/>页
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link" href="javascript:jumpInputPage()" aria-label="Previous">
+                                    <span aria-hidden="true">跳转</span>
+                                </a>
+                            </li>
+                        </ul>
+                        <div class="ui_flt" style="height: 30px; line-height: 30px;">
+                            共有
+                            <span class="ui_txt_bold04" id="totalCount" name="totalCount">0</span>
+                            条记录，当前第
+                            <span class="ui_txt_bold04" id="startPage" name="startPage">1</span>
+                            /
+                            <span class="ui_txt_bold04" id="totalPage" name="totalPage">1</span>
+                            页
+                        </div>
+
+
+                        <!-- <ul class="pagination">
+                             <li class="page-item">
+                                 <a class="page-link" href="javascript:getLastPage()" aria-label="Previous">
+                                     <span aria-hidden="true"><i class="fa fa-angle-left"></i></span>
+                                 </a>
+                             </li>
+                             <dev id="inter">
+                                 <li class="page-item"><a class="page-link" href="#">1</a></li>
+                                 <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                 <li class="page-item"><a class="page-link" href="#">3</a></li>
+                             </dev>
+
+                             <li class="page-item">
+                                 <a class="page-link" href="javascript:getNextPage()"aria-label="Next">
+                                     <span aria-hidden="true"><i class="fa fa-angle-right"></i></span>
+                                 </a>
+                             </li>
+                         </ul>-->
+                    </nav>
+                </div>
+
+
+
+                <!--猜你喜欢-->
+                <div class="browse-by-category-area common-pd">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="section-title-2">
+                                    <h3 class="title">猜你喜欢</h3>
+                                    <!--                    <a href="#" class="btn btn-transparent">View All</a>-->
+                                </div>
+                                <div class="category-slider square-controler owl-carousel owl-theme">
+                                    <div class="item">
+                                        <div class="single-gadget media">
+                                            <div class="gadget-details media-left w-50 align-self-center">
+                                                <span>健康</span>
+                                                <h4><a href="#">关注您的健康</a></h4>
+                                                <p class="price"><span> ￥15</span>起</p>
+                                                <a class="btn btn-black" href="shop.html?bookType=5">看一看！</a>
+                                            </div>
+                                            <div class="thumb w-50">
+                                                <img src="https://img1.doubanio.com/view/subject/s/public/s29710377.jpg" alt="img">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="item">
+                                        <div class="single-gadget media">
+                                            <div class="gadget-details media-left w-50 align-self-center">
+                                                <span>小说</span>
+                                                <h4><a href="#">新故事，新世界</a></h4>
+                                                <p class="price"><span> ￥15</span>起</p>
+                                                <a class="btn btn-black" href="shop.html?bookType=2">看一看！</a>
+                                            </div>
+                                            <div class="thumb w-50">
+                                                <img src="https://img1.doubanio.com/view/subject/s/public/s24514468.jpg" alt="img">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="item">
+                                        <div class="single-gadget media">
+                                            <div class="gadget-details media-left w-50 align-self-center">
+                                                <span>童书</span>
+                                                <h4><a href="#">童趣童真</a></h4>
+                                                <p class="price"><span> ￥15</span>起</p>
+                                                <a class="btn btn-black" href="shop.html?bookType=3">看一看！</a>
+                                            </div>
+                                            <div class="thumb w-50">
+                                                <img src="https://img3.doubanio.com/view/subject/s/public/s3109561.jpg" alt="img">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="item">
+                                        <div class="single-gadget media">
+                                            <div class="gadget-details media-left w-50 align-self-center">
+                                                <span>英文</span>
+                                                <h4><a href="#">Find the New Land</a></h4>
+                                                <p class="price"> <span> ￥15</span>起</p>
+                                                <a class="btn btn-black" href="shop.html?bookType=6">看一看！</a>
+                                            </div>
+                                            <div class="thumb w-50">
+                                                <img src="https://img1.doubanio.com/view/subject/s/public/s1078958.jpg" alt="img">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <form id="hiddenPage" name="hiddenPage">
+                <input type="hidden" name="hiddenStartPage" id="hiddenStartPage" value="1"/>
+                <input type="hidden" name="hiddenTotalPage" id="hiddenTotalPage" value="1"/>
+                <input type="hidden" name="hiddenTotalCount" id="hiddenTotalCount" value="0"/>
+                <input type="hidden" name="hiddenPageSize" id="hiddenPageSize" value="12"/>
+            </form>
+
+        </div>
+    </div>
+</div>
+<!-- shop-product area end -->
+
+<!-- listed-pruduct area start -->
+<div class="listed-product-area">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-4">
+                <div class="single-list-area">
+                    <h4 class="area-title">Recent Products</h4>
+                    <div class="single-product-card media border-0">
+                        <div class="thumb media-left align-self-center">
+                            <img src="../assets/img/listed/01w.png" alt="top-product">
+                        </div>
+                        <div class="product-card-details">
+                            <h4 class="title"><a href="#">Yasi Pata H2S Rupal Dimapo Dual</a></h4>
+                            <div class="star-rating">
+                                <span><i class="fa fa-star"></i></span>
+                                <span><i class="fa fa-star"></i></span>
+                                <span><i class="fa fa-star"></i></span>
+                                <span><i class="fa fa-star-half-o"></i></span>
+                                <span><i class="fa fa-star-half-o"></i></span>
+                            </div>
+                            <div class="price">
+                                <span>$23.45</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="single-product-card media border-0">
+                        <div class="thumb media-left align-self-center">
+                            <img src="../assets/img/listed/02w.png" alt="top-product">
+                        </div>
+                        <div class="product-card-details">
+                            <h4 class="title"><a href="#">Sokim Ultra Dualx Putal PM5</a></h4>
+                            <div class="star-rating">
+                                <span><i class="fa fa-star"></i></span>
+                                <span><i class="fa fa-star"></i></span>
+                                <span><i class="fa fa-star"></i></span>
+                                <span><i class="fa fa-star-half-o"></i></span>
+                                <span><i class="fa fa-star-half-o"></i></span>
+                            </div>
+                            <div class="price">
+                                <span>$7.38</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="single-product-card media border-0">
+                        <div class="thumb media-left align-self-center">
+                            <img src="../assets/img/listed/03w.png" alt="top-product">
+                        </div>
+                        <div class="product-card-details">
+                            <h4 class="title"><a href="#">Muzi Lipattu Pokim 15 Zalim DX2</a></h4>
+                            <div class="star-rating">
+                                <span><i class="fa fa-star"></i></span>
+                                <span><i class="fa fa-star"></i></span>
+                                <span><i class="fa fa-star"></i></span>
+                                <span><i class="fa fa-star-half-o"></i></span>
+                                <span><i class="fa fa-star-half-o"></i></span>
+                            </div>
+                            <div class="price">
+                                <span>$88.95</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="single-product-card media border-0">
+                        <div class="thumb media-left align-self-center">
+                            <img src="../assets/img/listed/04w.png" alt="top-product">
+                        </div>
+                        <div class="product-card-details">
+                            <h4 class="title"><a href="#">Wireless Lupda Audio System</a></h4>
+                            <div class="star-rating">
+                                <span><i class="fa fa-star"></i></span>
+                                <span><i class="fa fa-star"></i></span>
+                                <span><i class="fa fa-star"></i></span>
+                                <span><i class="fa fa-star-half-o"></i></span>
+                                <span><i class="fa fa-star-half-o"></i></span>
+                            </div>
+                            <div class="price">
+                                <span>$19.00</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="single-list-area">
+                    <h4 class="area-title">Popular Products</h4>
+                    <div class="single-product-card media border-0">
+                        <div class="thumb media-left align-self-center">
+                            <img src="../assets/img/listed/05w.png" alt="top-product">
+                        </div>
+                        <div class="product-card-details">
+                            <h4 class="title"><a href="#">Wireless Lupda Audio System</a></h4>
+                            <div class="star-rating">
+                                <span><i class="fa fa-star"></i></span>
+                                <span><i class="fa fa-star"></i></span>
+                                <span><i class="fa fa-star"></i></span>
+                                <span><i class="fa fa-star-half-o"></i></span>
+                                <span><i class="fa fa-star-half-o"></i></span>
+                            </div>
+                            <div class="price">
+                                <span>$17.95</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="single-product-card media border-0">
+                        <div class="thumb media-left align-self-center">
+                            <img src="../assets/img/listed/06w.png" alt="top-product">
+                        </div>
+                        <div class="product-card-details">
+                            <h4 class="title"><a href="#">Yasi Pata H2S Rupal Dimapo Dual</a></h4>
+                            <div class="star-rating">
+                                <span><i class="fa fa-star"></i></span>
+                                <span><i class="fa fa-star"></i></span>
+                                <span><i class="fa fa-star"></i></span>
+                                <span><i class="fa fa-star-half-o"></i></span>
+                                <span><i class="fa fa-star-half-o"></i></span>
+                            </div>
+                            <div class="price">
+                                <span>$32.00</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="single-product-card media border-0">
+                        <div class="thumb media-left align-self-center">
+                            <img src="../assets/img/listed/07w.png" alt="top-product">
+                        </div>
+                        <div class="product-card-details">
+                            <h4 class="title"><a href="#">Sokim Ultra Dualx Putal PM5</a></h4>
+                            <div class="star-rating">
+                                <span><i class="fa fa-star"></i></span>
+                                <span><i class="fa fa-star"></i></span>
+                                <span><i class="fa fa-star"></i></span>
+                                <span><i class="fa fa-star-half-o"></i></span>
+                                <span><i class="fa fa-star-half-o"></i></span>
+                            </div>
+                            <div class="price">
+                                <span>$35.90</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="single-product-card media border-0">
+                        <div class="thumb media-left align-self-center">
+                            <img src="../assets/img/listed/08w.png" alt="top-product">
+                        </div>
+                        <div class="product-card-details">
+                            <h4 class="title"><a href="#">Muzi Lipattu Pokim 15 Zalim DX2</a></h4>
+                            <div class="star-rating">
+                                <span><i class="fa fa-star"></i></span>
+                                <span><i class="fa fa-star"></i></span>
+                                <span><i class="fa fa-star"></i></span>
+                                <span><i class="fa fa-star-half-o"></i></span>
+                                <span><i class="fa fa-star-half-o"></i></span>
+                            </div>
+                            <div class="price">
+                                <span>$43.45</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="single-list-area">
+                    <h4 class="area-title">Onsales Products</h4>
+                    <div class="single-product-card media border-0">
+                        <div class="thumb media-left align-self-center">
+                            <img src="../assets/img/listed/09w.png" alt="top-product">
+                        </div>
+                        <div class="product-card-details">
+                            <h4 class="title"><a href="#">Smart Muzi Lipoki 15 Zalim</a></h4>
+                            <div class="star-rating">
+                                <span><i class="fa fa-star"></i></span>
+                                <span><i class="fa fa-star"></i></span>
+                                <span><i class="fa fa-star"></i></span>
+                                <span><i class="fa fa-star-half-o"></i></span>
+                                <span><i class="fa fa-star-half-o"></i></span>
+                            </div>
+                            <div class="price">
+                                <span>$18.59</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="single-product-card media border-0">
+                        <div class="thumb media-left align-self-center">
+                            <img src="../assets/img/listed/10w.png" alt="top-product">
+                        </div>
+                        <div class="product-card-details">
+                            <h4 class="title"><a href="#">Muzi Lipattu Pokim 15 Zalim DX2</a></h4>
+                            <div class="star-rating">
+                                <span><i class="fa fa-star"></i></span>
+                                <span><i class="fa fa-star"></i></span>
+                                <span><i class="fa fa-star"></i></span>
+                                <span><i class="fa fa-star-half-o"></i></span>
+                                <span><i class="fa fa-star-half-o"></i></span>
+                            </div>
+                            <div class="price">
+                                <span>$84.65</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="single-product-card media border-0">
+                        <div class="thumb media-left align-self-center">
+                            <img src="../assets/img/listed/11w.png" alt="top-product">
+                        </div>
+                        <div class="product-card-details">
+                            <h4 class="title"><a href="#">Yasi Pata H2S Rupal Dimapo Dual</a></h4>
+                            <div class="star-rating">
+                                <span><i class="fa fa-star"></i></span>
+                                <span><i class="fa fa-star"></i></span>
+                                <span><i class="fa fa-star"></i></span>
+                                <span><i class="fa fa-star-half-o"></i></span>
+                                <span><i class="fa fa-star-half-o"></i></span>
+                            </div>
+                            <div class="price">
+                                <span>$99.00</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="single-product-card media border-0">
+                        <div class="thumb media-left align-self-center">
+                            <img src="../assets/img/listed/12w.png" alt="top-product">
+                        </div>
+                        <div class="product-card-details">
+                            <h4 class="title"><a href="#">Sokim Ultra Dualx Putal PM5</a></h4>
+                            <div class="star-rating">
+                                <span><i class="fa fa-star"></i></span>
+                                <span><i class="fa fa-star"></i></span>
+                                <span><i class="fa fa-star"></i></span>
+                                <span><i class="fa fa-star-half-o"></i></span>
+                                <span><i class="fa fa-star-half-o"></i></span>
+                            </div>
+                            <div class="price">
+                                <span>$26.49</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- listed-pruduct area end -->
+
+<!-- footer area start -->
+<footer class="footer-area">
+    <div class="footer-top">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 col-sm-6">
+                    <div class="footer-widget widget contact-widget">
+                        <a href="../index.html" class="footer-logo">
+                            <img src="../assets/img/logo-2.png" alt="footer logo">
+                        </a>
+                        <p>It is a long established fact that a reader will be the distracted by the readable content of
+                            a page.</p>
+                        <ul class="contact_info_list">
+                            <li class="single-info-item">
+                                <h4>Address:</h4>
+                                <p>45 Grand Central Terminal New York <br> NY 1245, United State USA</p>
+                            </li>
+                            <li class="single-info-item">
+                                <h4>Email:</h4>
+                                <p>supports@zenax.com</p>
+                            </li>
+                            <li class="single-info-item">
+                                <h4>Phone:</h4>
+                                <p>+123 4567 8910</p>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-2 offset-lg-1 col-sm-3">
+                    <div class="footer-widget widget widget_nav_menu">
+                        <h4 class="widget-title">Quick Links</h4>
+                        <ul>
+                            <li><a href="#"><i class="fa fa-long-arrow-right" aria-hidden="true"></i>Support</a></li>
+                            <li><a href="#"><i class="fa fa-long-arrow-right" aria-hidden="true"></i>Helpline</a></li>
+                            <li><a href="#"><i class="fa fa-long-arrow-right" aria-hidden="true"></i>Affiliates</a></li>
+                            <li><a href="#"><i class="fa fa-long-arrow-right" aria-hidden="true"></i>Live Support</a>
+                            </li>
+                            <li><a href="#"><i class="fa fa-long-arrow-right" aria-hidden="true"></i>Customer Care</a>
+                            </li>
+                            <li><a href="#"><i class="fa fa-long-arrow-right" aria-hidden="true"></i>FAQs</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-sm-6">
+                    <div class="footer-widget widget widget_nav_menu">
+                        <h4 class="widget-title">Informations</h4>
+                        <ul>
+                            <li><a href="#"><i class="fa fa-long-arrow-right" aria-hidden="true"></i>About Us</a></li>
+                            <li><a href="#"><i class="fa fa-long-arrow-right" aria-hidden="true"></i>Customer
+                                Services</a></li>
+                            <li><a href="#"><i class="fa fa-long-arrow-right" aria-hidden="true"></i>Privacy and Policy</a>
+                            </li>
+                            <li><a href="#"><i class="fa fa-long-arrow-right" aria-hidden="true"></i>Orders &
+                                Returns</a></li>
+                            <li><a href="#"><i class="fa fa-long-arrow-right" aria-hidden="true"></i>Shipping Policy</a>
+                            </li>
+                            <li><a href="#"><i class="fa fa-long-arrow-right" aria-hidden="true"></i>Our Sitemap</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-sm-6">
+                    <div class="footer-widget widget widget_nav_menu">
+                        <h4 class="widget-title">My Account</h4>
+                        <ul>
+                            <li><a href="#"><i class="fa fa-long-arrow-right" aria-hidden="true"></i>Balance</a></li>
+                            <li><a href="#"><i class="fa fa-long-arrow-right" aria-hidden="true"></i>Checkout</a></li>
+                            <li><a href="#"><i class="fa fa-long-arrow-right" aria-hidden="true"></i>Cards</a></li>
+                            <li><a href="#"><i class="fa fa-long-arrow-right" aria-hidden="true"></i>Track Order</a>
+                            </li>
+                            <li><a href="#"><i class="fa fa-long-arrow-right" aria-hidden="true"></i>Terms</a></li>
+                            <li><a href="#"><i class="fa fa-long-arrow-right" aria-hidden="true"></i>Site Policy</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="footer-bottom text-md-center">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 align-self-lg-center">
+                    <p class="copyright">Copyright &copy; 2020.Company name All rights reserved.<a target="_blank"
+                                                                                                   href="http://sc.chinaz.com/moban/">&#x7F51;&#x9875;&#x6A21;&#x677F;</a>
+                    </p>
+                </div>
+                <div class="col-lg-4 text-lg-center">
+                    <ul class="footer-social social-area">
+                        <li><a href="#"><i class="fa fa-facebook-f"></i></a></li>
+                        <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+                        <li><a href="#"><i class="fa fa-pinterest-p"></i></a></li>
+                        <li><a href="#"><i class="fa fa-instagram"></i></a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-4">
+                    <ul class="footer-currency currency-area float-lg-right">
+                        <li><a href="#"><img src="../assets/img/footer/01.png" alt="img"></a></li>
+                        <li><a href="#"><img src="../assets/img/footer/02.png" alt="img"></a></li>
+                        <li><a href="#"><img src="../assets/img/footer/03.png" alt="img"></a></li>
+                        <li><a href="#"><img src="../assets/img/footer/04.png" alt="img"></a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+<!-- footer area end -->
+
+<!-- back to top area start -->
+<div class="back-to-top">
+    <span class="back-top"><i class="fa fa-angle-up"></i></span>
+</div>
+<!-- back to top area end -->
+
+
+<!-- all plugins here -->
+<script src="../assets/js/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+<script src="../assets/js/vendor.js"></script>
+<!-- main js  -->
+<script src="../assets/js/main.js"></script>
+</body>
+</html>

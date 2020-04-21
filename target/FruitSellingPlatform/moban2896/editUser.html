@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<!--陈志漂-->
+<html>
+<head>
+    <title>信息管理系统</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <script type="text/javascript" src="scripts/jquery/jquery-1.7.1.js"></script>
+    <link href="style/authority/basic_layout.css" rel="stylesheet" type="text/css">
+    <link href="style/authority/common_style.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="scripts/authority/commonAll.js"></script>
+    <script type="text/javascript" src="scripts/jquery/jquery-1.4.4.min.js"></script>
+    <script src="scripts/My97DatePicker/WdatePicker.js" type="text/javascript" defer="defer"></script>
+    <script type="text/javascript" src="scripts/artDialog/artDialog.js?skin=default"></script>
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            /*
+             * 提交
+             */
+            $("#submitbutton").click(function () {
+                if (validateForm()) {
+                    updateUser();
+                    // checkFyFhSubmit();
+                }
+            });
+
+            /*
+             * 取消
+             */
+            $("#cancelbutton").click(function () {
+                /**  关闭弹出iframe  **/
+                window.parent.$.fancybox.close();
+            });
+
+            var result = 'null';
+            if (result == 'success') {
+                /**  关闭弹出iframe  **/
+                window.parent.$.fancybox.close();
+            }
+        });
+
+        //         private Long userId;
+        // private String userName;
+        // private String gender;
+        // private String userAddress;
+        // private String userPassword;
+        // private String userStatus;
+        /** 表单验证  **/
+        function validateForm() {
+            if ($("#userName").val() == "") {
+                art.dialog({icon: 'error', title: '友情提示', drag: false, resize: false, content: '姓名', ok: true,});
+                return false;
+            }
+            if ($("#gender").val() == "") {
+                art.dialog({icon: 'error', title: '友情提示', drag: false, resize: false, content: '行呗', ok: true,});
+                return false;
+            }
+            if ($("#userAddress").val() == "") {
+                art.dialog({icon: 'error', title: '友情提示', drag: false, resize: false, content: '地址', ok: true,});
+                return false;
+            }
+            if ($("#userPassword").val() == "") {
+                art.dialog({icon: 'error', title: '友情提示', drag: false, resize: false, content: '密码', ok: true,});
+                return false;
+            }
+            if ($("#userStatus").val() == "") {
+                art.dialog({icon: 'error', title: '友情提示', drag: false, resize: false, content: '用户类型', ok: true,});
+                return false;
+            }
+            return true;
+        }
+
+        function getParam(name) {
+            var search = document.location.search;
+            var pattern = new RegExp("[?&]" + name + "\=([^&]+)", "g");
+            var matcher = pattern.exec(search);
+            var items = null;
+            if (null != matcher) {
+                try {
+                    items = decodeURIComponent(decodeURIComponent(matcher[1]));
+                } catch (e) {
+                    try {
+                        items = decodeURIComponent(matcher[1]);
+                    } catch (e) {
+                        items = matcher[1];
+                    }
+                }
+            }
+            return items;
+        }
+
+        window.onload = function getUser(){
+            var userId = getParam("userId");
+            $.ajax({
+                async:false,
+                url: "http://localhost:8080/user/searchUsersPage",
+                contentType: "application/json;charset=UTF-8", //必须有
+                dataType: "json", //表示返回值类型，不必须
+                type: "post",
+                data: JSON.stringify({
+                    "userId": parseInt(userId)
+                }),
+                success: function (response) {
+                    var users = response.data.lists;
+                    var user = users[0];
+                    if(response.status == 0){
+                        // var user = response.data;
+                        $("#userId").val(user.userId);
+                        $("#userName").val(user.userName);
+                        $("#gender").val(user.gender);
+                        $("#userAddress").val(user.userAddress);
+                        $("#userPassword").val(user.userPassword);
+                        $("#userStatus").val(user.userStatus);
+                        // alert("查询成功");
+                    }else if(response.status==10) {
+                        alert("请登录！");
+                        window.location.href = "login.html";
+                    }else{
+                        alert("查询失败");
+                        return false;
+                    }
+                },
+                error:function () {
+                    alert("请求失败");
+                }
+            });
+        }
+
+        /** update图书**/
+        function updateUser(){
+            var userId = getParam("userId");
+            var userStatus = $("#userStatus").find("option:selected").text();
+            var gender = $("#gender").find("option:selected").text();
+
+            $.ajax({
+                async:false,
+                url: "http://localhost:8080/user/updateUser",
+                contentType: "application/json;charset=UTF-8", //必须有
+                dataType: "json", //表示返回值类型，不必须
+                type: "post",
+                data: JSON.stringify({
+                    "userId": parseInt(userId),
+                    "userName": $("#userName").val()==""?null:$("#userName").val(),
+                    "gender": $("#gender").val()==""?null:$("#gender").val(),
+                    "userAddress": $("#userAddress").val()==""?null:$("#userAddress").val(),
+                    "userPassword": $("#userPassword").val()==""?null:$("#userPassword").val(),
+                    "userStatus": $("#userStatus").val()==""?null:$("#userStatus").val()
+                }),
+                success: function (response) {
+                    if(response.status == 0){
+                        alert("更新成功");
+                    }else{
+                        alert("更新失败");
+                        return false;
+                    }
+                },
+                error:function () {
+                    alert("请求失败");
+                }
+            });
+        }
+    </script>
+</head>
+<body>
+<form id="submitForm" name="submitForm" action="/xngzf/archives/initFangyuan.action" method="post">
+    <input type="hidden" name="fyID" value="14458625716623" id="fyID"/>
+    <div id="container">
+        <div id="nav_links">
+            当前位置：用户&nbsp;>&nbsp;<span style="color: #1A5CC6;">用户编辑</span>
+            <div id="page_close">
+                <a href="javascript:parent.$.fancybox.close();">
+                    <img src="images/common/page_close.png" width="20" height="20" style="vertical-align: text-top;"/>
+                </a>
+            </div>
+        </div>
+        <div class="ui_content">
+            <table cellspacing="0" cellpadding="0" width="100%" align="left" border="0">
+                <tr>
+                    <td class="ui_text_rt">ID</td>
+                    <td class="ui_text_lt">
+                        <input type="text" id="userId" name="fangyuanEntity.userId" value="" class="ui_input_txt02" readonly="true"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="ui_text_rt">姓名</td>
+                    <td class="ui_text_lt">
+                        <input type="text" id="userName" name="fangyuanEntity.userName" value="" class="ui_input_txt02"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="ui_text_rt">性别</td>
+                    <td class="ui_text_lt">
+                        <select name="fangyuanEntity.gender" id="gender"
+                                class="ui_select01">
+                            <option value="">--请选择--</option>
+                            <option value="男"selected="selected">男</option>
+                            <option value="女">女</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="ui_text_rt">地址</td>
+                    <td class="ui_text_lt">
+                        <input type="text" id="userAddress" name="fangyuanEntity.userAddress" value="" class="ui_input_txt02"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="ui_text_rt">密码</td>
+                    <td class="ui_text_lt">
+                        <input type="text" id="userPassword" name="fangyuanEntity.userPassword" value="" class="ui_input_txt02"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="ui_text_rt">用户类型</td>
+                    <td class="ui_text_lt">
+                        <select name="fangyuanEntity.userStatus" id="userStatus"
+                                class="ui_select01">
+                            <option value="">--请选择--</option>
+                            <option value="manager"selected="selected">manager</option>
+                            <option value="user">user</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>&nbsp;</td>
+                    <td class="ui_text_lt" >
+                        &nbsp;<input id="submitbutton" type="button" value="更新" class="ui_input_btn01"/>
+                        &nbsp;<input id="cancelbutton" type="button" value="取消" class="ui_input_btn01"/>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</form>
+<div style="display:none">
+    <script src='http://v7.cnzz.com/stat.php?id=155540&web_id=155540' language='JavaScript' charset='gb2312'></script>
+</div>
+</body>
+</html>

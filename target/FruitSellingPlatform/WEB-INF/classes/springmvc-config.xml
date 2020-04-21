@@ -1,0 +1,82 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/mvc
+       http://www.springframework.org/schema/mvc/spring-mvc.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context.xsd
+       http://www.springframework.org/schema/aop
+       http://www.springframework.org/schema/aop/spring-aop.xsd
+       http://www.springframework.org/schema/tx
+       http://www.springframework.org/schema/tx/spring-tx.xsd">
+    <!--扫描controller包-->
+    <context:component-scan base-package="com.bookshop.controller"/>
+
+
+    <mvc:resources location="/assets/js/" mapping="assets/js/**" />
+    <mvc:resources location="/assets/css/" mapping="assets/css/**" />
+    <mvc:resources location="/assets/img/" mapping="assets/img/**" />
+
+    <!--注解驱动-->
+    <mvc:annotation-driven/>
+    <mvc:default-servlet-handler />
+    <!--视图解析器，suffix为空，方便跟参数url?id=xxx-->
+    <bean id="jspViewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/pages/"/>
+        <property name="suffix" value=".jsp"/>
+        <property name="order" value="1" />
+    </bean>
+    <bean id="htmlViewResolver"
+          class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="viewClass" value="com.bookshop.util.HtmlResourceView"/><!-- 改成你自己的第一步新建的解析类路径 -->
+        <property name="order" value="0" />
+        <property name="prefix" value="/pages/" />
+        <property name="suffix" value=".html" />
+        <property name="contentType">
+            <value>text/html; charset=UTF-8</value>
+        </property>
+    </bean>
+
+<!--    <bean id="htmlViewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/"/>
+        <property name="suffix" value=".html"/>
+        <property name="order" value="0"/>&lt;!&ndash;配置优先级 越小优先级越高&ndash;&gt;
+    </bean>-->
+<!--
+    <bean class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver">
+        <property name="contentType" value="text/html;charset=UTF-8"></property>
+        <property name="suffix" value=".html" />
+    </bean>
+    <bean class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver">
+        <property name="contentType" value="text/html;charset=UTF-8"></property>
+        <property name="suffix" value=".jsp" />
+    </bean>
+    <bean class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
+        <property name="templateLoaderPath">
+            <value>/</value>
+        </property>
+    </bean>-->
+
+    <!--拦截器配置-->
+<!--
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <mvc:mapping path="/**"/>
+            <bean class="com.webo.interceptor.LoginInterceptor"/>
+        </mvc:interceptor>
+    </mvc:interceptors>
+-->
+    <!--文件上传解析器，最大能上传10mb文件（ 1024*1024*1O)-->
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <property name="maxUploadSize" value="10484760"/>
+    </bean>
+
+
+
+</beans>

@@ -1,0 +1,1305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="referrer" content="no-referrer" />
+    <title></title>
+
+    <!-- Vendor Stylesheet -->
+    <link rel="stylesheet" href="../assets/css/vendor.css">
+    <!-- Main Stylesheet -->
+    <link rel="stylesheet" href="../assets/css/owl.carousel.min.css">
+    <link rel="stylesheet" href="../assets/css/nice-select.css">
+    <link rel="stylesheet" href="../assets/css/line-awesome.min.css">
+    <link rel="stylesheet" href="../assets/css/jquery-ui.min.css">
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <!-- responsive Stylesheet -->
+    <link rel="stylesheet" href="../assets/css/responsive.css">
+</head>
+<body>
+
+<!-- preloader area start -->
+<div class="preloader" id="preloader">
+    <div class="preloader-inner">
+        <div class="spinner">
+            <div class="dot1"></div>
+            <div class="dot2"></div>
+        </div>
+    </div>
+</div>
+<!-- preloader area end -->
+
+<!-- search Popup -->
+<div class="body-overlay" id="body-overlay"></div>
+<div class="search-popup" id="search-popup">
+    <form action="../index.html" class="main-search search-form">
+        <input type="text" placeholder="Search...">
+        <button>Search</button>
+    </form>
+</div>
+<!-- //. search Popup -->
+
+<!--sidebar menu start-->
+<div class="sidebar-menu" id="sidebar-menu">
+    <button class="sidebar-menu-close"><i class="flaticon-close"></i></button>
+    <div class="sidebar-inner">
+        <div class="sidebar-logo">
+            <img src="../assets/img/logo.png" alt="logo"/>
+        </div>
+        <div class="sidemenu-text">
+            <p>We believe brand interaction is key in commu- nication. Real inno vations and a positive customer
+                experience are the heart of successful commu- nication.</p>
+        </div>
+        <div class="sidebar-contact">
+            <h4>Contact Us</h4>
+            <ul>
+                <li><i class="fa fa-map-marker"></i>Lavaca Street, Suite 2000</li>
+                <li><i class="fa fa-envelope"></i>email@evha.com</li>
+                <li><i class="fa fa-phone"></i>(+880) 172570051</li>
+            </ul>
+        </div>
+        <div class="sidebar-subscribe">
+            <input type="text" placeholder="Email">
+            <button><i class="fa fa-long-arrow-right"></i></button>
+        </div>
+        <div class="social-link">
+            <ul>
+                <li><a href="#"><i class="fa fa-facebook-f"></i></a></li>
+                <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+                <li><a href="#"><i class="fa fa-instagram"></i></a></li>
+                <li><a href="#"><i class="fa fa-pinterest"></i></a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!--sidebar menu end-->
+
+<!-- navbar start -->
+<div class="navbar-area">
+    <div class="navbar-top">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 text-md-left text-center">
+                    <ul class="topbar-left">
+                        <li class="topbar-single-info"><i class="fa fa-phone"></i>+123 4567 8910</li>
+                        <li class="topbar-single-info"><i class="fa fa-map-marker"></i>Store Location</li>
+                        <li class="topbar-single-info d-none d-lg-block"><i class="fa fa-crosshairs"></i>Track Your
+                            Order
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-md-6 text-md-right text-center">
+                    <ul class="topbar-right float-md-right">
+                        <div class="align-self-center">
+                            <div class="shop-cart-area">
+                                <ul id="userCart">
+
+                                    <!--                                <li><span>6</span><i class="fa fa-heart-o"></i></li>-->
+                                    <li id="userCartCount" onclick="goToCart();">
+                                        <i class="las la-shopping-cart" onclick="goToCart();"></i>
+                                        <span id="userCartCountSpan"></span></li>
+<!--                                    <li id="userCartPrice" onclick="goToCart();">$ 155.00 .</li>&lt;!&ndash;                                todo 获取购物车价格&ndash;&gt;-->
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="dropdown topbar-help" id="myaccountdropdown">
+                            <i class="fa fa-user"></i>
+                        </div>
+                        <script src="http://libs.baidu.com/jquery/1.9.0/jquery.js"></script>
+                        <script type="text/javascript">
+                            function checkLoginStatus(){
+
+                            }
+                            function logOut() {
+                                alert("login");
+                                $.ajax({
+                                    async: false,
+                                    url: "http://localhost:8080/user/logOut",
+                                    contentType: "application/json;charset=UTF-8", //必须有
+                                    dataType: "json", //表示返回值类型，不必须
+                                    type: "post",
+                                    data: JSON.stringify({}),
+                                    success: function (response) {
+                                        if (response.status == 0) {
+                                            /*退登成功*/
+                                            window.location.href = "login.html";
+                                        } else {
+                                            alert("退登失败");
+                                        }
+                                    },
+                                    error: function () {
+                                        alert("请求失败");
+                                    }
+                                });
+                            }
+
+                            function goToCart(){
+                                window.open("cart.html");
+                            }
+
+                            function checkLogin() {
+                                var user;
+                                $.ajax({
+                                    async:false,
+                                    url: "http://localhost:8080/user/checkLogin",
+                                    contentType: "application/json;charset=UTF-8", //必须有
+                                    dataType: "json", //表示返回值类型，不必须
+                                    type: "post",
+                                    success: function (response) {
+                                        if (response.status == 0) {
+                                            // alert("已登录");
+                                            user = response.data;
+                                            // alert(user.userId);
+                                        } else {
+                                            // alert("未登录");
+                                            return null;
+                                        }
+                                    },
+                                    error: function () {
+                                        alert("请求失败");
+                                        return null;
+                                    }
+                                });
+                                if (user == null || user.userId == null) {
+                                    var str =
+                                        "<a class=\"btn dropdown-toggle\" href=\"#\" role=\"button\" id=\"dropdownMenuLink2\" data-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"false\">\n" +
+                                        "请登录</a>" +
+                                        "<div class=\"dropdown-menu\" aria-labelledby=\"dropdownMenuLink2\" >\n" +
+                                        "<a class=\"dropdown-item\" target=\"_blank\" href=\"login.html\">登录</a> " +
+                                        "</div>";
+                                    $("#myaccountdropdown").append(str);
+                                } else {
+                                    // alert(user.userName);
+                                    /*用户选项*/
+                                    var str =
+                                        "<a class=\"btn dropdown-toggle\" href=\"#\" role=\"button\" id=\"dropdownMenuLink2\" data-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"false\">\n" +
+                                        user.userName + "</a>" +
+                                        "<div class=\"dropdown-menu\" aria-labelledby=\"dropdownMenuLink2\" >\n" +
+                                        "<a class=\"dropdown-item\"target=\"_blank\" href=\"user-order.html\">我的订单</a>" +
+                                        "<a class=\"dropdown-item\"target=\"_blank\"  href=\"user-setting.html\">用户设置</a> " +
+                                        "<a class=\"dropdown-item\"target=\"_blank\" onclick=\"logOut()\">退登</a>\n" +
+                                        "</div>";
+                                    $("#myaccountdropdown").append(str);
+
+                                    $.ajax({
+                                        url: "http://localhost:8080/cart/getCartNum",
+                                        contentType: "application/json;charset=UTF-8", //必须有
+                                        dataType: "json", //表示返回值类型，不必须
+                                        type: "post",
+                                        // data: JSON.stringify(),/*不需要传用户数据*/
+                                        success: function (response) {
+                                            if(response.status==0){
+                                                document.getElementById("userCartCountSpan").innerText = response.data;
+                              /*                  str = "<span>"+response.data+"</span>";
+                                                $("#userCartCount").append(str);*/
+                                            }else{
+                                                alert("获取购物车信息错误");
+                                            }
+                                        },
+                                        error: function () {
+                                            alert("请求失败");
+                                        }
+                                    });
+                                }
+                            }
+
+                            function getRecommendedBooks(){
+                                $.ajax({
+                                    url: "http://localhost:8080/book/getRecommendedBooks",
+                                    contentType: "application/json;charset=UTF-8", //必须有
+                                    dataType: "json", //表示返回值类型，不必须
+                                    type: "post",
+                                    data: JSON.stringify({
+                                        "startPage": 1
+                                    }),
+                                    success: function (response) {
+                                        if (response.status == 0) {
+                                            var page = response.data;
+                                            var books = page.lists;
+                                            for (var i = 0; i < parseInt(books.length); i++) {
+                                                var book = books[i];
+                                                var str =
+                                                    "    <div class=\"col-lg-3 col-md-6\">\n" +
+                                                    "        <div class=\"single-product-card single-product-card-2 text-center\">\n" +
+                                                    "<a href=\"shop-details.html?bookId="+book.bookId+"\">"+
+                                                    "<img src=\""+book.image.toString()+"\" alt=\"top-product\" style='width: 283px;height: 432px;'/>"+
+                                                    "</a>"+
+                                                    // "            <div class=\"thumb\">\n" +
+                                                    //
+                                                    // // "                 <img src=\"../assets/img/product/" + book.image.toString() + "\" alt=\"top-product\">\n" +
+                                                    // "            </div>\n" +
+                                                    "            <div class=\"product-card-details\">\n" +
+                                                    "                <p class=\"categories\">Gadgets</p>\n" +
+                                                    "                    <h4 class=\"title\"><a href=\"shop-details.html?bookId="+book.bookId+"\">" + book.bookName.toString() + "</a></h4>\n" +
+                                                    "                <div class=\"star-rating\">\n" +
+                                                    "                    <span><i class=\"fa fa-star\"></i></span>\n" +
+                                                    "                    <span><i class=\"fa fa-star\"></i></span>\n" +
+                                                    "                    <span><i class=\"fa fa-star\"></i></span>\n" +
+                                                    "                    <span><i class=\"fa fa-star\"></i></span>\n" +
+                                                    "                    <span><i class=\"fa fa-star\"></i></span>\n" +
+                                                    "                </div>\n" +
+                                                    "                <div class=\"price\">\n" +
+                                                    "                    <span>" + book.price.toString() + "</span>\n" +
+                                                    "                </div>\n" +
+                                                    "            </div>\n" +
+                                                    "        </div>\n" +
+                                                    "    </div>";
+                                                $("#homeBooks").append(str);
+                                            }
+                                        }else{
+                                            alert("获取推荐书籍失败");
+                                        }
+                                    },
+                                    error:function(response){
+                                        alert("请求失败");
+                                    }
+                                });
+                            }
+
+                            window.onload = function () {
+                                getRecommendedBooks();
+                                checkLogin();
+                            }
+
+                        </script>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+    <div class="navbar-middle d-none d-lg-block">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-2 align-self-center">
+                    <div class="logo-area">
+                        <a href="../index.html"> <img src="../assets/img/logo.png" alt="logo"></a>
+                    </div>
+                </div>
+                <div class="col-lg-7 text-center">
+                    <div class="main-search d-inline-flex">
+                        <input type="text" placeholder="Search product..." name="searchText" id="searchText"/>
+                        <div class="topbar-cat-select">
+                            <select id="bookTypeSelection">
+                                <option value="" selected="selected">全部</option>
+                                <option value="1">教育考试</option>
+                                <option value="2">小说</option>
+                                <option value="3">童书</option>
+                                <option value="4" >人文社科</option>
+                                <option value="5">健康</option>
+                                <option value="6">英文</option>
+                                <option value="7">理工</option>
+                            </select>
+                        </div>
+                        <button onclick="shopPage()">搜索</button>
+
+                        <script type="text/javascript">
+                            function shopPage() {
+                                window.location.href = "shop.html?bookName=" + $("#searchText").val()+"&bookType="+$("#bookTypeSelection").val();
+                                // window.location.href="shop.html?bookName="+searchText.val();
+                            }
+                        </script>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <nav class="navbar navbar-area navbar-expand-lg nav-style-01">
+        <div class="container nav-container">
+            <div class="responsive-mobile-menu">
+                <button class="menu toggle-btn d-block d-lg-none" data-toggle="collapse" data-target="#zenax_main_menu"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="icon-left"></span>
+                    <span class="icon-right"></span>
+                </button>
+            </div>
+            <div class="mobile-logo">
+                <a href="../index.html"> <img src="../assets/img/logo-2.png" alt="logo"></a>
+            </div>
+            <div class="cat-menu-wrap">
+                <div class="cat-menu">
+                    <img src="../assets/img/icon/bar.png" alt="icon">
+                    All Category
+                </div>
+                <ul class="sidebar-categories">
+                    <li><a href="shop.html?bookType=1"><img src="../assets/img/icon/laptop.png" alt="img">教育考试<i
+                            class="fa fa-angle-down"></i></a></li>
+                    <li><a href="shop.html?bookType=2"><img src="../assets/img/icon/chair.png" alt="img">小说<i
+                            class="fa fa-angle-down"></i></a></li>
+                    <li><a href="shop.html?bookType=3"><img src="../assets/img/icon/phone.png" alt="img">童书<i
+                            class="fa fa-angle-down"></i></a></li>
+                    <li><a href="shop.html?bookType=4"><img src="../assets/img/icon/ball.png" alt="img">人文社科<i
+                            class="fa fa-angle-down"></i></a></li>
+                    <li><a href="shop.html?bookType=5"><img src="../assets/img/icon/heart.png" alt="img">健康<i
+                            class="fa fa-angle-down"></i></a></li>
+                    <li><a href="shop.html?bookType=6"><img src="../assets/img/icon/monitor.png" alt="img">英文<i
+                            class="fa fa-angle-down"></i></a></li>
+                    <li><a href="shop.html?bookType=7"><img src="../assets/img/icon/monitor.png" alt="img">理工<i
+                            class="fa fa-angle-down"></i></a></li>
+                </ul>
+            </div>
+            <div class="shop-cart-area">
+                <ul>
+                    <li><span>6</span><i class="fa fa-heart-o"></i></li>
+                    <li><span>5</span><i class="las la-shopping-cart"></i></li>
+                </ul>
+                <ul class="right-part-search">
+                    <li class="search" id="search">
+                        <a href="#"><i class="fa fa-search"></i></a>
+                    </li>
+                    <li class="menubar d-none d-lg-block" id="navigation-button">
+                        <a><i class="flaticon-menu-button"></i></a>
+                    </li>
+                </ul>
+            </div>
+            <div class="collapse navbar-collapse" id="zenax_main_menu">
+                <ul class="navbar-nav menu-open">
+
+                </ul>
+            </div>
+            <!--<div class="nav-right-part">
+                <a href="cart.html" class="right-part-text">购物车</a>
+            </div>-->
+        </div>
+    </nav>
+</div>
+<!-- navbar end -->
+
+<!-- banner area start -->
+<div class="banner-area bg-black p-0 m-0">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-12 text-center text-lg-left">
+                <div class="banner-slider round-controler contrl-white owl-carousel owl-theme">
+                    <div class="item">
+                        <div class="row justify-content-center">
+                            <div class="col-lg-7 align-self-center">
+                                <div class="banner-inner banner-inner-2">
+                                    <p class="subtitle">Upto 50% Off</p>
+                                    <h2 size="100">书 <span>无</span> 止 境<br></h2>
+                                    <!--                                        <h2>Enjoy Unlimited <span>Black</span><br> <span>Friday</span> Deals</h2>-->
+<!--                                    <a class="btn btn-basic-lg" href="#">Start Shopping</a>-->
+                                </div>
+                            </div>
+                            <div class="col-lg-4 offset-lg-1 col-md-4 col-6">
+                                <div class="banner-thumb">
+                                    <img src="https://img3.doubanio.com/view/subject/l/public/s33534692.jpg" alt="banner">
+<!--                                    <img src="../assets/img/banner/03.png" alt="banner">-->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="item">
+                        <div class="row justify-content-center">
+                            <div class="col-lg-7 align-self-center">
+                                <div class="banner-inner banner-inner-2">
+                                    <p class="subtitle">Upto 50% Off</p>
+                                    <h2>All In One <span>Best Place</span> for Books</h2>
+<!--                                    <a class="btn btn-basic-lg" href="#">Start Shopping</a>-->
+                                </div>
+                            </div>
+                            <div class="col-lg-4 offset-lg-1 col-md-4 col-6">
+                                <div class="banner-thumb">
+                                    <img src="https://img3.doubanio.com/view/subject/l/public/s33525533.jpg" alt="banner">
+<!--                                    <img src="../assets/img/banner/02.png" alt="banner">-->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- banner area end -->
+
+<!-- top-product area start -->
+<!--<div class="top-product-area bg-gray-3 common-pd">
+    <div class="container">
+        <div class="row">
+            &lt;!&ndash;左侧类别导航栏&ndash;&gt;
+            <div class="col-lg-3">
+                <div class="sidebar">
+                    <div class="single-widget">
+                        <h4 class="sidebar-title sidebar-title-cat"><img src="../assets/img/icon/bar.png" alt="img">分类
+                            <i class="fa fa-angle-up"></i></h4>
+                        <ul class="sidebar-categories">
+
+                            <li><a href="shop.html?type=1"><img src="../assets/img/icon/laptop.png"
+                                                                           alt="img">教育考试<i
+                                    class="fa fa-angle-down"></i></a></li>
+                            <li><a href="shop.html?type=2"><img src="../assets/img/icon/light.png" alt="img">小说<i
+                                    class="fa fa-angle-down"></i></a></li>
+                            <li><a href="shop.html?type=3"><img src="../assets/img/icon/ball.png" alt="img">童书<i
+                                    class="fa fa-angle-down"></i></a></li>
+                            <li><a href="shop.html?type=4"><img src="../assets/img/icon/chair.png" alt="img">人文社科<i
+                                    class="fa fa-angle-down"></i></a></li>
+                            <li><a href="shop.html?type=5"><img src="../assets/img/icon/heart.png" alt="img">健康<i
+                                    class="fa fa-angle-down"></i></a></li>
+                            <li><a href="shop.html?type=6"><img src="../assets/img/icon/headphone.png" alt="img">英文<i
+                                    class="fa fa-angle-down"></i></a></li>
+                            <li><a href="shop.html?type=7"><img src="../assets/img/icon/monitor.png" alt="img">理工<i
+                                    class="fa fa-angle-down"></i></a></li>
+                        </ul>
+                    </div>
+                    &lt;!&ndash;按照星级和价格筛选&ndash;&gt;
+                    &lt;!&ndash; <div class="single-widget">
+                         <h4 class="sidebar-title">Filter by Price <i class="fa fa-angle-up"></i></h4>
+                         <div class="side-bar-range">
+                             <div id="slider-range"></div>
+                             <p>
+                               <input type="text" id="amount" readonly>
+                             </p>
+                         </div>
+                     </div>
+                     <div class="single-widget">
+                         <h4 class="sidebar-title">Filter by Rating <i class="fa fa-angle-up"></i></h4>
+                         <div class="sidebar-rating">
+                             <div class="sidebar-single-rating">
+                                 <label><input type="checkbox" aria-label="Checkbox for following text input">
+                                 <span class="checkmark"></span></label>
+                                 <div class="star-rating">
+                                     <span><i class="fa fa-star"></i></span>
+                                     <span><i class="fa fa-star"></i></span>
+                                     <span><i class="fa fa-star"></i></span>
+                                     <span><i class="fa fa-star"></i></span>
+                                     <span><i class="fa fa-star"></i></span>
+                                     <span class="rate-count">(8920)</span>
+                                 </div>
+                             </div>
+                             <div class="sidebar-single-rating">
+                                 <label><input type="checkbox" aria-label="Checkbox for following text input">
+                                 <span class="checkmark"></span></label>
+                                 <div class="star-rating">
+                                     <span><i class="fa fa-star"></i></span>
+                                     <span><i class="fa fa-star"></i></span>
+                                     <span><i class="fa fa-star"></i></span>
+                                     <span><i class="fa fa-star"></i></span>
+                                     <span class="rate-count">(6935)</span>
+                                 </div>
+                             </div>
+                             <div class="sidebar-single-rating">
+                                 <label><input type="checkbox" aria-label="Checkbox for following text input">
+                                 <span class="checkmark"></span></label>
+                                 <div class="star-rating">
+                                     <span><i class="fa fa-star"></i></span>
+                                     <span><i class="fa fa-star"></i></span>
+                                     <span><i class="fa fa-star"></i></span>
+                                     <span class="rate-count">(1205)</span>
+                                 </div>
+                             </div>
+                             <div class="sidebar-single-rating">
+                                 <label><input type="checkbox" aria-label="Checkbox for following text input">
+                                 <span class="checkmark"></span></label>
+                                 <div class="star-rating">
+                                     <span><i class="fa fa-star"></i></span>
+                                     <span><i class="fa fa-star"></i></span>
+                                     <span class="rate-count">(792)</span>
+                                 </div>
+                             </div>
+                             <div class="sidebar-single-rating">
+                                 <label><input type="checkbox" aria-label="Checkbox for following text input">
+                                 <span class="checkmark"></span></label>
+                                 <div class="star-rating">
+                                     <span><i class="fa fa-star"></i></span>
+                                     <span class="rate-count">(503)</span>
+                                 </div>
+                             </div>
+                         </div>
+                     </div>&ndash;&gt;
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6">
+                <div class="single-product-card single-product-card-2 text-center border-0">
+                    <div class="thumb">
+                        <img src="../assets/img/product/home-2/1.png" alt="top-product">
+                    </div>
+                    <div class="product-card-details">
+                        <span class="featured">New</span>
+                        <p class="categories">Gadgets</p>
+                        <h4 class="title"><a href="#">Universal Color Dual Pro S25 Rapata Loxin Duka</a></h4>
+                        <div class="star-rating">
+                            <span><i class="fa fa-star"></i></span>
+                            <span><i class="fa fa-star"></i></span>
+                            <span><i class="fa fa-star"></i></span>
+                            <span><i class="fa fa-star"></i></span>
+                            <span><i class="fa fa-star"></i></span>
+                        </div>
+                        <div class="price">
+                            <span>$19.00</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="single-product-card single-product-card-2 text-center border-0">
+                    <div class="thumb">
+                        <img src="../assets/img/product/home-2/4.png" alt="top-product">
+                    </div>
+                    <div class="product-card-details">
+                        <p class="categories">Gadgets</p>
+                        <h4 class="title"><a href="#">Yasi Pata H2S Rupal Dimapo Dual Color TX2</a></h4>
+                        <div class="star-rating">
+                            <span><i class="fa fa-star"></i></span>
+                            <span><i class="fa fa-star"></i></span>
+                            <span><i class="fa fa-star"></i></span>
+                            <span><i class="fa fa-star"></i></span>
+                            <span><i class="fa fa-star"></i></span>
+                        </div>
+                        <div class="price">
+                            <span>$97.05</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="single-product-card single-product-card-2 text-center border-0">
+                    <div class="thumb">
+                        <img src="../assets/img/product/home-2/7.png" alt="top-product">
+                    </div>
+                    <div class="product-card-details">
+                        <span class="featured red">-10%</span>
+                        <p class="categories">Gadgets</p>
+                        <h4 class="title"><a href="#">Rostal Razmali Nonstick Dish washer PFOA</a></h4>
+                        <div class="star-rating">
+                            <span><i class="fa fa-star"></i></span>
+                            <span><i class="fa fa-star"></i></span>
+                            <span><i class="fa fa-star"></i></span>
+                            <span><i class="fa fa-star"></i></span>
+                            <span><i class="fa fa-star"></i></span>
+                        </div>
+                        <div class="price">
+                            <span>$69.00</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="single-product-card single-product-card-2 text-center border-0">
+                    <div class="thumb">
+                        <img src="../assets/img/product/home-2/2.png" alt="top-product">
+                    </div>
+                    <div class="product-card-details">
+                        <p class="categories">Gadgets</p>
+                        <h4 class="title"><a href="#">Rostal Razmali Nonstick Dish washer PFOA</a></h4>
+                        <div class="star-rating">
+                            <span><i class="fa fa-star"></i></span>
+                            <span><i class="fa fa-star"></i></span>
+                            <span><i class="fa fa-star"></i></span>
+                            <span><i class="fa fa-star"></i></span>
+                            <span><i class="fa fa-star"></i></span>
+                        </div>
+                        <div class="price">
+                            <span>$21.85</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="single-product-card single-product-card-2 text-center border-0">
+                    <div class="thumb">
+                        <img src="../assets/img/product/home-2/5.png" alt="top-product">
+                    </div>
+                    <div class="product-card-details">
+                        <span class="featured">New</span>
+                        <p class="categories">Gadgets</p>
+                        <h4 class="title"><a href="#">Universal Color Dual Pro S25 Rapata Loxin Duka</a></h4>
+                        <div class="star-rating">
+                            <span><i class="fa fa-star"></i></span>
+                            <span><i class="fa fa-star"></i></span>
+                            <span><i class="fa fa-star"></i></span>
+                            <span><i class="fa fa-star"></i></span>
+                            <span><i class="fa fa-star"></i></span>
+                        </div>
+                        <div class="price">
+                            <span>$54.99</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="single-product-card single-product-card-2 text-center border-0">
+                    <div class="thumb">
+                        <img src="../assets/img/product/home-2/8.png" alt="top-product">
+                    </div>
+                    <div class="product-card-details">
+                        <span class="featured">New</span>
+                        <p class="categories">Gadgets</p>
+                        <h4 class="title"><a href="#">Yasi Pata H2S Rupal Dimapo Dual Color TX2</a></h4>
+                        <div class="star-rating">
+                            <span><i class="fa fa-star"></i></span>
+                            <span><i class="fa fa-star"></i></span>
+                            <span><i class="fa fa-star"></i></span>
+                            <span><i class="fa fa-star"></i></span>
+                            <span><i class="fa fa-star"></i></span>
+                        </div>
+                        <div class="price">
+                            <span>$58.54</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="row justify-content-center">
+                    <div class="col-lg-12 col-md-6">
+                        <div class="single-product-card single-product-card-2 text-center border-0">
+                            <div class="thumb">
+                                <img src="../assets/img/product/home-2/3.png" alt="top-product">
+                            </div>
+                            <div class="product-card-details">
+                                <span class="featured">New</span>
+                                <p class="categories">Gadgets</p>
+                                <h4 class="title"><a href="#">Yasi Pata H2S Rupal Dimapo Dual Color TX2</a></h4>
+                                <div class="star-rating">
+                                    <span><i class="fa fa-star"></i></span>
+                                    <span><i class="fa fa-star"></i></span>
+                                    <span><i class="fa fa-star"></i></span>
+                                    <span><i class="fa fa-star"></i></span>
+                                    <span><i class="fa fa-star"></i></span>
+                                </div>
+                                <div class="price">
+                                    <span>$28.00</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-12 col-md-6">
+                        <div class="single-product-card single-product-card-2 text-center border-0">
+                            <div class="thumb">
+                                <img src="../assets/img/product/home-2/6.png" alt="top-product">
+                            </div>
+                            <div class="product-card-details">
+                                <span class="featured">New</span>
+                                <p class="categories">Gadgets</p>
+                                <h4 class="title"><a href="#">Rostal Razmali Nonstick Dish washer PFOA</a></h4>
+                                <div class="star-rating">
+                                    <span><i class="fa fa-star"></i></span>
+                                    <span><i class="fa fa-star"></i></span>
+                                    <span><i class="fa fa-star"></i></span>
+                                    <span><i class="fa fa-star"></i></span>
+                                    <span><i class="fa fa-star"></i></span>
+                                </div>
+                                <div class="price">
+                                    <span>$85.00</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-12 col-md-6">
+                        <div class="single-product-card single-product-card-2 text-center border-0">
+                            <div class="thumb">
+                                <img src="../assets/img/product/home-2/9.png" alt="top-product">
+                            </div>
+                            <div class="product-card-details">
+                                <span class="featured">New</span>
+                                <p class="categories">Gadgets</p>
+                                <h4 class="title"><a href="#">Universal Color Dual Pro S25 Rapata Loxin Duka</a></h4>
+                                <div class="star-rating">
+                                    <span><i class="fa fa-star"></i></span>
+                                    <span><i class="fa fa-star"></i></span>
+                                    <span><i class="fa fa-star"></i></span>
+                                    <span><i class="fa fa-star"></i></span>
+                                    <span><i class="fa fa-star"></i></span>
+                                </div>
+                                <div class="price">
+                                    <span>$12.50</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>-->
+<!-- top-product area end -->
+
+<!-- featured-product area start -->
+<div class="featured-product-area common-pd">
+    <div class="container">
+        <div class="row" id="homeBooks">
+            <div class="col-12">
+                <div class="section-title-2">
+                    <h3 class="title">好书推荐</h3>
+<!--                    <form class="woocommerce-ordering">
+                        <select class="orderby">
+                            <option value="popularity">Sort by popularity</option>
+                            <option value="rating">Sort by average</option>
+                            <option value="date">Sort by newness</option>
+                            <option value="price-desc">Sort by price</option>
+                            <option value="categories" selected="selected">All Categories</option>
+                        </select>
+                    </form>-->
+                </div>
+            </div>
+<!--            <div class="col-lg-3 col-md-6">
+                <div class="single-product-card single-product-card-2 text-center">
+                    <div class="thumb">
+                        <img src="../assets/img/product/home-2/01.png" alt="top-product">
+                    </div>
+                    <div class="product-card-details">
+                        <p class="categories">Gadgets</p>
+                        <h4 class="title"><a href="#">Universal Color Dual Pro S25 Rapata Loxin Duka</a></h4>
+                        <div class="star-rating">
+                            <span><i class="fa fa-star"></i></span>
+                            <span><i class="fa fa-star"></i></span>
+                            <span><i class="fa fa-star"></i></span>
+                            <span><i class="fa fa-star"></i></span>
+                            <span><i class="fa fa-star"></i></span>
+                        </div>
+                        <div class="price">
+                            <span>$49.00</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="single-product-card single-product-card-2 text-center">
+                    <div class="thumb">
+                        <img src="../assets/img/product/home-2/02.png" alt="top-product">
+                    </div>
+                    <div class="product-card-details">
+                        <p class="categories">Gadgets</p>
+                        <h4 class="title"><a href="#">Yasi Pata H2S Rupal Dimapo Dual Color TX2</a></h4>
+                        <div class="star-rating">
+                            <span><i class="fa fa-star"></i></span>
+                            <span><i class="fa fa-star"></i></span>
+                            <span><i class="fa fa-star"></i></span>
+                            <span><i class="fa fa-star"></i></span>
+                            <span><i class="fa fa-star"></i></span>
+                        </div>
+                        <div class="price">
+                            <span>$94.00</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="single-product-card single-product-card-2 text-center">
+                    <div class="thumb">
+                        <img src="../assets/img/product/home-2/03.png" alt="top-product">
+                    </div>
+                    <div class="product-card-details">
+                        <p class="categories">Gadgets</p>
+                        <h4 class="title"><a href="#">Rostal Razmali Nonstick Dish washer PFOA</a></h4>
+                        <div class="star-rating">
+                            <span><i class="fa fa-star"></i></span>
+                            <span><i class="fa fa-star"></i></span>
+                            <span><i class="fa fa-star"></i></span>
+                            <span><i class="fa fa-star"></i></span>
+                            <span><i class="fa fa-star"></i></span>
+                        </div>
+                        <div class="price">
+                            <span>$17.60</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="single-product-card single-product-card-2 text-center">
+                    <div class="thumb">
+                        <img src="../assets/img/product/home-2/04.png" alt="top-product">
+                    </div>
+                    <div class="product-card-details">
+                        <p class="categories">Gadgets</p>
+                        <h4 class="title"><a href="#">Wireless Lupda Audio System Multiroom MX2</a></h4>
+                        <div class="star-rating">
+                            <span><i class="fa fa-star"></i></span>
+                            <span><i class="fa fa-star"></i></span>
+                            <span><i class="fa fa-star"></i></span>
+                            <span><i class="fa fa-star"></i></span>
+                            <span><i class="fa fa-star"></i></span>
+                        </div>
+                        <div class="price">
+                            <span>$85.00</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="single-product-card single-product-card-2 text-center">
+                    <div class="thumb">
+                        <img src="../assets/img/product/home-2/05.png" alt="top-product">
+                    </div>
+                    <div class="product-card-details">
+                        <p class="categories">Gadgets</p>
+                        <h4 class="title"><a href="#">Wireless Lupda Audio System Multiroom MX2</a></h4>
+                        <div class="star-rating">
+                            <span><i class="fa fa-star"></i></span>
+                            <span><i class="fa fa-star"></i></span>
+                            <span><i class="fa fa-star"></i></span>
+                            <span><i class="fa fa-star"></i></span>
+                            <span><i class="fa fa-star"></i></span>
+                        </div>
+                        <div class="price">
+                            <span>$97.00</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="single-product-card single-product-card-2 text-center">
+                    <div class="thumb">
+                        <img src="../assets/img/product/home-2/06.png" alt="top-product">
+                    </div>
+                    <div class="product-card-details">
+                        <p class="categories">Gadgets</p>
+                        <h4 class="title"><a href="#">Universal Color Dual Pro S25 Rapata Loxin Duka</a></h4>
+                        <div class="star-rating">
+                            <span><i class="fa fa-star"></i></span>
+                            <span><i class="fa fa-star"></i></span>
+                            <span><i class="fa fa-star"></i></span>
+                            <span><i class="fa fa-star"></i></span>
+                            <span><i class="fa fa-star"></i></span>
+                        </div>
+                        <div class="price">
+                            <span>$73.00</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="single-product-card single-product-card-2 text-center">
+                    <div class="thumb">
+                        <img src="../assets/img/product/home-2/07.png" alt="top-product">
+                    </div>
+                    <div class="product-card-details">
+                        <p class="categories">Gadgets</p>
+                        <h4 class="title"><a href="#">Yasi Pata H2S Rupal Dimapo Dual Color TX2</a></h4>
+                        <div class="star-rating">
+                            <span><i class="fa fa-star"></i></span>
+                            <span><i class="fa fa-star"></i></span>
+                            <span><i class="fa fa-star"></i></span>
+                            <span><i class="fa fa-star"></i></span>
+                            <span><i class="fa fa-star"></i></span>
+                        </div>
+                        <div class="price">
+                            <span>$38.00</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="single-product-card single-product-card-2 text-center">
+                    <div class="thumb">
+                        <img src="../assets/img/product/home-2/08.png" alt="top-product">
+                    </div>
+                    <div class="product-card-details">
+                        <p class="categories">Gadgets</p>
+                        <h4 class="title"><a href="#">Rostal Razmali Nonstick Dish washer PFOA</a></h4>
+                        <div class="star-rating">
+                            <span><i class="fa fa-star"></i></span>
+                            <span><i class="fa fa-star"></i></span>
+                            <span><i class="fa fa-star"></i></span>
+                            <span><i class="fa fa-star"></i></span>
+                            <span><i class="fa fa-star"></i></span>
+                        </div>
+                        <div class="price">
+                            <span>$87.00</span>
+                        </div>
+                    </div>
+                </div>
+            </div>-->
+        </div>
+    </div>
+</div>
+<!-- featured-product area end -->
+
+<!-- offer area start -->
+<div class="offer-area offer-area-2 text-center">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <h5 class="subtitle">本周优惠</h5>
+                <h2 class="title">最高 <span>50%</span> 折扣</h2>
+                <div class="offer-wrap">
+                    <div class="countdown"></div>
+                </div>
+                <a href="shop.html" class="btn btn-basic-lg">现在抢购</a>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- offer area end -->
+
+<!-- browse-by-category area start -->
+<div class="browse-by-category-area common-pd">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="section-title-2">
+                    <h3 class="title">猜你喜欢</h3>
+                    <!--                    <a href="#" class="btn btn-transparent">View All</a>-->
+                </div>
+                <div class="category-slider square-controler owl-carousel owl-theme">
+                    <div class="item">
+                        <div class="single-gadget media">
+                            <div class="gadget-details media-left w-50 align-self-center">
+                                <span>健康</span>
+                                <h4><a href="#">关注您的健康</a></h4>
+                                <p class="price"><span> ￥15</span>起</p>
+                                <a class="btn btn-black" href="shop.html?bookType=5">看一看！</a>
+                            </div>
+                            <div class="thumb w-50">
+                                <img src="https://img1.doubanio.com/view/subject/s/public/s29710377.jpg" alt="img">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="item">
+                        <div class="single-gadget media">
+                            <div class="gadget-details media-left w-50 align-self-center">
+                                <span>小说</span>
+                                <h4><a href="#">新故事，新世界</a></h4>
+                                <p class="price"><span> ￥15</span>起</p>
+                                <a class="btn btn-black" href="shop.html?bookType=2">看一看！</a>
+                            </div>
+                            <div class="thumb w-50">
+                                <img src="https://img1.doubanio.com/view/subject/s/public/s24514468.jpg" alt="img">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="item">
+                        <div class="single-gadget media">
+                            <div class="gadget-details media-left w-50 align-self-center">
+                                <span>童书</span>
+                                <h4><a href="#">童趣童真</a></h4>
+                                <p class="price"><span> ￥15</span>起</p>
+                                <a class="btn btn-black" href="shop.html?bookType=3">看一看！</a>
+                            </div>
+                            <div class="thumb w-50">
+                                <img src="https://img3.doubanio.com/view/subject/s/public/s3109561.jpg" alt="img">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="item">
+                        <div class="single-gadget media">
+                            <div class="gadget-details media-left w-50 align-self-center">
+                                <span>英文</span>
+                                <h4><a href="#">Find the New Land</a></h4>
+                                <p class="price"> <span> ￥15</span>起</p>
+                                <a class="btn btn-black" href="shop.html?bookType=6">看一看！</a>
+                            </div>
+                            <div class="thumb w-50">
+                                <img src="https://img1.doubanio.com/view/subject/s/public/s1078958.jpg" alt="img">
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- browse-by-category area end -->
+
+<!-- recent-product area start -->
+<div class="recent-product-area bg-gray-3 common-pd">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="section-title-2">
+                    <h3 class="title">新品上市</h3>
+                    <a href="#" class="btn btn-transparent">View All</a>
+                </div>
+                <div class="recent-slider square-controler owl-carousel owl-theme">
+                    <div class="item">
+                        <div class="single-product-card single-product-card-2 text-center">
+                            <div class="thumb">
+                                <img src="../assets/img/product/11.png" alt="top-product">
+                            </div>
+                            <div class="product-card-details">
+                                <p class="categories">Gadgets</p>
+                                <h4 class="title"><a href="#">Yasi Pata H2S Rupal Dimapo Dual Color TX2</a></h4>
+                                <div class="star-rating">
+                                    <span><i class="fa fa-star"></i></span>
+                                    <span><i class="fa fa-star"></i></span>
+                                    <span><i class="fa fa-star"></i></span>
+                                    <span><i class="fa fa-star"></i></span>
+                                    <span><i class="fa fa-star-half-o"></i></span>
+                                </div>
+                                <div class="price">
+                                    <span>$79.00</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="item">
+                        <div class="single-product-card single-product-card-2 text-center">
+                            <div class="thumb">
+                                <img src="../assets/img/product/10.png" alt="top-product">
+                            </div>
+                            <div class="product-card-details">
+                                <p class="categories">Gadgets</p>
+                                <h4 class="title"><a href="#">Rostal Razmali Nonstick Dish washer PFOA</a></h4>
+                                <div class="star-rating">
+                                    <span><i class="fa fa-star"></i></span>
+                                    <span><i class="fa fa-star"></i></span>
+                                    <span><i class="fa fa-star"></i></span>
+                                    <span><i class="fa fa-star"></i></span>
+                                    <span><i class="fa fa-star-half-o"></i></span>
+                                </div>
+                                <div class="price">
+                                    <span>$93.00</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="item">
+                        <div class="single-product-card single-product-card-2 text-center">
+                            <div class="thumb">
+                                <img src="../assets/img/product/06.png" alt="top-product">
+                            </div>
+                            <div class="product-card-details">
+                                <p class="categories">Gadgets</p>
+                                <h4 class="title"><a href="#">Universal Color Dual Pro S25 Rapata Loxin Duka</a></h4>
+                                <div class="star-rating">
+                                    <span><i class="fa fa-star"></i></span>
+                                    <span><i class="fa fa-star"></i></span>
+                                    <span><i class="fa fa-star"></i></span>
+                                    <span><i class="fa fa-star"></i></span>
+                                    <span><i class="fa fa-star-half-o"></i></span>
+                                </div>
+                                <div class="price">
+                                    <span>$35.00</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="item">
+                        <div class="single-product-card single-product-card-2 text-center">
+                            <div class="thumb">
+                                <img src="../assets/img/product/14.png" alt="top-product">
+                            </div>
+                            <div class="product-card-details">
+                                <p class="categories">Gadgets</p>
+                                <h4 class="title"><a href="#">Wireless Lupda Audio System Multiroom MX2</a></h4>
+                                <div class="star-rating">
+                                    <span><i class="fa fa-star"></i></span>
+                                    <span><i class="fa fa-star"></i></span>
+                                    <span><i class="fa fa-star"></i></span>
+                                    <span><i class="fa fa-star"></i></span>
+                                    <span><i class="fa fa-star-half-o"></i></span>
+                                </div>
+                                <div class="price">
+                                    <span>$57.00</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="item">
+                        <div class="single-product-card single-product-card-2 text-center">
+                            <div class="thumb">
+                                <img src="../assets/img/product/11.png" alt="top-product">
+                            </div>
+                            <div class="product-card-details">
+                                <p class="categories">Gadgets</p>
+                                <h4 class="title"><a href="#">Yasi Pata H2S Rupal Dimapo Dual Color TX2</a></h4>
+                                <div class="star-rating">
+                                    <span><i class="fa fa-star"></i></span>
+                                    <span><i class="fa fa-star"></i></span>
+                                    <span><i class="fa fa-star"></i></span>
+                                    <span><i class="fa fa-star"></i></span>
+                                    <span><i class="fa fa-star-half-o"></i></span>
+                                </div>
+                                <div class="price">
+                                    <span>$79.00</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="item">
+                        <div class="single-product-card single-product-card-2 text-center">
+                            <div class="thumb">
+                                <img src="../assets/img/product/10.png" alt="top-product">
+                            </div>
+                            <div class="product-card-details">
+                                <p class="categories">Gadgets</p>
+                                <h4 class="title"><a href="#">Rostal Razmali Nonstick Dish washer PFOA</a></h4>
+                                <div class="star-rating">
+                                    <span><i class="fa fa-star"></i></span>
+                                    <span><i class="fa fa-star"></i></span>
+                                    <span><i class="fa fa-star"></i></span>
+                                    <span><i class="fa fa-star"></i></span>
+                                    <span><i class="fa fa-star-half-o"></i></span>
+                                </div>
+                                <div class="price">
+                                    <span>$93.00</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="item">
+                        <div class="single-product-card single-product-card-2 text-center">
+                            <div class="thumb">
+                                <img src="../assets/img/product/06.png" alt="top-product">
+                            </div>
+                            <div class="product-card-details">
+                                <p class="categories">Gadgets</p>
+                                <h4 class="title"><a href="#">Universal Color Dual Pro S25 Rapata Loxin Duka</a></h4>
+                                <div class="star-rating">
+                                    <span><i class="fa fa-star"></i></span>
+                                    <span><i class="fa fa-star"></i></span>
+                                    <span><i class="fa fa-star"></i></span>
+                                    <span><i class="fa fa-star"></i></span>
+                                    <span><i class="fa fa-star-half-o"></i></span>
+                                </div>
+                                <div class="price">
+                                    <span>$35.00</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="item">
+                        <div class="single-product-card single-product-card-2 text-center">
+                            <div class="thumb">
+                                <img src="../assets/img/product/14.png" alt="top-product">
+                            </div>
+                            <div class="product-card-details">
+                                <p class="categories">Gadgets</p>
+                                <h4 class="title"><a href="#">Wireless Lupda Audio System Multiroom MX2</a></h4>
+                                <div class="star-rating">
+                                    <span><i class="fa fa-star"></i></span>
+                                    <span><i class="fa fa-star"></i></span>
+                                    <span><i class="fa fa-star"></i></span>
+                                    <span><i class="fa fa-star"></i></span>
+                                    <span><i class="fa fa-star-half-o"></i></span>
+                                </div>
+                                <div class="price">
+                                    <span>$57.00</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- recent-product area end -->
+
+<!-- footer area start -->
+<footer class="footer-area">
+    <div class="footer-top">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 col-sm-6">
+                    <div class="footer-widget widget contact-widget">
+                        <a href="../index.html" class="footer-logo">
+                            <img src="../assets/img/logo-2.png" alt="footer logo">
+                        </a>
+                        <p>It is a long established fact that a reader will be the distracted by the readable content of
+                            a page.</p>
+                        <ul class="contact_info_list">
+                            <li class="single-info-item">
+                                <h4>Address:</h4>
+                                <p>45 Grand Central Terminal New York <br> NY 1245, United State USA</p>
+                            </li>
+                            <li class="single-info-item">
+                                <h4>Email:</h4>            "<img src=\""+image+"\" alt=\"item\"/>"+
+
+                                <p>supports@zenax.com</p>
+                            </li>
+                            <li class="single-info-item">
+                                <h4>Phone:</h4>
+                                <p>+123 4567 8910</p>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-2 offset-lg-1 col-sm-3">
+                    <div class="footer-widget widget widget_nav_menu">
+                        <h4 class="widget-title">Quick Links</h4>
+                        <ul>
+                            <li><a href="#"><i class="fa fa-long-arrow-right" aria-hidden="true"></i>Support</a></li>
+                            <li><a href="#"><i class="fa fa-long-arrow-right" aria-hidden="true"></i>Helpline</a></li>
+                            <li><a href="#"><i class="fa fa-long-arrow-right" aria-hidden="true"></i>Affiliates</a></li>
+                            <li><a href="#"><i class="fa fa-long-arrow-right" aria-hidden="true"></i>Live Support</a>
+                            </li>
+                            <li><a href="#"><i class="fa fa-long-arrow-right" aria-hidden="true"></i>Customer Care</a>
+                            </li>
+                            <li><a href="#"><i class="fa fa-long-arrow-right" aria-hidden="true"></i>FAQs</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-sm-6">
+                    <div class="footer-widget widget widget_nav_menu">
+                        <h4 class="widget-title">Informations</h4>
+                        <ul>
+                            <li><a href="#"><i class="fa fa-long-arrow-right" aria-hidden="true"></i>About Us</a></li>
+                            <li><a href="#"><i class="fa fa-long-arrow-right" aria-hidden="true"></i>Customer
+                                Services</a></li>
+                            <li><a href="#"><i class="fa fa-long-arrow-right" aria-hidden="true"></i>Privacy and Policy</a>
+                            </li>
+                            <li><a href="#"><i class="fa fa-long-arrow-right" aria-hidden="true"></i>Orders &
+                                Returns</a></li>
+                            <li><a href="#"><i class="fa fa-long-arrow-right" aria-hidden="true"></i>Shipping Policy</a>
+                            </li>
+                            <li><a href="#"><i class="fa fa-long-arrow-right" aria-hidden="true"></i>Our Sitemap</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-sm-6">
+                    <div class="footer-widget widget widget_nav_menu">
+                        <h4 class="widget-title">My Account</h4>
+                        <ul>
+                            <li><a href="#"><i class="fa fa-long-arrow-right" aria-hidden="true"></i>Balance</a></li>
+                            <li><a href="#"><i class="fa fa-long-arrow-right" aria-hidden="true"></i>Checkout</a></li>
+                            <li><a href="#"><i class="fa fa-long-arrow-right" aria-hidden="true"></i>Cards</a></li>
+                            <li><a href="#"><i class="fa fa-long-arrow-right" aria-hidden="true"></i>Track Order</a>
+                            </li>
+                            <li><a href="#"><i class="fa fa-long-arrow-right" aria-hidden="true"></i>Terms</a></li>
+                            <li><a href="#"><i class="fa fa-long-arrow-right" aria-hidden="true"></i>Site Policy</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 align-self-lg-center">
+                    <p class="copyright">Copyright &copy; 2020.Company name All rights reserved.<a target="_blank"
+                                                                                                   href="http://sc.chinaz.com/moban/">&#x7F51;&#x9875;&#x6A21;&#x677F;</a>
+                    </p>
+                </div>
+                <div class="col-lg-4 text-lg-center">
+                    <ul class="footer-social social-area">
+                        <li><a href="#"><i class="fa fa-facebook-f"></i></a></li>
+                        <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+                        <li><a href="#"><i class="fa fa-pinterest-p"></i></a></li>
+                        <li><a href="#"><i class="fa fa-instagram"></i></a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-4">
+                    <ul class="footer-currency currency-area float-lg-right">
+                        <li><a href="#"><img src="../assets/img/footer/01.png" alt="img"></a></li>
+                        <li><a href="#"><img src="../assets/img/footer/02.png" alt="img"></a></li>
+                        <li><a href="#"><img src="../assets/img/footer/03.png" alt="img"></a></li>
+                        <li><a href="#"><img src="../assets/img/footer/04.png" alt="img"></a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+<!-- footer area end -->
+
+<!-- back to top area start -->
+<div class="back-to-top">
+    <span class="back-top"><i class="fa fa-angle-up"></i></span>
+</div>
+<!-- back to top area end -->
+
+
+<!-- all plugins here -->
+<script src="../assets/js/countdown.js"></script>
+<script src="../assets/js/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+<script src="../assets/js/vendor.js"></script>
+<!-- main js  -->
+<script src="../assets/js/main.js"></script>
+</body>
+</html>

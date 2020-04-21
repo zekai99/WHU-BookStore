@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--
+    暂时没用
+    Author: 曾志昊 2017302580214
+-->
+
+<mapper namespace="com.bookshop.dao.CartDao">
+    <resultMap id="cartResultMap" type="com.bookshop.entity.Cart">
+        <id property="userId" column="user_id"/>
+        <collection property="books" column="user_id"
+                    javaType="java.util.List"
+                    ofType="com.bookshop.entity.CartItem"
+                    select="com.bookshop.dao.CartItemDao.getCartItems">
+        </collection>
+    </resultMap>
+
+    <select id="getCart" parameterType="Integer" resultMap="cartResultMap">
+        select user_id from cart where user_id=#{userId}
+    </select>
+</mapper>

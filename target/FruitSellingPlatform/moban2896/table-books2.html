@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <script type="text/javascript" src="scripts/jquery/jquery-1.7.1.js"></script>
+    <link href="style/authority/basic_layout.css" rel="stylesheet" type="text/css">
+    <link href="style/authority/common_style.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="scripts/authority/commonAll.js"></script>
+    <script type="text/javascript" src="scripts/fancybox/jquery.fancybox-1.3.4.js"></script>
+    <script type="text/javascript" src="scripts/fancybox/jquery.fancybox-1.3.4.pack.js"></script>
+    <link rel="stylesheet" type="text/css" href="style/authority/jquery.fancybox-1.3.4.css" media="screen"></link>
+    <script type="text/javascript" src="scripts/artDialog/artDialog.js?skin=default"></script>
+    <title>信息管理系统</title>
+
+
+    <title>数据表格页面</title>
+    <!-- Bootstrap -->
+    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet" media="screen">
+    <link href="assets/styles.css" rel="stylesheet" media="screen">
+    <link href="assets/DT_bootstrap.css" rel="stylesheet" media="screen">
+    <!--[if lte IE 8]>
+    <script language="javascript" type="text/javascript" src="vendors/flot/excanvas.min.js"></script><![endif]-->
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <script src="vendors/modernizr-2.6.2-respond-1.1.0.min.js"></script>
+
+
+</head>
+
+<body>
+
+<div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container-fluid">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse"> <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+            <a class="brand" href="#">BootAdmin</a>
+            <div class="nav-collapse collapse">
+                <ul class="nav pull-right">
+                    <li class="dropdown">
+                        <a href="#" role="button" class="dropdown-toggle" data-toggle="dropdown"> <i class="icon-user"></i>管理员<i class="caret"></i>
+
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a tabindex="-1" href="manager-setting.html">个人资料</a>
+                            </li>
+                            <li class="divider"></li>
+                            <li>
+                                <a tabindex="-1" href="javascript:logout()">退出</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+                <ul class="nav">
+                    <li>
+                        <a href="back-index.html">首页</a>
+                    </li>
+                </ul>
+            </div>
+            <!--/.nav-collapse -->
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid">
+
+    <div class="row-fluid">
+        <div class="span2" id="sidebar">
+            <ul class="nav nav-list bs-docs-sidenav nav-collapse collapse">
+                <li>
+                    <a href="back-index.html"><i class="icon-chevron-right"></i> 首页</a>
+                </li>
+                <li>
+                    <a href="table-users2.html"><i class="icon-chevron-right"></i> 用户</a>
+                </li>
+                <li class="active">
+                    <a href="table-books2.html"><i class="icon-chevron-right"></i> 书籍</a>
+                </li>
+                <li>
+                    <a href="table-orders2.html"><i class="icon-chevron-right"></i> 订单</a>
+                </li>
+                <li>
+                    <a href="tables.html"><i class="icon-chevron-right"></i> 表格</a>
+                </li>
+
+            </ul>
+        </div>
+        <!--/span-->
+        <div class="span10" id="content">
+
+            <div class="block">
+
+                <div class="navbar navbar-inner block-header">
+                    <div class="muted pull-left">Bootstrap dataTables</div>
+                </div>
+
+                <div class="block-content collapse in">
+                    <div>
+                        <form id="submitForm" name="submitForm" action="" method="post">
+                            <input type="hidden" name="allIDCheck" value="" id="allIDCheck"/>
+                            <input type="hidden" name="fangyuanEntity.fyXqName" value="" id="fyXqName"/>
+                            <div id="container">
+                                <div class="ui_content">
+                                    <div class="ui_text_indent">
+                                        <div id="box_border">
+                                            <div id="box_top">搜索</div>
+                                            <div id="box_center">
+                                                ID&nbsp;&nbsp;<input type="text" id="bookIdSearch"
+                                                                     name="fangyuanEntity.bookIdSearch"
+                                                                     class="ui_input_txt02"/>
+                                                书名&nbsp;&nbsp;<input type="text" id="bookNameSearch"
+                                                                     name="fangyuanEntity.bookNameSearch"
+                                                                     class="ui_input_txt02"/>
+                                                类别&nbsp;
+                                                <select name="fangyuanEntity.bookTypeSearch" id="bookTypeSearch"
+                                                        class="ui_select01">
+                                                    <option value="" selected="selected">--请选择--</option>
+                                                    <option value="1">教育考试</option>
+                                                    <option value="2">小说</option>
+                                                    <option value="3">童书</option>
+                                                    <option value="4">人文社科</option>
+                                                    <option value="5">健康</option>
+                                                    <option value="6">英文</option>
+                                                    <option value="7">理工</option>
+                                                </select>
+
+                                                价格区间<input type="text" id="startPrice"
+                                                           name="fangyuanEntity.startPrice"
+                                                           class="ui_input_txt01" value=""/>
+                                                ----<input type="text" id="endPrice"
+                                                           name="fangyuanEntity.endPrice"
+                                                           class="ui_input_txt01" value=""/>
+                                                出版日期<input type="text" id="startDate"
+                                                           name="fangyuanEntity.startDate"
+                                                           class="ui_input_txt01" value=""/>
+                                                ----<input type="text" id="endDate"
+                                                           name="fangyuanEntity.endDate"
+                                                           class="ui_input_txt01" value=""/>
+                                                状态&nbsp;
+                                                <select name="fangyuanEntity.bookStatusSearch" id="bookStatusSearch"
+                                                        class="ui_select01">
+                                                    <option value="" selected="selected">--请选择--</option>
+                                                    <option value="off">off</option>
+                                                    <option value="on">on</option>
+                                                </select>
+                                            </div>
+                                            <div id="box_bottom">
+                                                <input type="button" value="查询" class="ui_input_btn0" onclick="getBookData()"/>
+                                                <input type="button" value="新增" class="ui_input_btn0" id="addBtn"/>
+                                                <input type="button" value="删除" class="ui_input_btn0" onclick="batchDel();"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="ui_content">
+                                    <div class="ui_tb">
+                                        <table class="table" id="booksRows" cellspacing="0" cellpadding="0" width="100%"
+                                               align="center"
+                                               border="0">
+
+                                            <tbody id="booksTBody">
+                                            <tr>
+                                                <th width="30"><input type="checkbox" id="all"
+                                                                      onclick="selectOrClearAllCheckbox(this);"/>
+                                                </th>
+                                                <th>Id</th>
+                                                <th>书名</th>
+                                                <th>种类</th>
+                                                <th>价格</th>
+                                                <th>出版日期</th>
+                                                <th>书籍状态</th>
+                                                <th>操作</th>
+                                            </tr>
+                                            <!--没用的数据-->
+                                            <!--  <tr>
+                                                  <td><input type="checkbox" name="IDCheck" value="14458579642011"
+                                                             class="acb"/></td>
+                                                  <td>城中区</td>
+                                                  <td>瑞景河畔16号楼1-111</td>
+                                                  <td>65.97㎡</td>
+                                                  <td>65.97㎡</td>
+                                                  <td>一室一厅一卫</td>
+                                                  <td>混凝土</td>
+                                                  <td>公租房</td>
+                                                  <td>建成待租</td>
+                                                  <td>
+                                                      <a href="editBook.html" class="edit">编辑</a>
+                                                      <a href="javascript:del('14458579642011');">删除</a>
+                                                  </td>
+                                              </tr>
+  -->
+                                            </tbody>
+
+                                        </table>
+                                    </div>
+                                    <div>
+                                        <div class="ui_flt" style="height: 30px; line-height: 30px;">
+                                            <!--                                            <input type="text" id="totalCount" name="totalCount" value="" class="ui_input_txt01" readonly="true"/>-->
+                                            <span class="ui_txt_bold04" id="totalCount" name="totalCount">0</span>
+                                            条记录，当前第
+                                            <span class="ui_txt_bold04" id="startPage" name="startPage">1</span>
+                                            <!--                                            <input type="text" id="startPage" name="startPage" value="1" class="ui_input_txt01" readonly="true"/>-->
+                                            /
+                                            <!--                                            <input type="text" id="totalPage" name="totalPage" value="" class="ui_input_txt01" readonly="true"/>-->
+                                            <span class="ui_txt_bold04" id="totalPage" name="totalPage">1</span>
+                                            页
+                                        </div>
+                                        <div class="ui_frt">
+                                            <!--    如果是第一页，则只显示下一页、尾页 -->
+
+                                            <input type="button" value="首页" class="ui_input_btn0" onclick="getBookData(1);"/>
+                                            <input type="button" value="上一页" class="ui_input_btn0" onclick="getLastOnePage();"/>
+                                            <input type="button" value="下一页" class="ui_input_btn0" onclick="getNextOnePage();"/>
+                                            <input type="button" value="尾页" class="ui_input_btn0" onclick="getLastPage();"/>
+
+
+                                            <!--     如果是最后一页，则只显示首页、上一页 -->
+
+                                            转到第<input type="text" id="jumpNumTxt" class="ui_input_txt01"/>页
+                                            <input type="button" class="ui_input_btn0" value="跳转"
+                                                   onclick="jumpInputPage();"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                        <div style="display:none">
+                            <script src='http://v7.cnzz.com/stat.php?id=155540&web_id=155540' language='JavaScript'
+                                    charset='gb2312'></script>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- /block -->
+
+    </div>
+
+
+</div>
+</div>
+<hr>
+<footer>
+    <p>Copyright &copy; 2018.Company name All rights reserved.<a target="_blank" href="http://sc.chinaz.com/moban/">&#x7F51;&#x9875;&#x6A21;&#x677F;</a>
+    </p>
+</footer>
+</div>
+<!--/.fluid-container-->
+
+<script src="bootstrap/js/bootstrap.min.js"></script>
+<script src="vendors/datatables/js/jquery.dataTables.min.js"></script>
+
+
+<script src="assets/scripts.js"></script>
+<script src="assets/DT_bootstrap.js"></script>
+<script type="text/javascript">
+    function logOut(){
+        $.ajax({
+            async: false,
+            url: "http://localhost:8080/user/logOut",
+            contentType: "application/json;charset=UTF-8", //必须有
+            dataType: "json", //表示返回值类型，不必须
+            type: "post",
+            data: JSON.stringify({}),
+            success:function(response){
+                if(response.status==0){
+                    window.location.href="login.html";
+                }else{
+                    alert("退登失败");
+                }
+            },
+            error:function(response){
+                alert("请求失败");
+            }
+        });
+    }
+
+    function checkLogin(){
+        var user;
+        $.ajax({
+            async:false,
+            url: "http://localhost:8080/user/checkLogin",
+            contentType: "application/json;charset=UTF-8", //必须有
+            dataType: "json", //表示返回值类型，不必须
+            type: "post",
+            success: function (response) {
+                if (response.status == 0) {
+                    user = response.data;
+                    getBookData(1);
+                    return true;
+                } else if(response.status==10){
+                    alert("请登录！");
+                    window.location.href = "login.html";
+                    return false;
+                }
+            },
+            error: function () {
+                alert("请求失败");
+                return false;
+
+            }
+        });
+    }
+
+
+    $(document).ready(function () {
+        /** 新增   **/
+        $("#addBtn").fancybox({
+            'href': 'addBook.html',
+            'width': 733,
+            'height': 530,
+            'type': 'iframe',
+            'hideOnOverlayClick': false,
+            'showCloseButton': false,
+            'onClosed': function () {
+                window.location.href = 'table-books2.html';
+            }
+        });
+
+        /**编辑   **/
+        $("a[name='edit']").fancybox({
+            'width': 733,
+            'height': 530,
+            'type': 'iframe',
+            'hideOnOverlayClick': false,
+            'showCloseButton': false,
+            'onClosed': function () {
+                window.location.href = 'table-books2.html';
+            }
+        });
+
+    });
+    /** 用户角色   **/
+    var userRole = '';
+
+    /** 模糊查询来电用户  **/
+    function search() {
+        $("#submitForm").attr("action", "table-users2.html?page=" + 1).submit();
+    }
+
+    /** 新增   **/
+    function add() {
+        $("#submitForm").attr("action", "/xngzf/archives/luruFangyuan.action").submit();
+    }
+
+
+
+    /** 删除 **/
+    function del(bookId) {
+        // 非空判断
+        if (bookId == '') return;
+        if (confirm("您确定要删除吗？")) {
+            $.ajax({
+                url: "http://localhost:8080/book/deleteBook",
+                contentType: "application/json;charset=UTF-8", //必须有
+                dataType: "json", //表示返回值类型，不必须
+                type: "post",
+                data: JSON.stringify({
+                    "bookId": parseInt(bookId)
+                }),
+                success: function (response) {
+                    if (response.status == 0) {
+                        alert("删除成功");
+                        getBookData();
+                    } else {
+                        alert("删除失败" + response.msg);
+                    }
+                },
+                error() {
+                    alert("请求失败");
+                }
+            });
+            // $("#submitForm").attr("action", "/xngzf/archives/delFangyuan.action?fyID=" + fyID).submit();
+        }
+    }
+
+    /** 批量删除 **/
+    function batchDel() {
+        if ($("input[name='IDCheck']:checked").size() <= 0) {
+            art.dialog({icon: 'error', title: '友情提示', drag: false, resize: false, content: '至少选择一条', ok: true,});
+            return;
+        }
+        // 1）取出用户选中的checkbox放入字符串传给后台,form提交
+        var books = [];
+        var i = 0;
+        $("input[name='IDCheck']:checked").each(
+            function (index, domEle) {
+                bookId = parseInt($(domEle).val());
+                $.ajax({
+                    url: "http://localhost:8080/book/deleteBook",
+                    contentType: "application/json;charset=UTF-8", //必须有
+                    dataType: "json", //表示返回值类型，不必须
+                    type: "post",
+                    data: JSON.stringify({
+                        "bookId": bookId
+                    }),
+                    success: function (response) {
+                        if (response.status == 0) {
+                            alert("删除成功");
+                        } else {
+                            alert("删除失败" + response.msg);
+                        }
+                    },
+                    error() {
+                        alert("请求失败");
+                    }
+                });
+            });
+        getBookData();
+    }
+
+    function getNextOnePage(){
+        var nowPage = parseInt(document.getElementById("startPage").innerText);
+        var totalPage = parseInt(document.getElementById("totalPage").innerText);
+        if(nowPage==totalPage){
+            alert("您现在已经在尾页");
+        }else{
+            getBookData(nowPage+1);
+        }
+    }
+
+    function getLastOnePage(){
+        var nowPage = parseInt(document.getElementById("startPage").innerText);
+        if(nowPage==1){
+            alert("您现在已经在首页");
+        }else{
+            getBookData(nowPage-1);
+        }
+    }
+
+    function getLastPage(){
+        var nowPage = parseInt(document.getElementById("startPage").innerText);
+        var totalPage = parseInt(document.getElementById("totalPage").innerText);
+        if(nowPage==totalPage){
+            alert("您现在已经在尾页");
+        }else{
+            getBookData(totalPage);
+        }
+    }
+
+    window.onload = function init() {
+        var login = checkLogin();
+        // if(login == true)
+        //     getBookData(1);
+    }
+
+    function editClicked(bookId) {
+        $("#editBtn").href = "editBook.html?bookId=" + bookId;
+        $("#editBtn").click();
+    }
+
+    function getBookData(startPage) {
+        /*请求信息*/
+        if(startPage == null||startPage == 0||startPage<0){
+            var startPage = document.getElementById("startPage").innerText
+        }
+        var bookName = $("#bookNameSearch").val();
+
+        if (bookName == "" || bookName == null) {
+            bookName = null;
+        } else {
+            bookName = "%" + bookName + "%";
+        }
+
+        $.ajax({
+            url: "http://localhost:8080/book/searchBooksPage",
+            contentType: "application/json;charset=UTF-8", //必须有
+            dataType: "json", //表示返回值类型，不必须
+            type: "post",
+            data: JSON.stringify({
+                /*todo 框中为空 传去的参数是为空还是为？0*/
+                "startPage": parseInt(startPage),
+                "bookName": bookName,
+                "bookId": parseInt($("#bookIdSearch").val()),
+                "bookType":$("#bookTypeSearch").val()==""?null:$("#bookTypeSearch").val(),
+                "bookStatus": $("#bookStatusSearch").val()==""?null:$("#bookStatusSearch").val(),
+                "startPrice": parseFloat($("#startPrice").val()),
+                "endPrice": parseFloat($("#endPrice").val()),
+                "startTime": $("#startDate").val() == "" ? null : $("#startDate").val(),
+                "endTime": $("#endDate").val() == "" ? null : $("#endDate").val()
+            }),
+            success: function (response) {
+                if (response.status == 0) {
+                    var page = response.data;
+                    var books = page.lists;
+
+                    // alert(page.currPage.toString()+ "  " +page.totalPage.toString()+ "   " +page.totalCount.toString());
+                    document.getElementById("startPage").innerText = page.currPage.toString();
+                    document.getElementById("totalPage").innerText = page.totalPage.toString();
+                    document.getElementById("totalCount").innerText = page.totalCount.toString();
+                    /*先清空元素*/
+                    $("#booksTBody").empty();
+                    var headstr = "<tr>\n" +
+                        "                                                <th width=\"30\"><input type=\"checkbox\" id=\"all\"\n" +
+                        "                                                                      onclick=\"selectOrClearAllCheckbox(this);\"/>\n" +
+                        "                                                </th>\n" +
+                        "                                                <th>Id</th>\n" +
+                        "                                                <th>书名</th>\n" +
+                        "                                                <th>种类</th>\n" +
+                        "                                                <th>价格</th>\n" +
+                        "                                                <th>出版日期</th>\n" +
+                        "                                                <th>书籍状态</th>\n" +
+                        "                                                <th>操作</th>\n" +
+                        "                                            </tr>";
+                    $("#booksTBody").append(headstr);
+                    // alert(books.length+"\n"+parseInt(books.length)+"\n");
+                    var count = books.length;
+                    for (var i = 0; i < count; i++) {
+                        var bookId = books[i].bookId;
+                        var bookName = books[i].bookName;
+                        var image = books[i].image;
+                        var price = books[i].price;
+                        var bookType = books[i].bookType;
+
+                        var str =
+                            " <tr>\n" +
+                            "<td><input type=\"checkbox\" name='IDCheck' value=" + parseInt(bookId) + " class=\"acb\"/></td>\n" +
+                            "<td>" + bookId + "</td>\n" +
+                            "<td>" + bookName + "</td>\n" +
+                            "<td>" + bookType + "</td>\n" +
+                            "<td>" + price + "</td>\n" +
+                            "<td>" + books[i].publishTime + "</td>\n" +
+                            "<td>" + books[i].bookStatus + "</td>\n" +
+                            "<td>\n" +
+                            // "<a name='edit' href=\"editBook.html\" class=\"edit\">编辑</a>\n" +
+                            "<a name='edit' href=\"editBook.html?bookId=" + bookId + "\" class='edit'>编辑</a>\n" +
+                            "<a href=\"javascript:del(" + bookId + ");\">删除</a>\n" +
+                            "</td>\n" +
+                            "</tr>";
+                        $("#booksTBody").append(str);
+                        $("a.edit").fancybox({
+                            'width': 733,
+                            'height': 530,
+                            'type': 'iframe',
+                            'hideOnOverlayClick': false,
+                            'showCloseButton': false,
+                            'onClosed': function () {
+                                window.location.href = 'table-books2.html';
+                            }
+                        });
+                    }
+                    // alert("搜索成功");
+                } else {
+                    alert("搜索失败");
+                }
+            },
+            error: function () {
+                alert("请求失败");
+            }
+        });
+    }
+
+    function getParam(name) {
+        var search = document.location.search;
+        var pattern = new RegExp("[?&]" + name + "\=([^&]+)", "g");
+        var matcher = pattern.exec(search);
+        var items = null;
+        if (null != matcher) {
+            try {
+                items = decodeURIComponent(decodeURIComponent(matcher[1]));
+            } catch (e) {
+                try {
+                    items = decodeURIComponent(matcher[1]);
+                } catch (e) {
+                    items = matcher[1];
+                }
+            }
+        }
+        return items;
+    }
+
+    /** 输入页跳转 **/
+    function jumpInputPage() {
+        // 如果“跳转页数”不为空
+        if ($("#jumpNumTxt").val() != '') {
+            var pageNum = parseInt($("#jumpNumTxt").val());
+            var totalPage = parseInt(document.getElementById("totalPage").innerText);
+            // 如果跳转页数在不合理范围内，则置为1
+            if (pageNum < 1 | pageNum > totalPage) {
+                art.dialog({
+                    icon: 'error',
+                    title: '友情提示',
+                    drag: false,
+                    resize: false,
+                    content: '请输入合适的页数，\n自动为您跳到首页',
+                    ok: true,
+                });
+                pageNum = 1;
+            }
+            getBookData(pageNum);
+            // $("#submitForm").attr("action", "table-users2.html?page=" + pageNum).submit();
+        } else {
+            // “跳转页数”为空
+            art.dialog({
+                icon: 'error',
+                title: '友情提示',
+                drag: false,
+                resize: false,
+                content: '请输入合适的页数，\n',
+                ok: true,
+            });
+            // $("#submitForm").attr("action", "table-users2.html?page=" + 1).submit();
+        }
+    }
+</script>
+<style>
+    .alt td {
+        background: black !important;
+    }
+</style>
+<input type="button" value="编辑" class="ui_input_btn0" id="editBtn" hidden="hidden" href="editBook.html"/>
+</body>
+
+</html>

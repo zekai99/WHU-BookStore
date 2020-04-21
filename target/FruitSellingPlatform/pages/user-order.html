@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="referrer" content="no-referrer" />
+    <title></title>
+
+    <!-- Vendor Stylesheet -->
+    <link rel="stylesheet" href="../assets/css/vendor.css">
+    <!-- Main Stylesheet -->
+    <link rel="stylesheet" href="../assets/css/line-awesome.min.css">
+    <link rel="stylesheet" href="../assets/css/owl.carousel.min.css">
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <!-- responsive Stylesheet -->
+    <link rel="stylesheet" href="../assets/css/responsive.css">
+</head>
+<body>
+
+<!-- preloader area start -->
+<div class="preloader" id="preloader">
+    <div class="preloader-inner">
+        <div class="spinner">
+            <div class="dot1"></div>
+            <div class="dot2"></div>
+        </div>
+    </div>
+</div>
+<!-- preloader area end -->
+
+<!-- search Popup -->
+<div class="body-overlay" id="body-overlay"></div>
+<div class="search-popup" id="search-popup">
+    <form action="../index.html" class="main-search search-form">
+        <input type="text" placeholder="Search...">
+        <button>Search</button>
+    </form>
+</div>
+<!-- //. search Popup -->
+
+<!--sidebar menu start-->
+<div class="sidebar-menu" id="sidebar-menu">
+    <button class="sidebar-menu-close"><i class="flaticon-close"></i></button>
+    <div class="sidebar-inner">
+        <div class="sidebar-logo">
+            <img src="../assets/img/logo.png" alt="logo"/>
+        </div>
+        <div class="sidemenu-text">
+            <p>We believe brand interaction is key in commu- nication. Real inno vations and a positive customer
+                experience are the heart of successful commu- nication.</p>
+        </div>
+        <div class="sidebar-contact">
+            <h4>Contact Us</h4>
+            <ul>
+                <li><i class="fa fa-map-marker"></i>Lavaca Street, Suite 2000</li>
+                <li><i class="fa fa-envelope"></i>email@evha.com</li>
+                <li><i class="fa fa-phone"></i>(+880) 172570051</li>
+            </ul>
+        </div>
+        <div class="sidebar-subscribe">
+            <input type="text" placeholder="Email">
+            <button><i class="fa fa-long-arrow-right"></i></button>
+        </div>
+        <div class="social-link">
+            <ul>
+                <li><a href="#"><i class="fa fa-facebook-f"></i></a></li>
+                <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+                <li><a href="#"><i class="fa fa-instagram"></i></a></li>
+                <li><a href="#"><i class="fa fa-pinterest"></i></a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!--sidebar menu end-->
+
+<!-- navbar start -->
+<div class="navbar-area">
+    <div class="navbar-top">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 text-md-left text-center">
+                    <ul class="topbar-left">
+                        <li class="topbar-single-info"><i class="fa fa-phone"></i>+123 4567 8910</li>
+                        <li class="topbar-single-info"><i class="fa fa-map-marker"></i>Store Location</li>
+                        <li class="topbar-single-info d-none d-lg-block"><i class="fa fa-crosshairs"></i>Track Your
+                            Order
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-md-6 text-md-right text-center">
+                    <ul class="topbar-right float-md-right">
+                        <div class="align-self-center">
+                            <div class="shop-cart-area">
+                                <ul id="userCart">
+
+                                    <!--                                <li><span>6</span><i class="fa fa-heart-o"></i></li>-->
+                                    <li id="userCartCount" onclick="goToCart();">
+                                        <i class="las la-shopping-cart" onclick="goToCart();"></i>
+                                        <span id="userCartCountSpan"></span></li>
+                                    <!--                                    <li id="userCartPrice" onclick="goToCart();">$ 155.00 .</li>&lt;!&ndash;                                todo 获取购物车价格&ndash;&gt;-->
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="dropdown topbar-help" id="myaccountdropdown">
+                            <i class="fa fa-user"></i>
+                        </div>
+                        <script src="http://libs.baidu.com/jquery/1.9.0/jquery.js"></script>
+                        <script type="text/javascript">
+                            function checkLoginStatus(){
+
+                            }
+                            function logOut() {
+                                alert("login");
+                                $.ajax({
+                                    async: false,
+                                    url: "http://localhost:8080/user/logOut",
+                                    contentType: "application/json;charset=UTF-8", //必须有
+                                    dataType: "json", //表示返回值类型，不必须
+                                    type: "post",
+                                    data: JSON.stringify({}),
+                                    success: function (response) {
+                                        if (response.status == 0) {
+                                            /*退登成功*/
+                                            window.location.href = "login.html";
+                                        } else {
+                                            alert("退登失败");
+                                        }
+                                    },
+                                    error: function () {
+                                        alert("请求失败");
+                                    }
+                                });
+                            }
+
+                            function goToCart(){
+                                window.open("cart.html");
+                            }
+
+                            function checkLogin() {
+                                var user;
+                                $.ajax({
+                                    async:false,
+                                    url: "http://localhost:8080/user/checkLogin",
+                                    contentType: "application/json;charset=UTF-8", //必须有
+                                    dataType: "json", //表示返回值类型，不必须
+                                    type: "post",
+                                    success: function (response) {
+                                        if (response.status == 0) {
+                                            // alert("已登录");
+                                            user = response.data;
+                                            // alert(user.userId);
+                                        } else {
+                                            // alert("未登录");
+                                            return null;
+                                        }
+                                    },
+                                    error: function () {
+                                        alert("请求失败");
+                                        return null;
+                                    }
+                                });
+                                if (user == null || user.userId == null) {
+                                    var str =
+                                        "<a class=\"btn dropdown-toggle\" href=\"#\" role=\"button\" id=\"dropdownMenuLink2\" data-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"false\">\n" +
+                                        "请登录</a>" +
+                                        "<div class=\"dropdown-menu\" aria-labelledby=\"dropdownMenuLink2\" >\n" +
+                                        "<a class=\"dropdown-item\" target=\"_blank\" href=\"login.html\">登录</a> " +
+                                        "</div>";
+                                    $("#myaccountdropdown").append(str);
+                                } else {
+                                    // alert(user.userName);
+                                    /*用户选项*/
+                                    var str =
+                                        "<a class=\"btn dropdown-toggle\" href=\"#\" role=\"button\" id=\"dropdownMenuLink2\" data-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"false\">\n" +
+                                        user.userName + "</a>" +
+                                        "<div class=\"dropdown-menu\" aria-labelledby=\"dropdownMenuLink2\" >\n" +
+                                        "<a class=\"dropdown-item\"target=\"_blank\" href=\"user-order.html\">我的订单</a>" +
+                                        "<a class=\"dropdown-item\"target=\"_blank\"  href=\"user-setting.html\">用户设置</a> " +
+                                        "<a class=\"dropdown-item\"target=\"_blank\" onclick=\"logOut()\">退登</a>\n" +
+                                        "</div>";
+                                    $("#myaccountdropdown").append(str);
+
+                                    $.ajax({
+                                        url: "http://localhost:8080/cart/getCartNum",
+                                        contentType: "application/json;charset=UTF-8", //必须有
+                                        dataType: "json", //表示返回值类型，不必须
+                                        type: "post",
+                                        // data: JSON.stringify(),/*不需要传用户数据*/
+                                        success: function (response) {
+                                            if(response.status==0){
+                                                document.getElementById("userCartCountSpan").innerText = response.data;
+                                                /*                  str = "<span>"+response.data+"</span>";
+                                                                  $("#userCartCount").append(str);*/
+                                            }else{
+                                                alert("获取购物车信息错误");
+                                            }
+                                        },
+                                        error: function () {
+                                            alert("请求失败");
+                                        }
+                                    });
+                                }
+                            }
+
+                            function getRecommendedBooks(){
+                                $.ajax({
+                                    url: "http://localhost:8080/book/getRecommendedBooks",
+                                    contentType: "application/json;charset=UTF-8", //必须有
+                                    dataType: "json", //表示返回值类型，不必须
+                                    type: "post",
+                                    data: JSON.stringify({
+                                        "startPage": 1
+                                    }),
+                                    success: function (response) {
+                                        if (response.status == 0) {
+                                            var page = response.data;
+                                            var books = page.lists;
+                                            for (var i = 0; i < parseInt(books.length); i++) {
+                                                var book = books[i];
+                                                var str =
+                                                    "    <div class=\"col-lg-3 col-md-6\">\n" +
+                                                    "        <div class=\"single-product-card single-product-card-2 text-center\">\n" +
+                                                    "                 <div  align='center'  style='width: 100px;height: 100px;align-items: center;justify-content:center;display:flex;'>\n" +
+                                                    "                       <a href=\"shop-details.html?bookId="+bookId+"\">"+
+                                                    "                                     <img src=\""+book.image.toString()+"\" alt=\"item\" style='height: 100%;width: auto;align-items: center;justify-content:center;display:flex;'/>"+
+
+                                                    // "                                 <img src=\""+book.image.toString()+"\" alt=\"top-product\" style='width: 283px;height: 432px;'/>"+
+                                                    "                       </a>"+
+                                                    "                  </div>\n" +
+
+                                                    // "            <div class=\"thumb\">\n" +
+                                                    //
+                                                    // // "                 <img src=\"../assets/img/product/" + book.image.toString() + "\" alt=\"top-product\">\n" +
+                                                    // "            </div>\n" +
+                                                    "            <div class=\"product-card-details\">\n" +
+                                                    "                <p class=\"categories\">Gadgets</p>\n" +
+                                                    "                    <h4 class=\"title\"><a href=\"shop-details.html?bookId="+book.bookId+"\">" + book.bookName.toString() + "</a></h4>\n" +
+                                                    "                <div class=\"star-rating\">\n" +
+                                                    "                    <span><i class=\"fa fa-star\"></i></span>\n" +
+                                                    "                    <span><i class=\"fa fa-star\"></i></span>\n" +
+                                                    "                    <span><i class=\"fa fa-star\"></i></span>\n" +
+                                                    "                    <span><i class=\"fa fa-star\"></i></span>\n" +
+                                                    "                    <span><i class=\"fa fa-star\"></i></span>\n" +
+                                                    "                </div>\n" +
+                                                    "                <div class=\"price\">\n" +
+                                                    "                    <span>" + book.price.toString() + "</span>\n" +
+                                                    "                </div>\n" +
+                                                    "            </div>\n" +
+                                                    "        </div>\n" +
+                                                    "    </div>";
+                                                $("#homeBooks").append(str);
+                                            }
+                                        }else{
+                                            alert("获取推荐书籍失败");
+                                        }
+                                    },
+                                    error:function(response){
+                                        alert("请求失败");
+                                    }
+                                });
+                            }
+                            //
+                            // window.onload = function () {
+                            //     getRecommendedBooks();
+                            //     checkLogin();
+                            // }
+
+                        </script>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+    <div class="navbar-middle d-none d-lg-block">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-2 align-self-center">
+                    <div class="logo-area">
+                        <a href="../index.html"> <img src="../assets/img/logo.png" alt="logo"></a>
+                    </div>
+                </div>
+                <div class="col-lg-7 text-center">
+                    <div class="main-search d-inline-flex">
+                        <input type="text" placeholder="Search product..." name="searchText" id="searchText"/>
+                        <div class="topbar-cat-select">
+                            <select id="bookTypeSelection">
+                                <option value="" selected="selected">全部</option>
+                                <option value="1">教育考试</option>
+                                <option value="2">小说</option>
+                                <option value="3">童书</option>
+                                <option value="4" >人文社科</option>
+                                <option value="5">健康</option>
+                                <option value="6">英文</option>
+                                <option value="7">理工</option>
+                            </select>
+                        </div>
+                        <button onclick="shopPage()">搜索</button>
+
+                        <script type="text/javascript">
+                            function shopPage() {
+                                window.location.href = "shop.html?bookName=" + $("#searchText").val()+"&bookType="+$("#bookTypeSelection").val();
+                                // window.location.href="shop.html?bookName="+searchText.val();
+                            }
+                        </script>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <nav class="navbar navbar-area navbar-expand-lg nav-style-01">
+        <div class="container nav-container">
+            <div class="responsive-mobile-menu">
+                <button class="menu toggle-btn d-block d-lg-none" data-toggle="collapse" data-target="#zenax_main_menu"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="icon-left"></span>
+                    <span class="icon-right"></span>
+                </button>
+            </div>
+            <div class="mobile-logo">
+                <a href="../index.html"> <img src="../assets/img/logo-2.png" alt="logo"></a>
+            </div>
+            <div class="cat-menu-wrap">
+                <div class="cat-menu">
+                    <img src="../assets/img/icon/bar.png" alt="icon">
+                    All Category
+                </div>
+                <ul class="sidebar-categories">
+                    <li><a href="shop.html?bookType=1"><img src="../assets/img/icon/laptop.png" alt="img">教育考试<i
+                            class="fa fa-angle-down"></i></a></li>
+                    <li><a href="shop.html?bookType=2"><img src="../assets/img/icon/chair.png" alt="img">小说<i
+                            class="fa fa-angle-down"></i></a></li>
+                    <li><a href="shop.html?bookType=3"><img src="../assets/img/icon/phone.png" alt="img">童书<i
+                            class="fa fa-angle-down"></i></a></li>
+                    <li><a href="shop.html?bookType=4"><img src="../assets/img/icon/ball.png" alt="img">人文社科<i
+                            class="fa fa-angle-down"></i></a></li>
+                    <li><a href="shop.html?bookType=5"><img src="../assets/img/icon/heart.png" alt="img">健康<i
+                            class="fa fa-angle-down"></i></a></li>
+                    <li><a href="shop.html?bookType=6"><img src="../assets/img/icon/monitor.png" alt="img">英文<i
+                            class="fa fa-angle-down"></i></a></li>
+                    <li><a href="shop.html?bookType=7"><img src="../assets/img/icon/monitor.png" alt="img">理工<i
+                            class="fa fa-angle-down"></i></a></li>
+                </ul>
+            </div>
+            <div class="shop-cart-area">
+                <ul>
+                    <li><span>6</span><i class="fa fa-heart-o"></i></li>
+                    <li><span>5</span><i class="las la-shopping-cart"></i></li>
+                </ul>
+                <ul class="right-part-search">
+                    <li class="search" id="search">
+                        <a href="#"><i class="fa fa-search"></i></a>
+                    </li>
+                    <li class="menubar d-none d-lg-block" id="navigation-button">
+                        <a><i class="flaticon-menu-button"></i></a>
+                    </li>
+                </ul>
+            </div>
+            <div class="collapse navbar-collapse" id="zenax_main_menu">
+                <ul class="navbar-nav menu-open">
+
+                </ul>
+            </div>
+            <!--<div class="nav-right-part">
+                <a href="cart.html" class="right-part-text">购物车</a>
+            </div>-->
+        </div>
+    </nav>
+</div>
+<!-- navbar end -->
+
+<!-- breadcrumb-area start -->
+<nav class="breadcrumb-area" aria-label="breadcrumb">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="#">首页</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">我的订单</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</nav>
+<!-- breadcrumb-area end -->
+
+<!-- wishlist area start -->
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-12" id="orderTable">
+           <!-- <div class="wishlist-area table-responsive pd-bottom-83 ">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th scope="col">Iteams</th>
+                        <th scope="col"></th>
+                        <th scope="col"></th>
+                        <th scope="col">Price</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Add to Card</th>
+                        <th scope="col"></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <th scope="row"><img src="../assets/img/wishlist/01.png" alt="img"></th>
+                        <td colspan="2" class="item-name">Universal Color Dual Pro S25 Rapata Loxin Duka</td>
+                        <td>$40.00</td>
+                        <td>In Stock</td>
+                        <td>
+                            <a class="btn btn-black" href="#">Add to Cart</a>
+                        </td>
+                        <td class="table-close-btn"><i class="fa fa-close"></i></td>
+                    </tr>
+                    <tr>
+                        <th scope="row"><img src="../assets/img/wishlist/02.png" alt="img"></th>
+                        <td colspan="2" class="item-name">Wireless Lupda Audio System Multiroom MX2</td>
+                        <td>$25.00</td>
+                        <td class="red">Not Available</td>
+                        <td>
+                            <a class="btn btn-black block" href="#">Add to Cart</a>
+                        </td>
+                        <td class="table-close-btn"><i class="fa fa-close"></i></td>
+                    </tr>
+
+                    </tbody>
+                </table>
+            </div>
+-->
+        </div>
+    </div>
+</div>
+<!-- wishlist area end -->
+
+<!-- footer area start -->
+<footer class="footer-area">
+    <div class="footer-top">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 col-sm-6">
+                    <div class="footer-widget widget contact-widget">
+                        <a href="../index.html" class="footer-logo">
+                            <img src="../assets/img/logo-2.png" alt="footer logo">
+                        </a>
+                        <p>It is a long established fact that a reader will be the distracted by the readable content of
+                            a page.</p>
+                        <ul class="contact_info_list">
+                            <li class="single-info-item">
+                                <h4>Address:</h4>
+                                <p>45 Grand Central Terminal New York <br> NY 1245, United State USA</p>
+                            </li>
+                            <li class="single-info-item">
+                                <h4>Email:</h4>
+                                <p>supports@zenax.com</p>
+                            </li>
+                            <li class="single-info-item">
+                                <h4>Phone:</h4>
+                                <p>+123 4567 8910</p>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-2 offset-lg-1 col-sm-3">
+                    <div class="footer-widget widget widget_nav_menu">
+                        <h4 class="widget-title">Quick Links</h4>
+                        <ul>
+                            <li><a href="#"><i class="fa fa-long-arrow-right" aria-hidden="true"></i>Support</a></li>
+                            <li><a href="#"><i class="fa fa-long-arrow-right" aria-hidden="true"></i>Helpline</a></li>
+                            <li><a href="#"><i class="fa fa-long-arrow-right" aria-hidden="true"></i>Affiliates</a></li>
+                            <li><a href="#"><i class="fa fa-long-arrow-right" aria-hidden="true"></i>Live Support</a>
+                            </li>
+                            <li><a href="#"><i class="fa fa-long-arrow-right" aria-hidden="true"></i>Customer Care</a>
+                            </li>
+                            <li><a href="#"><i class="fa fa-long-arrow-right" aria-hidden="true"></i>FAQs</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-sm-6">
+                    <div class="footer-widget widget widget_nav_menu">
+                        <h4 class="widget-title">Informations</h4>
+                        <ul>
+                            <li><a href="#"><i class="fa fa-long-arrow-right" aria-hidden="true"></i>About Us</a></li>
+                            <li><a href="#"><i class="fa fa-long-arrow-right" aria-hidden="true"></i>Customer
+                                Services</a></li>
+                            <li><a href="#"><i class="fa fa-long-arrow-right" aria-hidden="true"></i>Privacy and Policy</a>
+                            </li>
+                            <li><a href="#"><i class="fa fa-long-arrow-right" aria-hidden="true"></i>Orders &
+                                Returns</a></li>
+                            <li><a href="#"><i class="fa fa-long-arrow-right" aria-hidden="true"></i>Shipping Policy</a>
+                            </li>
+                            <li><a href="#"><i class="fa fa-long-arrow-right" aria-hidden="true"></i>Our Sitemap</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-sm-6">
+                    <div class="footer-widget widget widget_nav_menu">
+                        <h4 class="widget-title">My Account</h4>
+                        <ul>
+                            <li><a href="#"><i class="fa fa-long-arrow-right" aria-hidden="true"></i>Balance</a></li>
+                            <li><a href="#"><i class="fa fa-long-arrow-right" aria-hidden="true"></i>Checkout</a></li>
+                            <li><a href="#"><i class="fa fa-long-arrow-right" aria-hidden="true"></i>Cards</a></li>
+                            <li><a href="#"><i class="fa fa-long-arrow-right" aria-hidden="true"></i>Track Order</a>
+                            </li>
+                            <li><a href="#"><i class="fa fa-long-arrow-right" aria-hidden="true"></i>Terms</a></li>
+                            <li><a href="#"><i class="fa fa-long-arrow-right" aria-hidden="true"></i>Site Policy</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="footer-bottom text-md-center">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 align-self-lg-center">
+                    <p class="copyright">Copyright &copy; 2020.Company name All rights reserved.<a target="_blank"
+                                                                                                   href="http://sc.chinaz.com/moban/">&#x7F51;&#x9875;&#x6A21;&#x677F;</a>
+                    </p>
+                </div>
+                <div class="col-lg-4 text-lg-center">
+                    <ul class="footer-social social-area">
+                        <li><a href="#"><i class="fa fa-facebook-f"></i></a></li>
+                        <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+                        <li><a href="#"><i class="fa fa-pinterest-p"></i></a></li>
+                        <li><a href="#"><i class="fa fa-instagram"></i></a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-4">
+                    <ul class="footer-currency currency-area float-lg-right">
+                        <li><a href="#"><img src="../assets/img/footer/01.png" alt="img"></a></li>
+                        <li><a href="#"><img src="../assets/img/footer/02.png" alt="img"></a></li>
+                        <li><a href="#"><img src="../assets/img/footer/03.png" alt="img"></a></li>
+                        <li><a href="#"><img src="../assets/img/footer/04.png" alt="img"></a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+<!-- footer area end -->
+
+<!-- back to top area start -->
+<div class="back-to-top">
+    <span class="back-top"><i class="fa fa-angle-up"></i></span>
+</div>
+<!-- back to top area end -->
+
+
+<script type="text/javascript">
+    window.onload = function () {
+        checkLogin();
+        getOrders();
+    }
+
+    function getOrders(){
+        $.ajax({
+            async: false,
+            url: "http://localhost:8080/order/getOrdersForUser",
+            contentType: "application/json;charset=UTF-8", //必须有
+            dataType: "json", //表示返回值类型，不必须
+            type: "post",
+            data: JSON.stringify({}),
+            success:function(response){
+                if(response.status==0){
+                    var orders = response.data;
+                    for(var i =orders.length-1;i>=0;i--){
+                        var order = orders[i];
+                        var orderItems = order.books;
+                        var price = parseFloat(order.price);
+                        var orderStatus = order.orderStatus;
+                        var header =
+                            " <div class=\"wishlist-area table-responsive pd-bottom-83 \">\n" +
+                            "                <table class=\"table\">\n" +
+                            "                    <thead>\n" +
+                            "                    <tr>\n" +
+                            "                        <th scope=\"col\">书籍</th>\n" +
+                            "                        <th scope=\"col\"></th>\n" +
+                            "                        <th scope=\"col\"></th>\n" +
+                            "                        <th scope=\"col\">状态</th>\n" +
+                            "                        <th scope=\"col\">价格</th>\n" +
+                            "                        <th scope=\"col\">数量</th>\n" +
+                            "                        <th scope=\"col\">总价</th>\n" +
+                            "                        <th scope=\"col\"></th>\n" +
+                            "                    </tr>\n" +
+                            "                    </thead>\n"+
+                            "                    <tbody>\n";
+                        for(var j = 0;j<orderItems.length;j++){
+                            var book = orderItems[j].book;
+                            var orderNum = parseInt(orderItems[j].orderNum);
+                            var bookprice = parseFloat(book.price);
+                            header = header+
+                                "                    <tr>\n" +
+                                "                        <th scope=\"row\">" +
+                                "                 <div  align='center'  style='width: 100px;height: 100px;align-items: center;justify-content:center;display:flex;'>\n" +
+                                "                       <a href=\"shop-details.html?bookId="+book.bookId+"\"  style='width: 100px;height: 100px;align-items: center;justify-content:center;display:flex;'>"+
+                                "                                     <img src=\""+book.image.toString()+"\" alt=\"item\" style='height: 100%;width: auto;align-items: center;justify-content:center;display:flex;'/>"+
+                                "                       </a>"+
+                                "                  </div>\n" +
+                                "                        </th>\n" +
+                                "                        <td colspan=\"2\" class=\"item-name\"><a href=\"shop-details.html?bookId="+book.bookId+"\">"+book.bookName+"</a></td>\n" +
+                                "                        <td>"+price+"</td>\n" +
+                                "                        <td>"+book.bookStatus+"</td>\n" +
+                                "                        <td>"+orderNum+"</td>\n" +
+                                "                            <td id='"+book.bookId+"'>"+bookprice*orderNum+"</td>\n" +
+                                "                    </tr>" ;
+                                /*"                    <tr>\n" +
+                                "                        <th scope=\"row\"><img src=\"../assets/img/"+book.image+"\" alt=\"img\" style='width:40px;heigh:40px'></th>\n" +
+                                "                        <td colspan=\"2\" class=\"item-name\">"+book.bookName+"</td>\n" +
+                                "                        <td>"+price+"</td>\n" +
+                                "                        <td>"+book.bookStatus+"</td>\n" +
+                                "                        <td class=\"table-quantity\">\n" +
+                                "                                <div class=\"quantity buttons_added\">\n" +
+                                "                                        <input type=\"number\" class=\"input-text qty text\" step=\"1\" min=\"1\" max=\"10000\"\n" +
+                                "                                               name=\"quantity\" value=\""+orderNum+"\"  readonly='true'>\n" +
+                                "                                 </div>\n" +
+                                "                        </td>\n" +
+                                "                            <td id='"+book.bookId+"'>"+bookprice*orderNum+"</td>\n" +
+                                "                    </tr>\n" ;*/
+                        }
+                        var statusStr = "";
+                        if(orderStatus == null){
+                            statusStr = "<span>订单状态错误</span>";
+                        }else if(orderStatus == "finished"){
+                            statusStr = "<span>订单已完成</span>";
+                        }else if(orderStatus == "unpaid"){
+                            statusStr = "<a class=\"btn btn-basic-lg\" onclick=\"purchase("+order.orderId+")\" style='width:60px;heigh:20px'>支付</a>"
+                        }else if(orderStatus == "cancel"){
+                            statusStr = "<span>订单已取消</span>";
+                        }else{
+                            statusStr = "<span>书本正在途中</span>";
+                        }
+
+                        header = header+
+
+                            "                      <tr>\n" +
+                            "                            <th></th>\n" +
+                            "                            <td></td>\n" +
+                            "                            <td></td>\n" +
+                            "                            <td></td>\n" +
+                            "                            <td></td>\n" +
+                            "                            <td class=\"total-amount\">"+statusStr+"</td>\n" +
+                            "                            <td class=\"total-amount\">总价: <span>"+price+"</span></td>\n" +
+                            "                        </tr>"+
+                        "                    </tbody>\n"+
+                        "                </table>\n" +
+                            "            </div>";
+                        $("#orderTable").append(header);
+                    }
+                    <!--class="plus" -->
+
+                }else if(response.status==10){
+                    alert("请登录");
+                    window.location.href="login.html";
+                }
+            },
+            error:function(response){
+                alert("请求失败");
+            }
+        });
+    }
+
+    function purchase(orderId){
+        window.location.href="checkout.html?orderId="+orderId;
+    }
+</script>
+<!-- all plugins here -->
+<script src="../assets/js/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+<script src="../assets/js/vendor.js"></script>
+<!-- main js  -->
+<script src="../assets/js/main.js"></script>
+</body>
+</html>

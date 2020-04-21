@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--
+    Description: user mapper
+    Author: 曾志昊 2017302580214
+-->
+<mapper namespace="com.bookshop.dao.UserDao">
+
+    <resultMap id="userResultMap" type="com.bookshop.entity.User">
+        <id property="userId" column="user_id"/>
+        <result property="userName" column="user_name"/>
+        <result property="gender" column="gender"/>
+        <result property="userAddress" column="user_address"/>
+        <result property="userPassword" column="user_password"/>
+        <result property="userStatus" column="user_status"/>
+    </resultMap>
+
+    <sql id="search_where">
+        <if test="userId != null">and user_id=#{userId}</if>
+        <if test="userName != null">and user_name=#{userName}</if>
+        <if test="userPassword!=null">and user_password=#{userPassword}</if>
+        <if test="gender != null">and gender =#{gender}</if>
+        <if test="userAddress!=null">and user_address like #{userAddress}</if>
+        <if test="userStatus!=null">and user_status=#{userStatus}</if>
+    </sql>
+
+    <sql id="table_column">
+        (user_name,gender,user_address,user_password,user_status)
+    </sql>
+
+    <select id="getAllUsersPage" parameterType="map" resultMap="userResultMap">
+        select * from user
+        <if test="startPage!=null and pageSize != null"> LIMIT #{startPage},#{pageSize}</if>
+    </select>
+
+    <select id="getAllUsers" resultMap="userResultMap">
+        select * from user
+    </select>
+
+    <select id="getUser" parameterType="Integer" resultMap="userResultMap">
+        select * from user where user_id=#{userId}
+    </select>
+
+    <select id="searchUsers" parameterType="map" resultMap="userResultMap">
+        select * from user where 1=1
+        <include refid="search_where"/>
+        <if test="startPage!=null and pageSize != null"> LIMIT #{startPage},#{pageSize}</if>
+    </select>
+
+<!--    <insert id="insertUser" parameterType="com.bookshop.entity.User" useGeneratedKeys="true" keyProperty="userId">
+        insert into user
+        <include refid="table_column"/>
+        values(
+            #{userName},#{gender},#{userAddress},#{userPassword},#{userStatus}
+        )
+    </insert>-->
+    <!--动态sql解决了没有默认值的问题-->
+    <insert id="insertUser" parameterType="com.bookshop.entity.User" useGeneratedKeys="true" keyProperty="userId">
+        insert into user(<include refid="userInfoColumns"/>)
+        values(<include refid="userInfoValues"/>)
+    </insert>
+
+    <sql id="userInfoColumns">
+        <trim suffixOverrides=",">
+            <if test="userId != null"> user_id,</if>
+            <if test="userName != null"> user_name,</if>
+            <if test="userPassword!=null"> user_password,</if>
+            <if test="gender != null"> gender,</if>
+            <if test="orderAddress!=null"> order_address, </if>
+            <if test="userStatus!=null"> user_status,</if>
+
+        </trim>
+    </sql>
+
+    <sql id="userInfoValues">
+        <trim suffixOverrides=",">
+            <if test="userId != null">#{userId},</if>
+            <if test="userName != null">#{userName},</if>
+            <if test="userPassword!=null">#{userPassword},</if>
+            <if test="gender != null">#{gender},</if>
+            <if test="orderAddress!=null">#{orderAddress},</if>
+            <if test="userStatus!=null"> #{userStatus},</if>
+        </trim>
+    </sql>
+
+    <insert id="insertUsers" parameterType="java.util.List" useGeneratedKeys="true" keyProperty="userId">
+        insert into user <include refid="table_column"/>
+        <foreach collection="list" item="item" separator=",">
+            (
+                #{item.userName},
+                #{item.gender},
+                #{item.userAddress},
+                #{item.userPassword},
+                #{item.userStatus},
+            )
+        </foreach>
+    </insert>
+
+    <update id="updateUser" parameterType="com.bookshop.entity.User">
+        update user
+        <set>
+            <if test="userName!=null">user_name=#{userName},</if>
+            <if test="gender!=null">gender=#{gender},</if>
+            <if test="userAddress!=null">user_address=#{userAddress},</if>
+            <if test="userPassword!=null">user_password=#{userPassword},</if>
+            <if test="userStatus!=null">user_status=#{userStatus},</if>
+        </set>
+        where user_id=#{userId}
+    </update>
+
+    <update id="updateUsers" parameterType="java.util.List">
+        <foreach collection="list" item="item" index="index" separator=";">
+            update user
+            <set>
+                <if test="item.userName!=null">user_name=#{item.userName},</if>
+                <if test="item.gender!=null">gender=#{item.gender},</if>
+                <if test="item.userAddress!=null">user_address=#{item.userAddress},</if>
+                <if test="item.userPassword!=null">user_password=#{item.userPassword},</if>
+                <if test="item.userStatus!=null">user_status=#{item.userStatus},</if>
+            </set>
+            where item.user_id=#{item.userId}
+        </foreach>
+    </update>
+
+    <delete id="deleteUserById" parameterType="Integer">
+        delete from user where user_id=#{userId}
+    </delete>
+
+    <delete id="deleteUser" parameterType="com.bookshop.entity.User" >
+        delete from user where user_id=#{userId}
+    </delete>
+
+    <delete id="deleteUsers" parameterType="java.util.List">
+        delete from user where user_id in
+        <foreach collection="list" item="userId" open="(" close=")" separator=",">
+            #{userId}
+        </foreach>
+    </delete>
+
+    <select id="count" parameterType="map" resultType="Integer">
+        select count(*) from user where 1=1
+        <include refid="search_where"/>
+    </select>
+</mapper>

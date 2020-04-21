@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--
+    Description: cart mapper
+    Author: 曾志昊 2017302580214
+-->
+<!--todo 动态sql解决插入无默认值问题-->
+
+<mapper namespace="com.bookshop.dao.CartItemDao">
+
+    <resultMap id="cartItemResultMap" type="com.bookshop.entity.CartItem">
+        <id property="userId" column="user_id"/>
+        <id property="bookId" column="book_id"/>
+        <result property="cartNum" column="cart_num"/>
+        <collection property="book" column="book_id"
+                    javaType="com.bookshop.entity.Book"
+                    select="com.bookshop.dao.BookDao.getBook"/>
+    </resultMap>
+
+    <resultMap id="cartItemResultSimpleMap" type="com.bookshop.entity.CartItem">
+        <id property="userId" column="user_id"/>
+        <id property="bookId" column="book_id"/>
+        <result property="cartNum" column="cart_num"/>
+    </resultMap>
+
+    <sql id="table_column">
+        (user_id,book_id,cart_num)
+    </sql>
+
+    <select id="getCartItem" resultMap="cartItemResultMap">
+        select *from cart
+        where user_id=#{userId} and book_id=#{bookId}
+    </select>
+
+    <select id="getCartItemSimple" resultMap="cartItemResultSimpleMap">
+        select * from cart
+        where user_id=#{userId} and book_id=#{bookId}
+    </select>
+
+    <select id="getCartItems" parameterType="map" resultMap="cartItemResultMap">
+        select * from cart where user_id=#{userId}
+        <if test="startPage!=null and pageSize != null"> LIMIT #{startPage},#{pageSize}</if>
+        order by time desc
+    </select>
+
+
+    <insert id="insertCartItem" parameterType="com.bookshop.entity.CartItem">
+        insert into cart
+        <include refid="table_column"/>
+        values(
+            #{userId},#{bookId},#{cartNum}
+        )
+    </insert>
+
+    <insert id="insertCartItems" parameterType="java.util.List">
+        insert into cart
+        <include refid="table_column"/>
+        <foreach collection="list" item="item" index="index" separator=",">
+            values
+            (
+                #{item.userId},#{item.bookId},#{item.cartNum}
+            )
+        </foreach>
+    </insert>
+
+    <update id="updateCartItem" parameterType="com.bookshop.entity.CartItem">
+        update cart
+        <set>
+            <if test="cartNum!=null">cart_num=#{cartNum}</if>
+        </set>
+        where user_id=#{userId} and book_id=#{bookId}
+    </update>
+
+    <update id="updateCartItems" parameterType="java.util.List">
+        <foreach collection="list" item="item" index="index" separator=";">
+            update cart
+            <set>
+                <if test="item.cartNum!=null">cart_num=#{item.cartNum}</if>
+            </set>
+            where user_id=#{item.userId} and book_id=#{item.bookId}
+        </foreach>
+    </update>
+
+    <delete id="deleteCartItem" parameterType="com.bookshop.entity.CartItem">
+        delete from cart
+        where user_id=#{userId} and book_id=#{bookId}
+    </delete>
+
+    <delete id="deleteCartItems" parameterType="java.util.List">
+        <foreach collection="list" item="item" index="index" separator=";">
+            delete from cart
+            where user_id=#{items.userId} and book_id=#{items.bookId}
+        </foreach>
+    </delete>
+
+
+    <select id="count" parameterType="map" resultType="Integer">
+        select count(*) from cart
+        where user_id=#{userId}
+    </select>
+</mapper>

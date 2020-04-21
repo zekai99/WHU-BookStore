@@ -1,0 +1,914 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="referrer" content="no-referrer" />
+
+    <title></title>
+
+
+    <script src="http://libs.baidu.com/jquery/1.9.0/jquery.js"></script>
+    <!-- Vendor Stylesheet -->
+    <link rel="stylesheet" href="../assets/css/vendor.css">
+    <!-- Main Stylesheet -->
+    <link rel="stylesheet" href="../assets/css/line-awesome.min.css">
+    <link rel="stylesheet" href="../assets/css/owl.carousel.min.css">
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <!-- responsive Stylesheet -->
+    <link rel="stylesheet" href="../assets/css/responsive.css">
+</head>
+<body>
+
+
+<!-- preloader area start -->
+<div class="preloader" id="preloader">
+    <div class="preloader-inner">
+        <div class="spinner">
+            <div class="dot1"></div>
+            <div class="dot2"></div>
+        </div>
+    </div>
+</div>
+<!-- preloader area end -->
+
+<!-- search Popup -->
+<div class="body-overlay" id="body-overlay"></div>
+<div class="search-popup" id="search-popup">
+    <form action="../index.html" class="main-search search-form">
+        <input type="text" placeholder="Search...">
+        <button>Search</button>
+    </form>
+</div>
+<!-- //. search Popup -->
+
+<!--sidebar menu start-->
+<div class="sidebar-menu" id="sidebar-menu">
+    <button class="sidebar-menu-close"><i class="flaticon-close"></i></button>
+    <div class="sidebar-inner">
+        <div class="sidebar-logo">
+            <img src="../assets/img/logo.png" alt="logo"/>
+        </div>
+        <div class="sidemenu-text">
+            <p>We believe brand interaction is key in commu- nication. Real inno vations and a positive customer
+                experience are the heart of successful commu- nication.</p>
+        </div>
+        <div class="sidebar-contact">
+            <h4>Contact Us</h4>
+            <ul>
+                <li><i class="fa fa-map-marker"></i>Lavaca Street, Suite 2000</li>
+                <li><i class="fa fa-envelope"></i>email@evha.com</li>
+                <li><i class="fa fa-phone"></i>(+880) 172570051</li>
+            </ul>
+        </div>
+        <div class="sidebar-subscribe">
+            <input type="text" placeholder="Email">
+            <button><i class="fa fa-long-arrow-right"></i></button>
+        </div>
+        <div class="social-link">
+            <ul>
+                <li><a href="#"><i class="fa fa-facebook-f"></i></a></li>
+                <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+                <li><a href="#"><i class="fa fa-instagram"></i></a></li>
+                <li><a href="#"><i class="fa fa-pinterest"></i></a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!--sidebar menu end-->
+
+<!-- navbar start -->
+<div class="navbar-area">
+    <div class="navbar-top">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 text-md-left text-center">
+                    <ul class="topbar-left">
+                        <li class="topbar-single-info"><i class="fa fa-phone"></i>+123 4567 8910</li>
+                        <li class="topbar-single-info"><i class="fa fa-map-marker"></i>Store Location</li>
+                        <li class="topbar-single-info d-none d-lg-block"><i class="fa fa-crosshairs"></i>Track Your
+                            Order
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-md-6 text-md-right text-center">
+                    <ul class="topbar-right float-md-right">
+                        <div class="align-self-center">
+                            <div class="shop-cart-area">
+                                <ul id="userCart">
+
+                                    <!--                                <li><span>6</span><i class="fa fa-heart-o"></i></li>-->
+                                    <li id="userCartCount" onclick="goToCart();">
+                                        <i class="las la-shopping-cart" onclick="goToCart();">
+                                        </i>
+                                        <span id="userCartCountSpan"></span>
+                                    </li>
+                                    <!--                                    <li id="userCartPrice" onclick="goToCart();">$ 155.00 .</li>&lt;!&ndash;                                todo 获取购物车价格&ndash;&gt;-->
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="dropdown topbar-help" id="myaccountdropdown">
+                            <i class="fa fa-user"></i>
+                        </div>
+                        <script src="http://libs.baidu.com/jquery/1.9.0/jquery.js"></script>
+                        <script type="text/javascript">
+                            function logOut() {
+                                alert("login");
+                                $.ajax({
+                                    async: false,
+                                    url: "http://localhost:8080/user/logOut",
+                                    contentType: "application/json;charset=UTF-8", //必须有
+                                    dataType: "json", //表示返回值类型，不必须
+                                    type: "post",
+                                    data: JSON.stringify({}),
+                                    success: function (response) {
+                                        if (response.status == 0) {
+                                            /*退登成功*/
+                                            window.location.href = "login.html";
+                                        } else {
+                                            alert("退登失败");
+                                        }
+                                    },
+                                    error: function () {
+                                        alert("请求失败");
+                                    }
+                                });
+                            }
+
+                            function goToCart() {
+                                window.open("cart.html");
+                            }
+
+                            function checkLogin() {
+                                var user;
+                                $.ajax({
+                                    async: false,
+                                    url: "http://localhost:8080/user/checkLogin",
+                                    contentType: "application/json;charset=UTF-8", //必须有
+                                    dataType: "json", //表示返回值类型，不必须
+                                    type: "post",
+                                    success: function (response) {
+                                        if (response.status == 0) {
+                                            // alert("已登录");
+                                            user = response.data;
+                                            // alert(user.userId);
+                                        } else {
+                                            // alert("未登录");
+                                            return null;
+                                        }
+                                    },
+                                    error: function () {
+                                        alert("请求失败");
+                                        return null;
+                                    }
+                                });
+                                if (user == null || user.userId == null) {
+                                    var str =
+                                        "<a class=\"btn dropdown-toggle\" href=\"#\" role=\"button\" id=\"dropdownMenuLink2\" data-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"false\">\n" +
+                                        "请登录</a>" +
+                                        "<div class=\"dropdown-menu\" aria-labelledby=\"dropdownMenuLink2\" >\n" +
+                                        "<a class=\"dropdown-item\" target=\"_blank\" href=\"login.html\">登录</a> " +
+                                        "</div>";
+                                    $("#myaccountdropdown").append(str);
+                                } else {
+                                    // alert(user.userName);
+                                    /*用户选项*/
+                                    var str =
+                                        "<a class=\"btn dropdown-toggle\" href=\"#\" role=\"button\" id=\"dropdownMenuLink2\" data-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"false\">\n" +
+                                        user.userName + "</a>" +
+                                        "<div class=\"dropdown-menu\" aria-labelledby=\"dropdownMenuLink2\" >\n" +
+                                        "<a class=\"dropdown-item\"target=\"_blank\" href=\"user-order.html\">我的订单</a>" +
+                                        "<a class=\"dropdown-item\"target=\"_blank\"  href=\"user-setting.html\">用户设置</a> " +
+                                        "<a class=\"dropdown-item\"target=\"_blank\" onclick=\"logOut()\">退登</a>\n" +
+                                        "</div>";
+                                    $("#myaccountdropdown").append(str);
+
+                                    $.ajax({
+                                        url: "http://localhost:8080/cart/getCartNum",
+                                        contentType: "application/json;charset=UTF-8", //必须有
+                                        dataType: "json", //表示返回值类型，不必须
+                                        type: "post",
+                                        // data: JSON.stringify(),/*不需要传用户数据*/
+                                        success: function (response) {
+                                            if (response.status == 0) {
+                                                document.getElementById("userCartCountSpan").innerText = response.data;
+/*                                                str = "<span>" + response.data + "</span>";
+                                                $("#userCartCount").append(str);*/
+                                            } else {
+                                                alert("获取购物车信息错误");
+                                            }
+                                        },
+                                        error: function () {
+                                            alert("请求失败");
+                                        }
+                                    });
+                                }
+                            }
+
+
+                        </script>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="navbar-middle d-none d-lg-block">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-2 align-self-center">
+                    <div class="logo-area">
+                        <a href="../index.html"> <img src="../assets/img/logo.png" alt="logo"></a>
+                    </div>
+                </div>
+                <div class="col-lg-7 text-center">
+                    <div class="main-search d-inline-flex">
+                        <input type="text" placeholder="Search product..." name="searchText" id="searchText"/>
+                        <div class="topbar-cat-select">
+                            <select>
+                                <option value="jiaoyukaoshi">教育考试</option>
+                                <option value="xiaoshuo">小说</option>
+                                <option value="tongshu">童书</option>
+                                <option value="renwensheke" selected="selected">人文社科</option>
+                                <option value="jiankang">健康</option>
+                                <option value="yingwen">英文</option>
+                                <option value="ligong">理工</option>
+                                <option value="all">全部</option>
+                            </select>
+                        </div>
+                        <button onclick="shopPage()">搜索</button>
+
+                        <script type="text/javascript">
+                            function shopPage() {
+                                window.location.href = "shop.html?bookName=" + $("#searchText").val()+"&bookType="+$("#bookTypeSelection").val();
+                                // window.location.href = "shop.html?bookName=" + $("#searchText").val();// window.location.href="shop.html?bookName="+searchText.val();
+                            }
+                        </script>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <nav class="navbar navbar-area navbar-expand-lg nav-style-01">
+        <div class="container nav-container">
+            <div class="responsive-mobile-menu">
+                <button class="menu toggle-btn d-block d-lg-none" data-toggle="collapse" data-target="#zenax_main_menu"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="icon-left"></span>
+                    <span class="icon-right"></span>
+                </button>
+            </div>
+            <div class="mobile-logo">
+                <a href="../index.html"> <img src="../assets/img/logo-2.png" alt="logo"></a>
+            </div>
+            <div class="cat-menu-wrap">
+                <div class="cat-menu">
+                    <img src="../assets/img/icon/bar.png" alt="icon">
+                    All Category
+                </div>
+                <ul class="sidebar-categories">
+                    <li><a href="shop.html?type=jiaoyukaoshi"><img src="../assets/img/icon/laptop.png" alt="img">教育考试<i
+                            class="fa fa-angle-down"></i></a></li>
+                    <li><a href="shop.html?type=xiaoshuo"><img src="../assets/img/icon/chair.png" alt="img">小说<i
+                            class="fa fa-angle-down"></i></a></li>
+                    <li><a href="shop.html?type=tongshu"><img src="../assets/img/icon/phone.png" alt="img">童书<i
+                            class="fa fa-angle-down"></i></a></li>
+                    <li><a href="shop.html?type=renwensheke"><img src="../assets/img/icon/ball.png" alt="img">人文社科<i
+                            class="fa fa-angle-down"></i></a></li>
+                    <li><a href="shop.html?type=jiankang"><img src="../assets/img/icon/heart.png" alt="img">健康<i
+                            class="fa fa-angle-down"></i></a></li>
+                    <li><a href="shop.html?type=yingwen"><img src="../assets/img/icon/monitor.png" alt="img">英文<i
+                            class="fa fa-angle-down"></i></a></li>
+                    <li><a href="shop.html?type=ligong"><img src="../assets/img/icon/monitor.png" alt="img">理工<i
+                            class="fa fa-angle-down"></i></a></li>
+                </ul>
+            </div>
+            <div class="shop-cart-area">
+                <ul>
+                    <li><span>6</span><i class="fa fa-heart-o"></i></li>
+                    <li><span>5</span><i class="las la-shopping-cart"></i></li>
+                </ul>
+                <ul class="right-part-search">
+                    <li class="search" id="search">
+                        <a href="#"><i class="fa fa-search"></i></a>
+                    </li>
+                    <li class="menubar d-none d-lg-block" id="navigation-button">
+                        <a><i class="flaticon-menu-button"></i></a>
+                    </li>
+                </ul>
+            </div>
+            <div class="collapse navbar-collapse" id="zenax_main_menu">
+                <ul class="navbar-nav menu-open">
+
+                </ul>
+            </div>
+            <!--<div class="nav-right-part">
+                <a href="cart.html" class="right-part-text">购物车</a>
+            </div>-->
+        </div>
+    </nav>
+</div>
+<!-- navbar end -->
+
+<!-- breadcrumb-area start -->
+<nav class="breadcrumb-area" aria-label="breadcrumb">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="home.html">Home</a></li>
+                    <li class="breadcrumb-item"><a href="#">Shop</a></li><!--todo 加载页面时设置该项-->
+                    <li class="breadcrumb-item active" aria-current="page">Product</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</nav>
+<!-- breadcrumb-area end -->
+
+<!-- shop-product area start -->
+<div class="shop-details-area bg-gray-4 pd-top-100 common-pd-bottom">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-7">
+                <div class="product-thumbnail-wrapper">
+                    <div class="row">
+                        <div class="col-3" id="leftImageDiv">
+                            <!--左侧-->
+<!--                            <div class="product-thumbnail-carousel2 pro" >-->
+<!--                                <div class="single-thumbnail-item">-->
+<!--                                    <img src="../assets/img/product/shop/shop-details/01.png" alt="item">-->
+<!--                                </div>-->
+<!--                                <div class="single-thumbnail-item">-->
+<!--                                    <img src="../assets/img/product/shop/shop-details/02.png" alt="item">-->
+<!--                                </div>-->
+
+<!--                            </div>-->
+                        </div>
+
+                        <div class="col-9 pl-0" id="centerImageDiv">
+                            <!--中间-->
+<!--                            <div class="single-thumbnail-slider2" >-->
+<!--                                <div class="slider-item" >-->
+<!--                                    <img src="../assets/img/product/01.png" alt="item">-->
+<!--                                </div>-->
+<!--                                <div class="slider-item">-->
+<!--                                    <img src="../assets/img/product/02.png" alt="item">-->
+<!--                                </div>-->
+<!--                            </div>-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!--商品属性-->
+            <div class="col-md-5">
+                <div class="shop-item-details">
+                    <div id="titleDiv"></div>
+                    <div class="star-rating">
+                        <span><i class="fa fa-star"></i></span>
+                        <span><i class="fa fa-star"></i></span>
+                        <span><i class="fa fa-star"></i></span>
+                        <span><i class="fa fa-star"></i></span>
+                        <span><i class="fa fa-star"></i></span>
+                    </div>
+<!--                    <a class="review-counter" href="#">(19 Review)</a>-->
+                    <div class="price" id="priceDiv"><!--$99.00<del>$115.90</del>--></div>
+                    <div class="stock"><i class="fa fa-check"></i>库存充足</div>
+                    <form>
+                        <div class="quantity buttons_added">
+                            <input type="button" value="-" class="minus">
+                            <input type="number" id="cartNumber" class="input-text qty text" step="1" min="1"
+                                   max="10000" name="quantity" value="1">
+                            <input type="button" value="+" class="plus">
+                        </div>
+                    </form>
+                    <!--
+                    <div class="color-variation">
+                        <h3>Available Colors:</h3>
+                        <ul>
+                            <li><a class="color-1" href="#"></a></li>
+                            <li><a class="color-2" href="#"></a></li>
+                            <li><a class="color-3" href="#"></a></li>
+                            <li><a class="color-4" href="#"></a></li>
+                            <li><a class="color-5" href="#"></a></li>
+                        </ul>
+                    </div> -->
+                    <button type="submit" class="btn btn-black" onclick="addToCart()">加入购物车</button>
+                </div>
+            </div>
+            <div class="col-12 mg-top-120">
+                <div class="shop-tabs">
+                    <ul class="nav nav-tabs" id="myTab" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab"
+                               aria-controls="profile" aria-selected="true">Description</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="review-tab" data-toggle="tab" href="#review" role="tab"
+                               aria-controls="profile" aria-selected="false">Reviews (09)</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content specific-tab" id="myTabContent">
+
+                        <div class="tab-pane fade describe-tab" id="profile" role="tabpanel"
+                             aria-labelledby="profile-tab">
+                            <h3 class="title">作者</h3>
+                            <p class="mb-0" id="author"></p>
+                            <h3 class="title">---------------</h3>
+                            <h3 class="title">出版社</h3>
+                            <p class="mb-0" id="publisher"></p>
+                            <h3 class="title">---------------</h3>
+                            <h3 class="title">出版日期</h3>
+                            <p class="mb-0" id="publishTime"></p>
+                            <h3 class="title">---------------</h3>
+                            <h3 class="title">相关信息</h3>
+                            <p class="mb-0" id="details"></p>
+<!--                            <div class="quick-view">-->
+<!--                                <h3 class="title">Quick View</h3>-->
+<!--                                <ul>-->
+<!--                                    <li>Lorem Ipsum is simply dummy text of the printing.</li>-->
+<!--                                    <li>Contrary to popular belief, Lorem Ipsum is not simply.</li>-->
+<!--                                    <li>There are many variations of passages.</li>-->
+<!--                                    <li>It is a long established fact that a reader will be distracted.</li>-->
+<!--                                    <li>The standard chunk of Lorem Ipsum used since the 1500s.</li>-->
+<!--                                </ul>-->
+<!--                            </div>-->
+<!--                            <h3 class="title">Warranty Policy</h3>-->
+<!--                            <p>It has survived not only five centuries, but also the leap into electronic typesetting,-->
+<!--                                remaining essentially unchanged. It was popularised in the 1960s with the release of-->
+<!--                                Letraset sheets containing Lorem Ipsum passages, and more recently with desktop-->
+<!--                                publishing software like Aldus PageMaker including versions.</p>-->
+                        </div>
+                        <div class="tab-pane review-tab fade" id="review" role="tabpanel" aria-labelledby="review-tab">
+                            <p class="woocommerce-noreviews">There are no reviews yet.</p>
+                            <div class="star-rating">
+                                <span><i class="fa fa-star"></i></span>
+                                <span><i class="fa fa-star"></i></span>
+                                <span><i class="fa fa-star"></i></span>
+                                <span><i class="fa fa-star"></i></span>
+                                <span><i class="fa fa-star"></i></span>
+                            </div>
+                            <form class="contact-form">
+                                <div class="row">
+                                    <div class="col-lg-6 col-md-6 col-12">
+                                        <div class="single-input-wrap">
+                                            <label>Name</label>
+                                            <input type="text" class="single-input">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-md-6 col-12">
+                                        <div class="single-input-wrap">
+                                            <label>Email</label>
+                                            <input type="text" class="single-input">
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="single-input-wrap">
+                                            <label>Your review </label>
+                                            <textarea class="single-input textarea"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                                <a class="btn btn-black" href="#">Submit</a>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- shop-product area end -->
+
+<!-- recent-product area start -->
+<div class="recent-product-area shop-recent-product-area bg-gray-4 common-pd-bottom-2">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="section-title text-center">
+                    <h3 class="title">Similar Products</h3>
+                    <p class="subtitle">The Standard chunk of lorem ipsum reproduced below those interested.</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="single-product-card single-product-card-3 border-0">
+                    <div class="thumb">
+                        <img src="../assets/img/product/shop/01.png" alt="top-product">
+                    </div>
+                    <div class="product-card-details">
+                        <span class="featured">New</span>
+                        <h4 class="title"><a href="#">Universal Color Dual Pro S25 Rapata Loxin Duka</a></h4>
+                        <div class="star-rating">
+                            <span><i class="fa fa-star"></i></span>
+                            <span><i class="fa fa-star"></i></span>
+                            <span><i class="fa fa-star"></i></span>
+                            <span><i class="fa fa-star"></i></span>
+                            <span><i class="fa fa-star-half-o"></i></span>
+                        </div>
+                        <div class="price">
+                            <span>$75.00</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="single-product-card single-product-card-3 border-0">
+                    <div class="thumb">
+                        <img src="../assets/img/product/shop/03.png" alt="top-product">
+                    </div>
+                    <div class="product-card-details">
+                        <span class="featured">New</span>
+                        <h4 class="title"><a href="#">Smart Muzi Lipattu Pokim 15 Zalim DX2 Laptol</a></h4>
+                        <div class="star-rating">
+                            <span><i class="fa fa-star"></i></span>
+                            <span><i class="fa fa-star"></i></span>
+                            <span><i class="fa fa-star"></i></span>
+                            <span><i class="fa fa-star"></i></span>
+                            <span><i class="fa fa-star-half-o"></i></span>
+                        </div>
+                        <div class="price">
+                            <span>$47.00 <del>$110.00</del></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="single-product-card single-product-card-3 border-0">
+                    <div class="thumb">
+                        <img src="../assets/img/product/shop/09.png" alt="top-product">
+                    </div>
+                    <div class="product-card-details">
+                        <h4 class="title"><a href="#">Wireless Lupda Audio System Multiroom MX2</a></h4>
+                        <div class="star-rating">
+                            <span><i class="fa fa-star"></i></span>
+                            <span><i class="fa fa-star"></i></span>
+                            <span><i class="fa fa-star"></i></span>
+                            <span><i class="fa fa-star"></i></span>
+                            <span><i class="fa fa-star-half-o"></i></span>
+                        </div>
+                        <div class="price d-block">
+                            <span>$94.79 <del>$98.12</del></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="single-product-card single-product-card-3 border-0">
+                    <div class="thumb">
+                        <img src="../assets/img/product/shop/10.png" alt="top-product">
+                    </div>
+                    <div class="product-card-details">
+                        <h4 class="title"><a href="#">Rostal Razmali Nonstick Dish washer PFOA</a></h4>
+                        <div class="star-rating">
+                            <span><i class="fa fa-star"></i></span>
+                            <span><i class="fa fa-star"></i></span>
+                            <span><i class="fa fa-star"></i></span>
+                            <span><i class="fa fa-star"></i></span>
+                            <span><i class="fa fa-star-half-o"></i></span>
+                        </div>
+                        <div class="price d-block">
+                            <span>$23.00</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- recent-product area end -->
+
+<!-- footer area start -->
+<footer class="footer-area">
+    <div class="footer-top">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 col-sm-6">
+                    <div class="footer-widget widget contact-widget">
+                        <a href="../index.html" class="footer-logo">
+                            <img src="../assets/img/logo-2.png" alt="footer logo">
+                        </a>
+                        <p>It is a long established fact that a reader will be the distracted by the readable content of
+                            a page.</p>
+                        <ul class="contact_info_list">
+                            <li class="single-info-item">
+                                <h4>Address:</h4>
+                                <p>45 Grand Central Terminal New York <br> NY 1245, United State USA</p>
+                            </li>
+                            <li class="single-info-item">
+                                <h4>Email:</h4>
+                                <p>supports@zenax.com</p>
+                            </li>
+                            <li class="single-info-item">
+                                <h4>Phone:</h4>
+                                <p>+123 4567 8910</p>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-2 offset-lg-1 col-sm-3">
+                    <div class="footer-widget widget widget_nav_menu">
+                        <h4 class="widget-title">Quick Links</h4>
+                        <ul>
+                            <li><a href="#"><i class="fa fa-long-arrow-right" aria-hidden="true"></i>Support</a></li>
+                            <li><a href="#"><i class="fa fa-long-arrow-right" aria-hidden="true"></i>Helpline</a></li>
+                            <li><a href="#"><i class="fa fa-long-arrow-right" aria-hidden="true"></i>Affiliates</a></li>
+                            <li><a href="#"><i class="fa fa-long-arrow-right" aria-hidden="true"></i>Live Support</a>
+                            </li>
+                            <li><a href="#"><i class="fa fa-long-arrow-right" aria-hidden="true"></i>Customer Care</a>
+                            </li>
+                            <li><a href="#"><i class="fa fa-long-arrow-right" aria-hidden="true"></i>FAQs</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-sm-6">
+                    <div class="footer-widget widget widget_nav_menu">
+                        <h4 class="widget-title">Informations</h4>
+                        <ul>
+                            <li><a href="#"><i class="fa fa-long-arrow-right" aria-hidden="true"></i>About Us</a></li>
+                            <li><a href="#"><i class="fa fa-long-arrow-right" aria-hidden="true"></i>Customer
+                                Services</a></li>
+                            <li><a href="#"><i class="fa fa-long-arrow-right" aria-hidden="true"></i>Privacy and Policy</a>
+                            </li>
+                            <li><a href="#"><i class="fa fa-long-arrow-right" aria-hidden="true"></i>Orders &
+                                Returns</a></li>
+                            <li><a href="#"><i class="fa fa-long-arrow-right" aria-hidden="true"></i>Shipping Policy</a>
+                            </li>
+                            <li><a href="#"><i class="fa fa-long-arrow-right" aria-hidden="true"></i>Our Sitemap</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-sm-6">
+                    <div class="footer-widget widget widget_nav_menu">
+                        <h4 class="widget-title">My Account</h4>
+                        <ul>
+                            <li><a href="#"><i class="fa fa-long-arrow-right" aria-hidden="true"></i>Balance</a></li>
+                            <li><a href="#"><i class="fa fa-long-arrow-right" aria-hidden="true"></i>Checkout</a></li>
+                            <li><a href="#"><i class="fa fa-long-arrow-right" aria-hidden="true"></i>Cards</a></li>
+                            <li><a href="#"><i class="fa fa-long-arrow-right" aria-hidden="true"></i>Track Order</a>
+                            </li>
+                            <li><a href="#"><i class="fa fa-long-arrow-right" aria-hidden="true"></i>Terms</a></li>
+                            <li><a href="#"><i class="fa fa-long-arrow-right" aria-hidden="true"></i>Site Policy</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="footer-bottom text-md-center">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 align-self-lg-center">
+                    <p class="copyright">Copyright &copy; 2020.Company name All rights reserved.<a target="_blank"
+                                                                                                   href="http://sc.chinaz.com/moban/">&#x7F51;&#x9875;&#x6A21;&#x677F;</a>
+                    </p>
+                </div>
+                <div class="col-lg-4 text-lg-center">
+                    <ul class="footer-social social-area">
+                        <li><a href="#"><i class="fa fa-facebook-f"></i></a></li>
+                        <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+                        <li><a href="#"><i class="fa fa-pinterest-p"></i></a></li>
+                        <li><a href="#"><i class="fa fa-instagram"></i></a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-4">
+                    <ul class="footer-currency currency-area float-lg-right">
+                        <li><a href="#"><img src="../assets/img/footer/01.png" alt="img"></a></li>
+                        <li><a href="#"><img src="../assets/img/footer/02.png" alt="img"></a></li>
+                        <li><a href="#"><img src="../assets/img/footer/03.png" alt="img"></a></li>
+                        <li><a href="#"><img src="../assets/img/footer/04.png" alt="img"></a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+<!-- footer area end -->
+
+<!-- back to top area start -->
+<div class="back-to-top">
+    <span class="back-top"><i class="fa fa-angle-up"></i></span>
+</div>
+<!-- back to top area end -->
+
+
+<!-- all plugins here -->
+<script src="../assets/js/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+<script src="../assets/js/vendor.js"></script>
+<!-- main js  -->
+<script src="../assets/js/main.js"></script>
+<script type="text/javascript">
+    function getParam(name) {
+        /*获取url参数*/
+        var search = document.location.search;
+        var pattern = new RegExp("[?&]" + name + "\=([^&]+)", "g");
+        var matcher = pattern.exec(search);
+        var items = null;
+        if (null != matcher) {
+            try {
+                items = decodeURIComponent(decodeURIComponent(matcher[1]));
+            } catch (e) {
+                try {
+                    items = decodeURIComponent(matcher[1]);
+                } catch (e) {
+                    items = matcher[1];
+                }
+            }
+        }
+        return items;
+    }
+
+    function addToCart() {
+        /*添加到购物车*/
+        var bookId = parseInt(getParam("bookId"));
+        var cartNum = parseInt($("#cartNumber").val());
+
+
+        $.ajax({
+            url: "http://localhost:8080/cart/insertCartItem",
+            contentType: "application/json;charset=UTF-8", //必须有
+            dataType: "json", //表示返回值类型，不必须
+            type: "post",
+            data: JSON.stringify({
+                "bookId": bookId,
+                "cartNum": cartNum
+            }),
+            success: function (response) {
+                if (response.status == 0) {
+                    document.getElementById("userCartCountSpan").innerText = response.data;
+                    alert("成功加入购物车");
+                    /*todo 弹窗跳入*/
+                } else if(response.status==10){
+                    alert("请登录");
+                    window.open("login.html");
+                }else{
+                    alert("添加失败");
+                }
+            },
+            error: function (response) {
+                alert("请求失败");
+            }
+        });
+    }
+
+    window.onload = function loadBook() {
+        var bookId = parseInt(getParam("bookId"));
+        $.ajax({
+            async: false,
+            url: "http://localhost:8080/book/getBook",
+            contentType: "application/json;charset=UTF-8", //必须有
+            dataType: "json", //表示返回值类型，不必须
+            type: "post",
+            data: JSON.stringify({
+                "bookId": bookId
+            }),
+            success: function (response) {
+                if (response.status == 0) {
+                    fillInData(response);
+                } else {
+                    alert("获取书本信息失败");
+                }
+            },
+            error: function () {
+                alert("请求失败");
+            }
+        });
+        checkLogin();
+    }
+
+    function fillInData(response){
+        book = response.data;
+        var image = book.image;
+
+        var leftImageStr =
+            "<div class=\"product-thumbnail-carousel2 pro\" >\n" +
+            "                                <div class=\"single-thumbnail-item\" align='center'  style='width: 140px;height: 140px;align-items: center;justify-content:center;display:flex;'>\n" +
+            "                                     <img src=\""+image+"\" alt=\"item\" style='height: 100%;width: auto;align-items: center;justify-content:center;display:flex;'/>"+
+            "                                </div>\n" +
+            "                                <div class=\"single-thumbnail-item\" align='center'  style='width: 140px;height: 140px;align-items: center;justify-content:center;display:flex;'>\n" +
+            "                                     <img src=\""+image+"\" alt=\"item\" style='height: 100%;width: auto;align-items: center;justify-content:center;display:flex;'/>"+
+            "                                </div>\n" +
+            "                            </div>";
+
+            // "<div class=\"product-thumbnail-carousel2\" >\n" +
+            // "<div class=\"single-thumbnail-item\" >\n" +
+            // "<img src=\""+image+"\" alt=\"item\" />"+
+            // "</div>" +
+            // "<div class=\"single-thumbnail-item\" >\n" +
+            // "<img src=\""+image+"\" alt=\"item\" />"+
+            // "</div>" +
+            // "</div>";
+        var centerImageStr =
+            "<div class=\"single-thumbnail-slider2\" >\n" +
+            "                                <div class=\"slider-item\" align='center'  style='width: 536px;height: 536px;align-items: center;justify-content:center;display:flex;'>\n" +
+            "                                     <img src=\""+image+"\" alt=\"item\" style='height: 100%;width: auto;align-items: center;justify-content:center;display:flex;'/>"+
+            "                                </div>\n" +
+            "                                <div class=\"slider-item\" align='center'  style='width: 536px;height: 536px;align-items: center;justify-content:center;display:flex;'>\n" +
+            "                                     <img src=\""+image+"\" alt=\"item\" style='height: 100%;width: auto;align-items: center;justify-content:center;display:flex;'/>"+
+            "                                </div>\n" +
+            "                            </div>";
+
+
+            // "<div class=\"single-thumbnail-slider2\" >\n" +
+            // "<div class=\"slider-item\" style='align-items:center;'>\n" +
+            // "<img src=\""+image+"\" alt=\"item\" style='width: auto;height: 100%;'/>"+
+            // "</div>" +
+            // "<div class=\"slider-item\" tyle='align-items:center;'>\n" +
+            // "<img src=\""+image+"\" alt=\"item\" style='width: auto;height: 100%;'/>"+
+            // // "<img src=\""+image+"\" alt=\"item\" style='width: auto;height: 100%;max-width: 100%; max-height: 100%;'/>"+
+            // "</div>"+
+            // "</div>\n";
+        // "<div class=\"single-thumbnail-slider2\" >\n" +
+        //     "<div class=\"slider-item\" >\n" +
+        //     "<img src=\"../assets/img/product/"+image+"\" alt=\"item\">"+
+        //     "</div>"+
+        //     "<div class=\"slider-item\" >\n" +
+        //     "<img src=\"../assets/img/product/"+image+"\" alt=\"item\">"+
+        //     "</div>"+
+        //     "</div>\n";
+
+        $("#titleDiv").append("<h4 class=\"entry-title\" >" + book.bookName + "</h4>");
+        $("#priceDiv").append("￥" + book.price);
+
+        $("#centerImageDiv").empty();
+        $("#leftImageDiv").empty();
+        $("#details").empty();
+        $("#publishTime").empty();
+
+        $("#centerImageDiv").append(centerImageStr);
+        $("#leftImageDiv").append(leftImageStr);
+        $("#details").append(book.detail);
+        $("#author").append(book.author);
+        $("#publisher").append(book.publisher);
+        $("#publishTime").append(book.publishTime);
+
+        /*---------------------------------------
+            Thumbnail Slider
+        ---------------------------------------*/
+        var productDetailSlider = $('.single-thumbnail-slider');
+        var pThumbanilSlider = $('.product-thumbnail-carousel');
+
+        if (productDetailSlider.length) {
+            productDetailSlider.slick({
+                slidesToShow: 1,
+                slidesToScroll: 1,
+                arrows: true,
+                speed: 2500,
+                asNavFor: '.product-thumbnail-carousel'
+            });
+        }
+        if (pThumbanilSlider.length) {
+            pThumbanilSlider.slick({
+                slidesToShow: 5,
+                slidesToScroll: 1,
+                asNavFor: '.single-thumbnail-slider',
+                dots: false,
+                centerMode: false,
+                focusOnSelect: true,
+                arrows:false,
+                prevArrow: '<div class="slick-prev"><i class="fa fa-angle-up"></i></div>',
+                nextArrow: '<div class="slick-next"><i class="fa fa-angle-down"></i></div>',
+            });
+        }
+
+        var productDetailSlider = $('.single-thumbnail-slider2');
+        var pThumbanilSlider = $('.product-thumbnail-carousel2');
+
+        if (productDetailSlider.length) {
+            productDetailSlider.slick({
+                slidesToShow: 1,
+                slidesToScroll: 1,
+                arrows: true,
+                asNavFor: '.product-thumbnail-carousel2'
+            });
+        }
+        if (pThumbanilSlider.length) {
+            pThumbanilSlider.slick({
+                slidesToShow: 4,
+                slidesToScroll: 1,
+                asNavFor: '.single-thumbnail-slider2',
+                dots: false,
+                centerMode: false,
+                focusOnSelect: true,
+                vertical: true,
+                arrows:false,
+                prevArrow: '<div class="slick-prev"><i class="fa fa-angle-double-up"></i></div>',
+                nextArrow: '<div class="slick-next"><i class="fa fa-angle-double-down"></i></div>',
+            });
+        }
+
+
+
+
+        // alert("查询成功");
+    }
+</script>
+
+</body>
+</html>

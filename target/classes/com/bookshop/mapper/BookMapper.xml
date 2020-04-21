@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--
+    Description: book mapper
+    Author: 曾志昊 2017302580214
+-->
+
+<mapper namespace="com.bookshop.dao.BookDao">
+
+    <resultMap id="bookResultMap" type="com.bookshop.entity.Book">
+        <id column="book_id"  property="bookId" />
+        <result column="price"  property="price" />
+        <result column="book_name"  property="bookName" />
+        <result column="detail"  property="detail" />
+        <result column="book_type" property="bookType" />
+        <result column="image"  property="image" />
+        <result column="publish_time" property="publishTime" />
+        <result column="book_status" property="bookStatus" />
+        <result column="author" property="author" />
+        <result column="publisher" property="publisher" />
+    </resultMap>
+
+    <sql id="search_where">
+        <if test="bookId != null">and book_id = #{bookId}</if>
+        <if test="price != null">and price = #{price}</if>
+        <if test="bookName != null">and book_name like #{bookName}</if>
+        <if test="bookType!=null">and book_type = #{bookType}</if>
+        <if test="bookStatus!=null">and book_status = #{bookStatus}</if>
+        <if test="searchStr!=null">and (book_name like #{searchStr} OR publisher like #{searchStr} OR author like #{searchStr})</if>
+        <if test="startTime!=null"><![CDATA[ and publish_time >= #{startTime}]]></if>
+        <if test="endTime!=null"><![CDATA[ and publish_time <= #{endTime}]]></if>
+        <if test="startPrice!=null"><![CDATA[ and price>= #{startPrice}]]></if>
+        <if test="endPrice!=null"><![CDATA[ and price<=  #{endPrice}]]></if>
+        <if test="priceOrderDESC!=null">order by price DESC</if>
+        <if test="priceOrder!=null">order by price</if>
+    </sql>
+
+    <!--sql代码块-->
+    <sql id="table_column">
+        (book_id,price,book_name,detail,book_type,image,publish_time,book_status)
+    </sql>
+
+    <select id="getAllBooks"  resultMap="bookResultMap">
+        select * from book
+     </select>
+
+    <select id="getAllBooksPage" parameterType="java.util.HashMap" resultMap="bookResultMap">
+        select * from book
+        <if test="startPage!=null and pageSize != null"> LIMIT #{startPage},#{pageSize}</if>
+    </select>
+
+    <select id="getBook" parameterType="Integer" resultMap="bookResultMap">
+        select * from book where book_id = #{bookId}
+    </select>
+
+    <select id="searchBooks" parameterType="java.util.HashMap" resultMap="bookResultMap">
+        select * from book where 1=1
+        <include refid="search_where"></include>
+        <if test="startPage!=null and pageSize != null">LIMIT #{startPage},#{pageSize}</if>
+    </select>
+
+    <!--动态sql解决插入无默认值问题-->
+    <sql id="bookInfoColumns">
+        <trim suffixOverrides=",">
+            <if test="bookId != null"> book_id,</if>
+            <if test="bookName != null"> book_name,</if>
+            <if test="detail!=null"> detail,</if>
+            <if test="bookType != null"> book_type,</if>
+            <if test="image!=null"> image, </if>
+            <if test="publishTime!=null"> publish_time,</if>
+            <if test="bookStatus!=null"> book_status,</if>
+            <if test="publisher!=null"> publisher,</if>
+            <if test="author!=null"> author,</if>
+        </trim>
+    </sql>
+
+    <sql id="bookInfoValues">
+        <trim suffixOverrides=",">
+            <if test="bookId != null">#{bookId},</if>
+            <if test="bookName != null">#{bookName},</if>
+            <if test="detail!=null">#{detail},</if>
+            <if test="bookType != null">#{bookType},</if>
+            <if test="image!=null">#{image},</if>
+            <if test="publishTime!=null"> #{publishTime},</if>
+            <if test="bookStatus!=null"> #{bookStatus},</if>
+            <if test="publisher!=null"> #{publisher},</if>
+            <if test="author!=null"> #{author},</if>
+        </trim>
+    </sql>
+
+    <insert id="insertBook" parameterType="com.bookshop.entity.Book" keyColumn="book_id" useGeneratedKeys="true">
+        insert into book (<include refid="bookInfoColumns"/>)
+        values
+        (<include refid="bookInfoValues"/>)
+    </insert>
+
+    <insert id="insertBooks" parameterType="java.util.List">
+        insert into book <include refid="table_column"/>
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (
+            #{item.bookId},
+            #{item.price},
+            #{item.bookName},
+            #{item.detail},
+            #{item.bookType},
+            #{item.image},
+            #{=DATE_FORMAT(#{item.publishTime},'%Y-%m-%d')},
+            #{bookStatus}
+            )
+        </foreach>
+    </insert>
+
+    <update id="updateBook" parameterType="com.bookshop.entity.Book">
+        update book
+        <set>
+            <if test="price!=null">price=#{price},</if>
+            <if test="bookName!=null">book_name=#{bookName},</if>
+            <if test="detail!=null">detail=#{detail},</if>
+            <if test="bookType!=null">book_type=#{bookType},</if>
+            <if test="image!=null">image=#{image},</if>
+            <if test="publishTime!=null">publish_time=DATE_FORMAT(#{publishTime},'%Y-%m-%d'),</if>
+            <if test="bookStatus!=null">book_status=#{bookStatus},</if>
+            <if test="publisher!=null"> publisher=#{publisher},</if>
+            <if test="author!=null"> author=#{author},</if>
+        </set>
+        where book_id=#{bookId}
+    </update>
+
+    <update id="updateBooks" parameterType="java.util.List">
+        <foreach collection="list" item="item" index="index" separator=";">
+            update book
+            <set>
+                <if test="item.price!=null">price=#{item.price},</if>
+                <if test="item.bookName!=null">book_name=#{item.bookName},</if>
+                <if test="item.detail!=null">detail=#{item.detail},</if>
+                <if test="item.bookType!=null">book_type=#{item.bookType} ,</if>
+                <if test="item.image!=null">image=#{item.image},</if>
+                <if test="item.publishTime!=null">publish_time=DATE_FORMAT(#{item.publishTime},'%Y-%m-%d'),</if>
+                <if test="bookStatus!=null">book_status=#{bookStatus},</if>
+            </set>
+            where book_id=#{item.bookId}
+        </foreach>
+
+    </update>
+
+    <delete id="deleteBookById" parameterType="Integer">
+        delete from book where book_id=#{bookId}
+    </delete>
+
+    <delete id="deleteBook" parameterType="com.bookshop.entity.Book">
+        delete from book where book_id=#{bookId}
+    </delete>
+
+    <delete id="deleteBooks" parameterType="java.util.List">
+        delete from book where book_id in
+        <foreach collection="list" item="bookId" open="(" close=")" separator=",">
+            #{bookId}
+        </foreach>
+    </delete>
+
+    <select id="count" parameterType="java.util.HashMap" resultType="Integer">
+        select count(*) from book where 1=1
+        <include refid="search_where"/>
+    </select>
+
+</mapper>
